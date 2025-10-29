@@ -22,6 +22,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<SqlDataAccessAsync>();
 
 		builder.Services.AddScoped<ITermService, TermService>();
+		builder.Services.AddScoped<ICourseService, CourseService>();
 
 #if DEBUG
 		builder.Logging.AddDebug();

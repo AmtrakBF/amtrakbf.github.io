@@ -11,7 +11,8 @@ public class TestServiceProvider : TestBedFixture
     protected override void AddServices(IServiceCollection services, IConfiguration? configuration)
         => services
             .AddSingleton<SqlDataAccessAsync>()
-            .AddScoped<ITermService, TermService>();
+            .AddScoped<ITermService, TermService>()
+            .AddScoped<ICourseService, CourseService>();
 
     protected override ValueTask DisposeAsyncCore() => new();
 
