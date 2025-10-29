@@ -18,7 +18,7 @@ public class Instructor
         {
             InstructorId = Guid.NewGuid(),
             Name = name,
-            Email = email,
+            Email = email.ToLower(),
             Phone = phone
         };
     }
@@ -29,7 +29,7 @@ public class Instructor
         {
             InstructorId = instructorId,
             Name = name,
-            Email = email,
+            Email = email.ToLower(),
             Phone = phone
         };
     } 

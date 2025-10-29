@@ -13,7 +13,7 @@ public class NoteTests : BaseTest
     [Fact]
     public async Task CreateNote_CreatesDBEntryAsync()
     {
-        var note = Note.CreateNewInstance("Test Note", "This is a test note.");
+        var note = Note.CreateNewInstance(Guid.NewGuid(), "Test Note", "This is a test note.");
 
         await _dbAccessAsync.GetConnection().InsertAsync(note);
         var noteFromDb = await _dbAccessAsync.GetConnection().GetAsync<Note>(note.NoteId);

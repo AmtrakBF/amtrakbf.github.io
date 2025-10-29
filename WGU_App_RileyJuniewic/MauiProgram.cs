@@ -35,6 +35,9 @@ public static class MauiProgram
 
 		builder.Services.AddScoped<ITermService, TermService>();
 		builder.Services.AddScoped<ICourseService, CourseService>();
+		builder.Services.AddScoped<IInstructorService, InstructorService>();
+		builder.Services.AddScoped<IAssessmentService, AssessmentService>();
+		builder.Services.AddScoped<INoteService, NoteService>();
 
 #if DEBUG
 		builder.Logging.AddDebug();

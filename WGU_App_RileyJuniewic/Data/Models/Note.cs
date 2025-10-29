@@ -14,21 +14,23 @@ public class Note
     public string Title { get; set; } = "";
     public string Content { get; set; } = "";
 
-    public static Note CreateNewInstance(string title, string content)
+    public static Note CreateNewInstance(Guid CourseId, string title, string content)
     {
         return new Note
         {
             NoteId = Guid.NewGuid(),
+            CourseId = CourseId,
             Title = title,
             Content = content
         };
     }
 
-    public static Note CreateInstance(Guid noteId, string title, string content)
+    public static Note CreateInstance(Guid noteId, Guid CourseId, string title, string content)
     {
         return new Note
         {
             NoteId = noteId,
+            CourseId = CourseId,
             Title = title,
             Content = content
         };

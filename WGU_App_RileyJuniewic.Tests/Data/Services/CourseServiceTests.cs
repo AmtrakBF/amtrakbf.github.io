@@ -72,7 +72,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             EndDate = new DateTime(2023, 3, 3)
         };
             
-        var exception = await Assert.ThrowsAsync<UserException>(() => _courseService.CreateCourseAsync(course2));
+        var exception = await Assert.ThrowsAsync<UserException>(async () => await _courseService.CreateCourseAsync(course2));
         exception.Message.Should().Be("Course overlaps with an existing course");
     }
 

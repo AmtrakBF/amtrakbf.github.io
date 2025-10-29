@@ -25,8 +25,12 @@ public class TestServiceProvider : TestBedFixture
             dbAccess.InitializeAsync().Wait();
             return dbAccess;
         });
+        
         services.AddScoped<ITermService, TermService>();
         services.AddScoped<ICourseService, CourseService>();
+        services.AddScoped<IInstructorService, InstructorService>();
+        services.AddScoped<IAssessmentService, AssessmentService>();
+        services.AddScoped<INoteService, NoteService>();
     }
 
     protected override ValueTask DisposeAsyncCore() => new();
