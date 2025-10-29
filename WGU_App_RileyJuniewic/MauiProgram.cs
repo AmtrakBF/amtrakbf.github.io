@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using WGU_App_RileyJuniewic.Data.Repository;
+using WGU_App_RileyJuniewic.Data.Services;
 using WGU_App_RileyJuniewic.Forms;
 
 namespace WGU_App_RileyJuniewic;
@@ -19,6 +20,8 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<HomePage>();
 		builder.Services.AddSingleton<SqlDataAccessAsync>();
+
+		builder.Services.AddScoped<ITermService, TermService>();
 
 #if DEBUG
 		builder.Logging.AddDebug();

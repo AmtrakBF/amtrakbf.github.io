@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using WGU_App_RileyJuniewic.Data.Repository;
+using WGU_App_RileyJuniewic.Data.Services;
 using Xunit.Microsoft.DependencyInjection;
 using Xunit.Microsoft.DependencyInjection.Abstracts;
 
@@ -9,7 +10,8 @@ public class TestServiceProvider : TestBedFixture
 {
     protected override void AddServices(IServiceCollection services, IConfiguration? configuration)
         => services
-            .AddSingleton<SqlDataAccessAsync>();
+            .AddSingleton<SqlDataAccessAsync>()
+            .AddScoped<ITermService, TermService>();
 
     protected override ValueTask DisposeAsyncCore() => new();
 
