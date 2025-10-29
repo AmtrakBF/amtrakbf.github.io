@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Reflection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using WGU_App_RileyJuniewic.Data.Repository;
 using WGU_App_RileyJuniewic.Data.Services;
 using WGU_App_RileyJuniewic.Forms;
@@ -18,8 +20,18 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
+		using var stream = Assembly.GetExecutingAssembly()
+			.GetManifestResourceStream("WGU_App_RileyJuniewic.appsettings.json");
+		var config = new ConfigurationBuilder().AddJsonStream(stream!).Build();
+		builder.Configuration.AddConfiguration(config);
+
 		builder.Services.AddSingleton<HomePage>();
-		builder.Services.AddSingleton<SqlDataAccessAsync>();
+		builder.Services.AddSingleton(provider =>
+        {
+            var dbAccess = new SqlDataAccessAsync(config);
+            dbAccess.InitializeAsync().Wait();
+            return dbAccess;
+        });
 
 		builder.Services.AddScoped<ITermService, TermService>();
 		builder.Services.AddScoped<ICourseService, CourseService>();

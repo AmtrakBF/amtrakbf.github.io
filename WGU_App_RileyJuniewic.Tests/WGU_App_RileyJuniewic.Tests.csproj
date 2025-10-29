@@ -30,4 +30,14 @@
     <ProjectReference Include="..\WGU_App_RileyJuniewic\WGU_App_RileyJuniewic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+		<EmbeddedResource Include="appsettings.test.json" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
