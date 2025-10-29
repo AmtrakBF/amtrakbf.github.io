@@ -7,7 +7,7 @@ namespace WGU_App_RileyJuniewic.Data.Services;
 
 public interface ITermService
 {
-    Task<List<Term>> GetTermsAsync();
+    Task<List<Term>> GetAllTermsAsync();
     Task<Term> GetTermAsync(Guid termId);
     Task<Term> CreateTermAsync(CreateTermRequest request);
     Task<Term> UpdateTermAsync(Term term);
@@ -58,7 +58,7 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) : ITermService
         return term;
     }
 
-    public Task<List<Term>> GetTermsAsync() => sqlDataAccess.GetConnection().Table<Term>().ToListAsync();
+    public Task<List<Term>> GetAllTermsAsync() => sqlDataAccess.GetConnection().Table<Term>().ToListAsync();
 
     public async Task<Term> UpdateTermAsync(Term term)
     {

@@ -127,10 +127,38 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
             StartDate = new DateTime(2023, 3, 3),
             EndDate = new DateTime(2023, 4, 4)
         };
-        
+
         await _termService.UpdateTermAsync(updatedTerm);
         var termFromDb = await _dbAccessAsync.GetConnection().GetAsync<Term>(updatedTerm.TermId);
         termFromDb.Should().BeEquivalentTo(updatedTerm);
+    }
+
+    [Fact]
+    public async Task GetAllTermsAsync_ReturnsAllTermsAsync()
+    {
+        await ClearTerms();
+
+        var term = new CreateTermRequest()
+        {
+            Title = "Test Term",
+            StartDate = new DateTime(2023, 1, 1),
+            EndDate = new DateTime(2023, 2, 2)
+        };
+
+        var createdTerm = await _termService.CreateTermAsync(term);
+
+        var term2 = new CreateTermRequest()
+        {
+            Title = "Test Term2",
+            StartDate = new DateTime(2023, 3, 3),
+            EndDate = new DateTime(2023, 4, 4)
+        };
+
+        var createdTerm2 = await _termService.CreateTermAsync(term2);
+
+        var terms = await _termService.GetAllTermsAsync();
+        terms.Should().ContainEquivalentOf(createdTerm);
+        terms.Should().ContainEquivalentOf(createdTerm2);
     }
 
     private async Task ClearTerms() => await _dbAccessAsync.GetConnection().DeleteAllAsync<Term>();
