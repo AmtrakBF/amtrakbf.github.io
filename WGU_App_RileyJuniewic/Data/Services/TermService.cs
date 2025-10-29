@@ -10,7 +10,7 @@ public interface ITermService
     Task<List<Term>> GetAllTermsAsync();
     Task<Term> GetTermAsync(Guid termId);
     Task<Term> CreateTermAsync(CreateTermRequest request);
-    Task<Term> UpdateTermAsync(Term term);
+    Task<Term> UpdateTermAsync(UpdateTermRequest request);
     Task DeleteTermAsync(Guid termId);
 }
 
@@ -19,16 +19,7 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) : ITermService
     public async Task<Term> CreateTermAsync(CreateTermRequest request)
     {
         var term = Term.CreateNewInstance(request.Title, request.StartDate, request.EndDate);
-
-        var existingTerms = await sqlDataAccess.GetConnection().Table<Term>().ToListAsync();
-        foreach (var existingTerm in existingTerms)
-        {
-            if (existingTerm.StartDate <= term.EndDate && existingTerm.EndDate >= term.StartDate)
-                throw new UserException("Term overlaps with an existing term");
-
-            if (existingTerm.Title == term.Title) 
-                throw new UserException("Term with the same title already exists");
-        }
+        await ValidateTermAsync(term);
 
         await sqlDataAccess.GetConnection().InsertAsync(term);
         return term;
@@ -60,9 +51,26 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) : ITermService
 
     public Task<List<Term>> GetAllTermsAsync() => sqlDataAccess.GetConnection().Table<Term>().ToListAsync();
 
-    public async Task<Term> UpdateTermAsync(Term term)
+    public async Task<Term> UpdateTermAsync(UpdateTermRequest request)
     {
+        var term = Term.CreateInstance(request.TermId, request.Title, request.StartDate, request.EndDate);
+        await ValidateTermAsync(term);
         await sqlDataAccess.GetConnection().UpdateAsync(term);
-        return term;        
+        return term;
+    }
+
+    internal async Task<bool> ValidateTermAsync(Term term)
+    {
+        var existingTerms = await sqlDataAccess.GetConnection().Table<Term>().ToListAsync();
+        foreach (var existingTerm in existingTerms)
+        {
+            if (existingTerm.StartDate <= term.EndDate && existingTerm.EndDate >= term.StartDate && existingTerm.TermId != term.TermId)
+                throw new UserException("Term overlaps with an existing term");
+
+            if (existingTerm.Title == term.Title && existingTerm.TermId != term.TermId)
+                throw new UserException("Term with the same title already exists");
+        }
+        
+        return true;
     }
 }

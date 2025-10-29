@@ -192,11 +192,23 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var createdCourse = await _courseService.CreateCourseAsync(course);
-        createdCourse.Title = "Updated Course";
-        await _courseService.UpdateCourseAsync(createdCourse);
+        var updateRequest = new UpdateCourseRequest()
+        {
+            CourseId = createdCourse.CourseId,
+            Title = "Updated Course",
+            TermId = term.TermId,
+            InstructorId = instructor.InstructorId,
+            Status = CourseStatus.Completed,
+            StartDate = DateTime.Now.AddDays(2),
+            EndDate = DateTime.Now.AddDays(4)
+        };
+
+        var updatedTerm = await _courseService.UpdateCourseAsync(updateRequest);
 
         var courseFromDb = await _courseService.GetCourseAsync(createdCourse.CourseId);
-        courseFromDb.Should().BeEquivalentTo(createdCourse);
+        courseFromDb.Should().BeEquivalentTo(updatedTerm);
+        courseFromDb.Should().NotBeEquivalentTo(createdCourse);
+        courseFromDb.CourseId.Should().Be(createdCourse.CourseId);
     }
 
     private async Task ClearCourses() => await _dbAccessAsync.GetConnection().DeleteAllAsync<Course>();

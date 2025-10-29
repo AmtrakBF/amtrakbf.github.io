@@ -5,7 +5,7 @@ namespace WGU_App_RileyJuniewic.Data.Dtos.Term;
 
 public class CreateTermRequest : BindingDto
 {
-    private string _title = "";
+    protected string _title = "";
     [Required(AllowEmptyStrings = false)]
     public string Title
     {
@@ -18,7 +18,7 @@ public class CreateTermRequest : BindingDto
         }
     }
 
-    private DateTime _startDate;
+    protected DateTime _startDate;
     [Required]
     public DateTime StartDate
     {
@@ -31,7 +31,7 @@ public class CreateTermRequest : BindingDto
         }
     }
 
-    private DateTime _endDate;
+    protected DateTime _endDate;
     [Required]
     [DateTimeComparer(nameof(StartDate), true)]
     public DateTime EndDate

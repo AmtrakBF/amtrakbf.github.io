@@ -6,7 +6,7 @@ namespace WGU_App_RileyJuniewic.Data.Dtos.Course;
 
 public class CreateCourseRequest : BindingDto
 {
-    private Guid _termId;
+    protected Guid _termId;
     [Required]
     public Guid TermId
     {
@@ -19,7 +19,7 @@ public class CreateCourseRequest : BindingDto
         }
     }
 
-    private Guid _instructorId;
+    protected Guid _instructorId;
     public Guid InstructorId
     {
         get => _instructorId;
@@ -31,7 +31,7 @@ public class CreateCourseRequest : BindingDto
         }
     }
 
-    private string _title = "";
+    protected string _title = "";
     [Required(AllowEmptyStrings = false)]
     public string Title
     {
@@ -45,7 +45,7 @@ public class CreateCourseRequest : BindingDto
     }
 
 
-    private CourseStatus _status;
+    protected CourseStatus _status;
     [Required]
     public CourseStatus Status
     {
@@ -58,7 +58,7 @@ public class CreateCourseRequest : BindingDto
         }
     }
 
-    private DateTime _startDate;
+    protected DateTime _startDate;
     [Required]
     public DateTime StartDate
     {
@@ -71,7 +71,7 @@ public class CreateCourseRequest : BindingDto
         }
     }
 
-    private DateTime _endDate;
+    protected DateTime _endDate;
     [Required]
     [DateTimeComparer(nameof(StartDate), true)]
     public DateTime EndDate

@@ -37,56 +37,7 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
         termFromDb.Should().BeEquivalentTo(createdTerm);
     }
 
-    [Fact]
-    public async Task CreateTermAsync_ThrowsExceptionWhenTermOverlapsAsync()
-    {
-        await ClearTerms();
-
-        var term = new CreateTermRequest()
-        {
-            Title = "Test Term",
-            StartDate = new DateTime(2023, 1, 1),
-            EndDate = new DateTime(2023, 2, 2)
-        };
-
-        await _termService.CreateTermAsync(term);
-
-        var term2 = new CreateTermRequest()
-        {
-            Title = "Test Term2",
-            StartDate = new DateTime(2023, 2, 2),
-            EndDate = new DateTime(2023, 3, 3)
-        };
-
-        var exception = await Assert.ThrowsAsync<UserException>(() => _termService.CreateTermAsync(term2));
-        exception.Message.Should().Be("Term overlaps with an existing term");
-    }
-
-    [Fact]
-    public async Task CreateTermAsync_ThrowsExceptionWhenTermTitleExistsAsync()
-    {
-        await ClearTerms();
-
-        var term = new CreateTermRequest()
-        {
-            Title = "Test Term",
-            StartDate = new DateTime(2023, 1, 1),
-            EndDate = new DateTime(2023, 2, 2)
-        };
-
-        await _termService.CreateTermAsync(term);
-
-        var term2 = new CreateTermRequest()
-        {
-            Title = "Test Term",
-            StartDate = new DateTime(2023, 4, 4),
-            EndDate = new DateTime(2023, 5, 5)
-        };
-
-        var exception = await Assert.ThrowsAsync<UserException>(() => _termService.CreateTermAsync(term2));
-        exception.Message.Should().Be("Term with the same title already exists");
-    }
-
+    
     [Fact]
     public async Task DeleteTermAsync_DeletesTermAsync()
     {
@@ -120,7 +71,7 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
 
         var createdTerm = await _termService.CreateTermAsync(term);
 
-        var updatedTerm = new Term()
+        var updateRequest = new UpdateTermRequest()
         {
             TermId = createdTerm.TermId,
             Title = "Updated Term",
@@ -128,9 +79,11 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
             EndDate = new DateTime(2023, 4, 4)
         };
 
-        await _termService.UpdateTermAsync(updatedTerm);
-        var termFromDb = await _dbAccessAsync.GetConnection().GetAsync<Term>(updatedTerm.TermId);
+        var updatedTerm = await _termService.UpdateTermAsync(updateRequest);
+        var termFromDb = await _dbAccessAsync.GetConnection().GetAsync<Term>(createdTerm.TermId);
         termFromDb.Should().BeEquivalentTo(updatedTerm);
+        termFromDb.Should().NotBeEquivalentTo(createdTerm);
+        termFromDb.TermId.Should().Be(createdTerm.TermId);
     }
 
     [Fact]
@@ -159,6 +112,32 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
         var terms = await _termService.GetAllTermsAsync();
         terms.Should().ContainEquivalentOf(createdTerm);
         terms.Should().ContainEquivalentOf(createdTerm2);
+    }
+
+    [Theory]
+    [InlineData("358aa2d3-69e3-4123-8deb-d71ef308502a", "Test Term", "2023-07-01", "2023-08-01", "Term with the same title already exists")]
+    [InlineData("358aa2d3-69e3-4123-8deb-d71ef308501a", "Test Term", "2023-07-01", "2023-08-01")]
+    [InlineData("358aa2d3-69e3-4123-8deb-d71ef308502a", "Test Term2", "2023-05-01", "2023-08-01", "Term overlaps with an existing term")]
+    [InlineData("358aa2d3-69e3-4123-8deb-d71ef308501a", "Test Term2", "2023-05-01", "2023-08-01")]
+    public async Task ValidateTermAsync_ValidatesTerm(Guid termId, string title, DateTime startDate, DateTime endDate, string? message = null)
+    {
+        await ClearTerms();
+
+        var termBase = Term.CreateInstance(new Guid("358aa2d3-69e3-4123-8deb-d71ef308501a"), "Test Term", new DateTime(2023, 5, 1), new DateTime(2023, 6, 1));
+        await _dbAccessAsync.GetConnection().InsertAsync(termBase);
+
+        var term = Term.CreateInstance(termId, title, startDate, endDate);
+        var termService = new TermService(_dbAccessAsync);
+
+        if (message != null)
+        {
+            var exception = await Assert.ThrowsAsync<UserException>(() => termService.ValidateTermAsync(term));
+            exception.Message.Should().Be(message);
+        } else
+        {
+            var result = await termService.ValidateTermAsync(term);
+            result.Should().Be(true);
+        }
     }
 
     private async Task ClearTerms() => await _dbAccessAsync.GetConnection().DeleteAllAsync<Term>();

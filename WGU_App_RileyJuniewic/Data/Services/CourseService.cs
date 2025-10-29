@@ -10,7 +10,7 @@ public interface ICourseService
     public Task<List<Course>> GetAllCoursesAsync();
     public Task<Course> GetCourseAsync(Guid courseId);
     public Task<Course> CreateCourseAsync(CreateCourseRequest request);
-    public Task<Course> UpdateCourseAsync(Course course);
+    public Task<Course> UpdateCourseAsync(UpdateCourseRequest request);
     public Task DeleteCourseAsync(Guid courseId);   
 }
 
@@ -19,20 +19,7 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) : ICourseService
     public async Task<Course> CreateCourseAsync(CreateCourseRequest request)
     {
         var course = Course.CreateNewInstance(request.TermId, request.InstructorId, request.Title, request.Status, request.StartDate, request.EndDate);
-        var validInstructor = await sqlDataAccess.GetConnection().Table<Instructor>().Where(x => x.InstructorId == course.InstructorId).FirstOrDefaultAsync();
-        if (validInstructor == null)
-            throw new UserException("Instructor does not exist");
-
-        var validTerm = await sqlDataAccess.GetConnection().Table<Term>().Where(x => x.TermId == course.TermId).FirstOrDefaultAsync();
-        if (validTerm == null)
-            throw new UserException("Term does not exist");
-
-        var otherCourses = await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.TermId == course.TermId).ToListAsync();
-        foreach (var otherCourse in otherCourses)
-        {
-            if (otherCourse.StartDate <= course.EndDate && otherCourse.EndDate >= course.StartDate)
-                throw new UserException("Course overlaps with an existing course");
-        }
+        await ValidateCourseAsync(course);
 
         await sqlDataAccess.GetConnection().InsertAsync(course);
         return course;
@@ -58,9 +45,32 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) : ICourseService
         return course;
     }
 
-    public async Task<Course> UpdateCourseAsync(Course course)
+    public async Task<Course> UpdateCourseAsync(UpdateCourseRequest request)
     {
+        var course = Course.CreateInstance(request.CourseId, request.TermId, request.InstructorId, request.Title, request.Status, request.StartDate, request.EndDate);
+        await ValidateCourseAsync(course);
+
         await sqlDataAccess.GetConnection().UpdateAsync(course);
         return course;
+    }
+    
+    internal async Task<bool> ValidateCourseAsync(Course course)
+    {
+        var validInstructor = await sqlDataAccess.GetConnection().Table<Instructor>().Where(x => x.InstructorId == course.InstructorId).FirstOrDefaultAsync();
+        if (validInstructor == null)
+            throw new UserException("Instructor does not exist");
+
+        var validTerm = await sqlDataAccess.GetConnection().Table<Term>().Where(x => x.TermId == course.TermId).FirstOrDefaultAsync();
+        if (validTerm == null)
+            throw new UserException("Term does not exist");
+
+        var otherCourses = await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.TermId == course.TermId && x.CourseId != course.CourseId).ToListAsync();
+        foreach (var otherCourse in otherCourses)
+        {
+            if (otherCourse.StartDate <= course.EndDate && otherCourse.EndDate >= course.StartDate)
+                throw new UserException("Course overlaps with an existing course");
+        }
+
+        return true;
     }
 }
