@@ -9,4 +9,9 @@ public partial class HomePage : ContentPage
 		BindingContext = viewModel;
 		InitializeComponent();
 	}
+
+    private void Button_Clicked(object sender, EventArgs e)
+	{
+        _ = Shell.Current.GoToAsync("AddCoursePage");
+    }
 }

@@ -5,6 +5,7 @@ using WGU_App_RileyJuniewic.Data.Repository;
 using WGU_App_RileyJuniewic.Data.Services;
 using WGU_App_RileyJuniewic.Data.ViewModels;
 using WGU_App_RileyJuniewic.Forms;
+using WGU_App_RileyJuniewic.Forms.CourseForms;
 
 namespace WGU_App_RileyJuniewic;
 
@@ -26,13 +27,15 @@ public static class MauiProgram
 		var config = new ConfigurationBuilder().AddJsonStream(stream!).Build();
 		builder.Configuration.AddConfiguration(config);
 
-		builder.Services.AddSingleton<HomePage>();
 		builder.Services.AddSingleton(provider =>
 		{
 			var dbAccess = new SqlDataAccessAsync(config);
 			_ = dbAccess.InitializeAsync();
 			return dbAccess;
 		});
+
+		builder.Services.AddTransient<HomePage>();
+		builder.Services.AddTransient<AddCoursePage>();
 		
 		builder.Services.AddTransient<HomeViewModel>();
 

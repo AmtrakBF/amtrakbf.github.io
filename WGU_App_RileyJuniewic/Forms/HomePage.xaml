@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WGU_App_RileyJuniewic.Forms.HomePage"
              xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
+             xmlns:courseComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.CourseComponents"
              Shell.NavBarIsVisible="False">
     <VerticalStackLayout>
         <components:HeaderComp />
@@ -11,13 +12,13 @@
                 <DataTemplate>
                     <ContentView>
                         <VerticalStackLayout>
-                            <components:CourseCard Course="{Binding Course}" Instructor="{Binding Instructor}" />
+                            <courseComponents:CourseCard Course="{Binding Course}" Instructor="{Binding Instructor}" />
                         </VerticalStackLayout>
                     </ContentView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Button Text="Add Course" Margin="40 0 0 0" HorizontalOptions="Center" />
+        <Button Text="Add Course" Margin="0,20,0,20" Clicked="Button_Clicked" HorizontalOptions="Center" />
     </VerticalStackLayout>
 </ContentPage>

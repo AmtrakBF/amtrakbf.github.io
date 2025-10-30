@@ -2,8 +2,8 @@ namespace WGU_App_RileyJuniewic.Data.Dtos.Course;
 
 public class FullCourseDto : BindingModel
 {
-    private Models.Course? _course;
-    public Models.Course? Course
+    private Models.Course _course = new();
+    public Models.Course Course
     {
         get => _course;
         set
@@ -13,8 +13,8 @@ public class FullCourseDto : BindingModel
         }
     }
     
-    private Models.Instructor? _instructor;
-    public Models.Instructor? Instructor
+    private Models.Instructor _instructor = new();
+    public Models.Instructor Instructor
     {
         get => _instructor;
         set

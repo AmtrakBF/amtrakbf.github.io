@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using WGU_App_RileyJuniewic.Data.Dtos;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
 using WGU_App_RileyJuniewic.Data.Misc.Commands;
@@ -9,9 +10,9 @@ public class HomeViewModel : BindingModel
 {
     private readonly ICourseService _courseService;
     private readonly IInstructorService _instructorService;
-    private List<FullCourseDto> _fullCourses = [];
+    private BindingList<FullCourseDto> _fullCourses = [];
 
-    public List<FullCourseDto> FullCourses
+    public BindingList<FullCourseDto> FullCourses
     {
         get => _fullCourses;
         set
@@ -42,10 +43,10 @@ public class HomeViewModel : BindingModel
         var fullCourses = courses.Select(c => new FullCourseDto
         {
             Course = c,
-            Instructor = instructors.FirstOrDefault(i => i.InstructorId == c.InstructorId)
+            Instructor = instructors.FirstOrDefault(i => i.InstructorId == c.InstructorId) ?? new()
         }).ToList();
 
-        FullCourses = fullCourses;
+        FullCourses = new(fullCourses);
         OnPropertyChanged(nameof(FullCourses));
     }
 }

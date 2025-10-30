@@ -1,6 +1,6 @@
 using WGU_App_RileyJuniewic.Data.Models;
 
-namespace WGU_App_RileyJuniewic.Forms.Components;
+namespace WGU_App_RileyJuniewic.Forms.Components.CourseComponents;
 
 public sealed partial class CourseCard : ContentView
 {
