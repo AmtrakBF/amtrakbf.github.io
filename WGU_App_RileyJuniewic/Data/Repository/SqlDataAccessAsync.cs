@@ -10,7 +10,10 @@ public class SqlDataAccessAsync
 
     public SqlDataAccessAsync(IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("Default");
+        var connectionString =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            configuration.GetConnectionString("Default") ?? "mysqliteasync.db");
+
         _connection = new SQLiteAsyncConnection(connectionString);
     }
 

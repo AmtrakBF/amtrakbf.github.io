@@ -1,0 +1,21 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="WGU_App_RileyJuniewic.Forms.Components.HeaderComp"
+            xmlns:local="clr-namespace:WGU_App_RileyJuniewic.Forms.Components">
+    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Stroke="White">
+        <Border.Shadow>
+            <Shadow Offset="0,10"
+                    Radius="10"
+                    Opacity="0.1" />
+        </Border.Shadow>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Image Source="logo.png" WidthRequest="75" HeightRequest="75" />
+            <Label Grid.Column="1" Text="WGU Mobile" FontSize="Title" FontAttributes="Bold" 
+                VerticalOptions="Center" HorizontalOptions="Center" TextColor="{StaticResource Primary}"/>
+        </Grid>
+    </Border>
+</ContentView>

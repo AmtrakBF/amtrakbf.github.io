@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WGU_App_RileyJuniewic.Data.Dtos.Note;
 
-public class CreateNoteRequest : BindingDto
+public class CreateNoteRequest : BindingModel
 {
     protected Guid _courseId;
     [Required]

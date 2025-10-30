@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WGU_App_RileyJuniewic.Data.Dtos.Instructor;
 
-public class CreateInstructorRequest : BindingDto
+public class CreateInstructorRequest : BindingModel
 {
     protected string _name = "";
     [Required(AllowEmptyStrings = false)]

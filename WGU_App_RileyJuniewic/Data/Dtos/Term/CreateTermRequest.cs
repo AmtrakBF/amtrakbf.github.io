@@ -3,7 +3,7 @@ using WGU_App_RileyJuniewic.Data.Misc.Attributes;
 
 namespace WGU_App_RileyJuniewic.Data.Dtos.Term;
 
-public class CreateTermRequest : BindingDto
+public class CreateTermRequest : BindingModel
 {
     protected string _title = "";
     [Required(AllowEmptyStrings = false)]

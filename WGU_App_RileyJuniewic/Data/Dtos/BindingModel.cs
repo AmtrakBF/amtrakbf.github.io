@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace WGU_App_RileyJuniewic.Data.Dtos;
 
-public class BindingDto : INotifyDataErrorInfo, INotifyPropertyChanged
+public class BindingModel : INotifyDataErrorInfo, INotifyPropertyChanged
 {
     protected Dictionary<string, List<string?>> _errors = [];
     public bool HasErrors => _errors.Count > 0;

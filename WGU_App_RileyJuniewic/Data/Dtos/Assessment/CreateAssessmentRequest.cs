@@ -4,7 +4,7 @@ using WGU_App_RileyJuniewic.Data.Models.Enums;
 
 namespace WGU_App_RileyJuniewic.Data.Dtos.Assessment;
 
-public class CreateAssessmentRequest : BindingDto
+public class CreateAssessmentRequest : BindingModel
 {
 
     protected Guid _courseId;

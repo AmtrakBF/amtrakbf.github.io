@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using WGU_App_RileyJuniewic.Data.Repository;
 using WGU_App_RileyJuniewic.Data.Services;
+using WGU_App_RileyJuniewic.Data.ViewModels;
 using WGU_App_RileyJuniewic.Forms;
 
 namespace WGU_App_RileyJuniewic;
@@ -27,11 +28,13 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<HomePage>();
 		builder.Services.AddSingleton(provider =>
-        {
-            var dbAccess = new SqlDataAccessAsync(config);
-            dbAccess.InitializeAsync().Wait();
-            return dbAccess;
-        });
+		{
+			var dbAccess = new SqlDataAccessAsync(config);
+			_ = dbAccess.InitializeAsync();
+			return dbAccess;
+		});
+		
+		builder.Services.AddTransient<HomeViewModel>();
 
 		builder.Services.AddScoped<ITermService, TermService>();
 		builder.Services.AddScoped<ICourseService, CourseService>();

@@ -4,7 +4,7 @@ using WGU_App_RileyJuniewic.Data.Models.Enums;
 
 namespace WGU_App_RileyJuniewic.Data.Dtos.Course;
 
-public class CreateCourseRequest : BindingDto
+public class CreateCourseRequest : BindingModel
 {
     protected Guid _termId;
     [Required]
