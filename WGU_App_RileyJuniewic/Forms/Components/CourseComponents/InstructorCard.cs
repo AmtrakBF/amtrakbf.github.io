@@ -38,8 +38,6 @@ public sealed partial class InstructorCard : ContentView
 
     public InstructorCard()
     {
-        InitializeComponent();
-
         var viewModel = ServiceHelper.GetService<InstructorCardViewModel>();
         BindingContext = viewModel;
         viewModel.OnCreateInstructor += (sender, args) =>
@@ -49,7 +47,7 @@ public sealed partial class InstructorCard : ContentView
             ChooseInstructor = true;
         };
 
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void Show_New_Instructor_Card(object sender, EventArgs e)

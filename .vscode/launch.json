@@ -1,0 +1,15 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: WGU_App_RileyJuniewic [Pixel 7 - API 35]",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\WGU_App_RileyJuniewic\\WGU_App_RileyJuniewic.csproj",
+            "launchConfigurationId": "pixel_7_-_api_35"
+        }
+    ]
+}

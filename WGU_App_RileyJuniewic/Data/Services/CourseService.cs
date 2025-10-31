@@ -18,6 +18,9 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) : ICourseService
 {
     public async Task<Result<Course>> CreateCourseAsync(CreateCourseRequest request)
     {
+        if (request.HasErrors)
+            return Result.Error(request.GetAllErrors());
+
         var course = Course.CreateNewInstance(request.TermId, request.InstructorId, request.Title, request.Status, request.StartDate, request.EndDate);
         var result = await ValidateCourseAsync(course);
         if (result.IsError())
@@ -50,6 +53,9 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) : ICourseService
 
     public async Task<Result<Course>> UpdateCourseAsync(UpdateCourseRequest request)
     {
+        if (request.HasErrors)
+            return Result.Error(request.GetAllErrors());
+            
         var course = Course.CreateInstance(request.CourseId, request.TermId, request.InstructorId, request.Title, request.Status, request.StartDate, request.EndDate);
         
         var result = await ValidateCourseAsync(course);

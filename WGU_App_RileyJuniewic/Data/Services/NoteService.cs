@@ -19,6 +19,9 @@ public class NoteService(SqlDataAccessAsync sqlDataAccess) : INoteService
 {
     public async Task<Result<Note>> CreateNoteAsync(CreateNoteRequest request)
     {
+        if (request.HasErrors)
+            return Result.Error(request.GetAllErrors());
+
         var note = Note.CreateNewInstance(request.CourseId, request.Title, request.Content);
         var result = await ValidateNoteAsync(note);
         if (result.IsError())
@@ -44,6 +47,9 @@ public class NoteService(SqlDataAccessAsync sqlDataAccess) : INoteService
 
     public async Task<Result<Note>> UpdateNoteAsync(UpdateNoteRequest request)
     {
+        if (request.HasErrors)
+            return Result.Error(request.GetAllErrors());
+            
         var note = Note.CreateInstance(request.NoteId, request.CourseId, request.Title, request.Content);
         var result = await ValidateNoteAsync(note);
         if (result.IsError())

@@ -11,9 +11,9 @@ public class UserError
 		ShowErrorMessage(message);
 	}
 	
-	public UserError(ErrorList errors)
+	public UserError(IEnumerable<string> errors)
     {
-        foreach (var error in errors.ErrorMessages)
+        foreach (var error in errors)
         {
             ShowErrorMessage(error);
         }
@@ -29,7 +29,7 @@ public class UserError
 				CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
 				ToastDuration duration = ToastDuration.Long;
-				double fontSize = 14;
+				double fontSize = 16;
 
 				var toast = Toast.Make(message, duration, fontSize);
 

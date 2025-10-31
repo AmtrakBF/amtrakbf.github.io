@@ -1,6 +1,8 @@
 using System.Diagnostics;
+using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos;
 using WGU_App_RileyJuniewic.Data.Dtos.Instructor;
+using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Misc.Commands;
 using WGU_App_RileyJuniewic.Data.Misc.Events;
 using WGU_App_RileyJuniewic.Data.Models;
@@ -45,10 +47,10 @@ public class InstructorCardViewModel : BindingModel
         CreateInstructorCommandAsync = new OnClickCommandAsync(CreateInstructorAsync, (obj) => !CreateInstructorRequest.HasErrors);
         CreateInstructorRequest.PropertyChanged += (sender, args) => CreateInstructorCommandAsync.RaiseCanExecuteChanged();
 
-        _ = GetInstructorsAsync();
+        _ = GetAllInstructorsAsync();
     }
 
-    private async Task GetInstructorsAsync()
+    private async Task GetAllInstructorsAsync()
     {
         Instructors = (await _instructorService.GetAllInstructorsAsync()).ToList();
         CreateInstructorCommandAsync.RaiseCanExecuteChanged();
@@ -56,8 +58,17 @@ public class InstructorCardViewModel : BindingModel
 
     private async Task CreateInstructorAsync()
     {
-        var instructor = await _instructorService.CreateInstructorAsync(CreateInstructorRequest);
-        await GetInstructorsAsync();
-        OnCreateInstructor?.Invoke(this, new CreateInstructorEventArgs(instructor));
+        var instructorResult = await _instructorService.CreateInstructorAsync(CreateInstructorRequest);
+        if (instructorResult.IsError())
+        {
+            new UserError(instructorResult.Errors);
+            return;
+        }
+
+        CreateInstructorRequest = new();
+        CreateInstructorRequest.PropertyChanged += (sender, args) => CreateInstructorCommandAsync.RaiseCanExecuteChanged();
+
+        await GetAllInstructorsAsync();
+        OnCreateInstructor?.Invoke(this, new CreateInstructorEventArgs(instructorResult.Value));
     }
 }

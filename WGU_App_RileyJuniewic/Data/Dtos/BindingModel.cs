@@ -2,6 +2,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Ardalis.Result;
 
 namespace WGU_App_RileyJuniewic.Data.Dtos;
 
@@ -26,6 +27,16 @@ public class BindingModel : INotifyDataErrorInfo, INotifyPropertyChanged
         }
 
         return Enumerable.Empty<DataErrorsChangedEventArgs>();
+    }
+
+    public ErrorList GetAllErrors()
+    {
+        var errors = new List<string?>();
+        foreach (var error in _errors.Values)
+        {
+            errors.AddRange(error);
+        }
+        return new ErrorList(errors);
     }
 
     public virtual void Validate(string propertyName, object? propertyValue)
