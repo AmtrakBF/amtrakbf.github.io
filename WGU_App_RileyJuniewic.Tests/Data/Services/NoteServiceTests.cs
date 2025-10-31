@@ -1,3 +1,4 @@
+using Ardalis.Result;
 using FluentAssertions;
 using WGU_App_RileyJuniewic.Data.Dtos.Note;
 using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
@@ -34,8 +35,8 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var result = await _noteService.CreateNoteAsync(note);
-        var dbNote = await _dbAccessAsync.GetConnection().Table<Note>().Where(x => x.NoteId == result.NoteId).FirstOrDefaultAsync();
-        result.Should().BeEquivalentTo(dbNote);
+        var dbNote = await _dbAccessAsync.GetConnection().Table<Note>().Where(x => x.NoteId == result.Value.NoteId).FirstOrDefaultAsync();
+        result.Value.Should().BeEquivalentTo(dbNote);
     }
 
     [Fact]
@@ -50,8 +51,9 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
             Content = "Test Content"
         };
 
-        var exception = await Assert.ThrowsAsync<UserException>(() => _noteService.CreateNoteAsync(note));
-        exception.Message.Should().Be("Course not found");
+        var result = await _noteService.CreateNoteAsync(note);
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Course not found");
     }
 
     [Fact]
@@ -70,8 +72,8 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var result = await _noteService.CreateNoteAsync(note);
-        await _noteService.DeleteNoteAsync(result.NoteId);
-        var dbNote = await _dbAccessAsync.GetConnection().Table<Note>().Where(x => x.NoteId == result.NoteId).FirstOrDefaultAsync();
+        await _noteService.DeleteNoteAsync(result.Value.NoteId);
+        var dbNote = await _dbAccessAsync.GetConnection().Table<Note>().Where(x => x.NoteId == result.Value.NoteId).FirstOrDefaultAsync();
         dbNote.Should().BeNull();
     }
 
@@ -100,8 +102,8 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
         var result = await _noteService.CreateNoteAsync(note);
         var result2 = await _noteService.CreateNoteAsync(note2);
         var notes = await _noteService.GetAllNotesAsync();
-        notes.Should().ContainEquivalentOf(result);
-        notes.Should().ContainEquivalentOf(result2);
+        notes.Should().ContainEquivalentOf(result.Value);
+        notes.Should().ContainEquivalentOf(result2.Value);
     }
     
     [Fact]
@@ -120,7 +122,7 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var result = await _noteService.CreateNoteAsync(note);
-        var dbNote = await _noteService.GetNoteAsync(result.NoteId);
+        var dbNote = await _noteService.GetNoteAsync(result.Value.NoteId);
         dbNote.Should().BeEquivalentTo(result);
     }
 
@@ -129,8 +131,9 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
     {
         await ClearNotes();
 
-        var exception = await Assert.ThrowsAsync<UserException>(() => _noteService.GetNoteAsync(Guid.NewGuid()));
-        exception.Message.Should().Be("Note not found");
+        var result = await _noteService.GetNoteAsync(Guid.NewGuid());
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Note not found");
     }
 
     [Fact]
@@ -151,14 +154,14 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
         var result = await _noteService.CreateNoteAsync(note);
         var updateNote = new UpdateNoteRequest()
         {
-            NoteId = result.NoteId,
+            NoteId = result.Value.NoteId,
             CourseId = course.CourseId,
             Title = "Test Note 2",
             Content = "Test Content 2"
         };
         await _noteService.UpdateNoteAsync(updateNote);
-        var dbNote = await _dbAccessAsync.GetConnection().Table<Note>().Where(x => x.NoteId == result.NoteId).FirstOrDefaultAsync();
-        dbNote.NoteId.Should().Be(result.NoteId);
+        var dbNote = await _dbAccessAsync.GetConnection().Table<Note>().Where(x => x.NoteId == result.Value.NoteId).FirstOrDefaultAsync();
+        dbNote.NoteId.Should().Be(result.Value.NoteId);
         dbNote.CourseId.Should().Be(course.CourseId);
         dbNote.Title.Should().Be(updateNote.Title);
         dbNote.Content.Should().Be(updateNote.Content);

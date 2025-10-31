@@ -1,6 +1,6 @@
+using Ardalis.Result;
 using FluentAssertions;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
-using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Models.Enums;
 using WGU_App_RileyJuniewic.Data.Repository;
@@ -38,7 +38,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var createdCourse = await _courseService.CreateCourseAsync(course);
-        var courseFromDb = await _courseService.GetCourseAsync(createdCourse.CourseId);
+        var courseFromDb = await _courseService.GetCourseAsync(createdCourse.Value.CourseId);
 
         courseFromDb.Should().BeEquivalentTo(createdCourse);
     }
@@ -71,9 +71,10 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             StartDate = new DateTime(2023, 2, 2),
             EndDate = new DateTime(2023, 3, 3)
         };
-            
-        var exception = await Assert.ThrowsAsync<UserException>(async () => await _courseService.CreateCourseAsync(course2));
-        exception.Message.Should().Be("Course overlaps with an existing course");
+
+        var result = await _courseService.CreateCourseAsync(course2);
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Course overlaps with an existing course");
     }
 
     [Fact]
@@ -92,8 +93,9 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             EndDate = DateTime.Now.AddDays(1)
         };
 
-        var exception = await Assert.ThrowsAsync<UserException>(() => _courseService.CreateCourseAsync(course));
-        exception.Message.Should().Be("Instructor does not exist");
+        var result = await _courseService.CreateCourseAsync(course);
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Instructor does not exist");
     }
 
     [Fact]
@@ -112,8 +114,9 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             EndDate = DateTime.Now.AddDays(1)
         };
 
-        var exception = await Assert.ThrowsAsync<UserException>(() => _courseService.CreateCourseAsync(course));
-        exception.Message.Should().Be("Term does not exist");
+        var result = await _courseService.CreateCourseAsync(course);
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Term does not exist");
     }
 
     [Fact]
@@ -133,10 +136,12 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var createdCourse = await _courseService.CreateCourseAsync(course);
-        await _courseService.DeleteCourseAsync(createdCourse.CourseId);
+        await _courseService.DeleteCourseAsync(createdCourse.Value.CourseId);
 
-        var exception = await Assert.ThrowsAsync<UserException>(() => _courseService.GetCourseAsync(createdCourse.CourseId));
-        exception.Message.Should().Be("Course not found");
+
+        var result = await _courseService.GetCourseAsync(createdCourse.Value.CourseId);
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Course not found");
     }
 
     [Fact]
@@ -170,8 +175,8 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
         var createdCourse2 =  await _courseService.CreateCourseAsync(course2);
 
         var courses = await _courseService.GetAllCoursesAsync();
-        courses.Should().ContainEquivalentOf(createdCourse);
-        courses.Should().ContainEquivalentOf(createdCourse2);
+        courses.Should().ContainEquivalentOf(createdCourse.Value);
+        courses.Should().ContainEquivalentOf(createdCourse2.Value);
         courses.Should().HaveCount(2);
     }
 
@@ -194,7 +199,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
         var createdCourse = await _courseService.CreateCourseAsync(course);
         var updateRequest = new UpdateCourseRequest()
         {
-            CourseId = createdCourse.CourseId,
+            CourseId = createdCourse.Value.CourseId,
             Title = "Updated Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
@@ -205,10 +210,10 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
 
         var updatedTerm = await _courseService.UpdateCourseAsync(updateRequest);
 
-        var courseFromDb = await _courseService.GetCourseAsync(createdCourse.CourseId);
+        var courseFromDb = await _courseService.GetCourseAsync(createdCourse.Value.CourseId);
         courseFromDb.Should().BeEquivalentTo(updatedTerm);
         courseFromDb.Should().NotBeEquivalentTo(createdCourse);
-        courseFromDb.CourseId.Should().Be(createdCourse.CourseId);
+        courseFromDb.Value.CourseId.Should().Be(createdCourse.Value.CourseId);
     }
 
     private async Task ClearCourses() => await _dbAccessAsync.GetConnection().DeleteAllAsync<Course>();

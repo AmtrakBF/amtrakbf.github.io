@@ -1,6 +1,6 @@
+using Ardalis.Result;
 using FluentAssertions;
 using WGU_App_RileyJuniewic.Data.Dtos.Instructor;
-using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Repository;
 using WGU_App_RileyJuniewic.Data.Services;
@@ -32,8 +32,8 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var result = await _instructorService.CreateInstructorAsync(instructor);
-        var dbInstructor = await _dbAccessAsync.GetConnection().Table<Instructor>().Where(x => x.InstructorId == result.InstructorId).FirstOrDefaultAsync();
-        result.Should().BeEquivalentTo(dbInstructor);
+        var dbInstructor = await _dbAccessAsync.GetConnection().Table<Instructor>().Where(x => x.InstructorId == result.Value.InstructorId).FirstOrDefaultAsync();
+        result.Value.Should().BeEquivalentTo(dbInstructor);
     }
 
     [Fact]
@@ -57,8 +57,9 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
             Phone = "54254535"
         };
 
-        var exception = await Assert.ThrowsAsync<UserException>(async () => await _instructorService.CreateInstructorAsync(instructor2));
-        exception.Message.Should().Be("Instructor with email already exists");
+        var result = await _instructorService.CreateInstructorAsync(instructor2);
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Instructor with email already exists");
     }
 
     [Fact]
@@ -82,8 +83,9 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
             Phone = "1234567890"
         };
 
-        var exception = await Assert.ThrowsAsync<UserException>(async () => await _instructorService.CreateInstructorAsync(instructor2));
-        exception.Message.Should().Be("Instructor with phone number already exists");
+        var result = await _instructorService.CreateInstructorAsync(instructor2);
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Instructor with phone number already exists");
     }
 
 
@@ -126,7 +128,7 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
         await _dbAccessAsync.GetConnection().InsertAsync(instructor);
 
         var result = await _instructorService.GetInstructorAsync(instructor.InstructorId);
-        result.Should().BeEquivalentTo(instructor);
+        result.Value.Should().BeEquivalentTo(instructor);
     }
 
     [Fact]
@@ -134,8 +136,9 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
     {
         await ClearInstructors();
 
-        var exception = await Assert.ThrowsAsync<UserException>(async () => await _instructorService.GetInstructorAsync(Guid.NewGuid()));
-        exception.Message.Should().Be("Instructor not found");
+        var result = await _instructorService.GetInstructorAsync(Guid.NewGuid());
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Instructor not found");
     }
 
     [Fact]
@@ -155,10 +158,11 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var result = await _instructorService.UpdateInstructorAsync(updateRequest);
-        result.InstructorId.Should().Be(updateRequest.InstructorId);
-        result.Name.Should().Be(updateRequest.Name);
-        result.Email.Should().Be(updateRequest.Email);
-        result.Phone.Should().Be(updateRequest.Phone);
+        var instructorResult = result.Value;
+        instructorResult.InstructorId.Should().Be(updateRequest.InstructorId);
+        instructorResult.Name.Should().Be(updateRequest.Name);
+        instructorResult.Email.Should().Be(updateRequest.Email);
+        instructorResult.Phone.Should().Be(updateRequest.Phone);
     }
 
     private async Task ClearInstructors() => await _dbAccessAsync.GetConnection().DeleteAllAsync<Instructor>();

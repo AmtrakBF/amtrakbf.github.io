@@ -7,6 +7,8 @@ using WGU_App_RileyJuniewic.Data.ViewModels;
 using WGU_App_RileyJuniewic.Data.ViewModels.Course;
 using WGU_App_RileyJuniewic.Forms;
 using WGU_App_RileyJuniewic.Forms.CourseForms;
+using CommunityToolkit.Maui;
+
 
 namespace WGU_App_RileyJuniewic;
 
@@ -17,6 +19,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+			.UseMauiCommunityToolkit()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -1,3 +1,4 @@
+using Ardalis.Result;
 using FluentAssertions;
 using WGU_App_RileyJuniewic.Data.Dtos.Assessment;
 using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
@@ -36,9 +37,9 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
             EndDate = DateTime.Now.AddDays(1)
         };
 
-        var assessment = await _assessmentService.CreateAssessmentAsync(assessmentRequest);
-        var dbAssessment = await _sqlDataAccess.GetConnection().GetAsync<Assessment>(assessment.AssessmentId);
-        dbAssessment.Should().BeEquivalentTo(assessment);
+        var result = await _assessmentService.CreateAssessmentAsync(assessmentRequest);
+        var dbAssessment = await _sqlDataAccess.GetConnection().GetAsync<Assessment>(result.Value.AssessmentId);
+        dbAssessment.Should().BeEquivalentTo(result.Value);
     }
 
     [Fact]
@@ -58,8 +59,9 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
             EndDate = DateTime.Now.AddDays(1)
         };
 
-        var exception = await Assert.ThrowsAsync<UserException>(() => _assessmentService.CreateAssessmentAsync(assessmentRequest));
-        exception.Message.Should().Be("Course does not exist");
+        var result = await _assessmentService.CreateAssessmentAsync(assessmentRequest);
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Course does not exist");
     }
 
     [Fact]
@@ -90,8 +92,9 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
             EndDate = DateTime.Now.AddDays(1)
         };
 
-        var exception = await Assert.ThrowsAsync<UserException>(() => _assessmentService.CreateAssessmentAsync(assessmentRequest2));
-        exception.Message.Should().Be("Assessment name already exists");
+        var result = await _assessmentService.CreateAssessmentAsync(assessmentRequest2);
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Assessment name already exists");
     }
 
     [Fact]
@@ -122,8 +125,9 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
             EndDate = DateTime.Now.AddDays(1.5)
         };
 
-        var exception = await Assert.ThrowsAsync<UserException>(() => _assessmentService.CreateAssessmentAsync(assessmentRequest2));
-        exception.Message.Should().Be("Assessment overlaps with existing assessment");
+        var result = await _assessmentService.CreateAssessmentAsync(assessmentRequest2);
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Assessment overlaps with existing assessment");
     }
 
     [Fact]
@@ -143,9 +147,10 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
             EndDate = DateTime.Now.AddDays(1)
         };
 
-        var assessment = await _assessmentService.CreateAssessmentAsync(assessmentRequest);
-        await _assessmentService.DeleteAssessmentAsync(assessment.AssessmentId);
-        var dbAssessment = await _sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.AssessmentId == assessment.AssessmentId).FirstOrDefaultAsync();
+        var result = await _assessmentService.CreateAssessmentAsync(assessmentRequest);
+        await _assessmentService.DeleteAssessmentAsync(result.Value.AssessmentId);
+        
+        var dbAssessment = await _sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.AssessmentId == result.Value.AssessmentId).FirstOrDefaultAsync();
         dbAssessment.Should().BeNull();
     }
 
@@ -179,8 +184,8 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         var result2 = await _assessmentService.CreateAssessmentAsync(assessmentRequest2);
 
         var assessments = await _assessmentService.GetAllAssessmentsAsync();
-        assessments.Should().ContainEquivalentOf(result);
-        assessments.Should().ContainEquivalentOf(result2);
+        assessments.Should().ContainEquivalentOf(result.Value);
+        assessments.Should().ContainEquivalentOf(result2.Value);
     }
 
     [Fact]
@@ -201,7 +206,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var result = await _assessmentService.CreateAssessmentAsync(assessmentRequest);
-        var assessment = await _assessmentService.GetAssessmentAsync(result.AssessmentId);
+        var assessment = await _assessmentService.GetAssessmentAsync(result.Value.AssessmentId);
         assessment.Should().BeEquivalentTo(result);
     }
 
@@ -210,8 +215,9 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
     {
         await ClearAssessments();
 
-        var exception = await Assert.ThrowsAsync<UserException>(() => _assessmentService.GetAssessmentAsync(Guid.NewGuid()));
-        exception.Message.Should().Be("Assessment not found");
+        var result = await _assessmentService.GetAssessmentAsync(Guid.NewGuid());
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Assessment not found");
     }
     
     [Fact]
@@ -234,15 +240,16 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         var result = await _assessmentService.CreateAssessmentAsync(assessmentRequest);
         var updateRequest = new UpdateAssessmentRequest()
         {
-            AssessmentId = result.AssessmentId,
-            CourseId = result.CourseId,
+            AssessmentId = result.Value.AssessmentId,
+            CourseId = result.Value.CourseId,
             Name = "Updated Assessment",
             Type = AssessmentType.Objective,
             StartDate = DateTime.Now.AddDays(2),
             EndDate = DateTime.Now.AddDays(3)
         };
-        
-        var updatedAssessment = await _assessmentService.UpdateAssessmentAsync(updateRequest);
+
+        var updatedAssessmentResult = await _assessmentService.UpdateAssessmentAsync(updateRequest);
+        var updatedAssessment = updatedAssessmentResult.Value;
         updatedAssessment.AssessmentId.Should().Be(updatedAssessment.AssessmentId);
         updatedAssessment.CourseId.Should().Be(updatedAssessment.CourseId);
         updatedAssessment.Name.Should().Be(updatedAssessment.Name);

@@ -1,3 +1,4 @@
+using Ardalis.Result;
 using FluentAssertions;
 using WGU_App_RileyJuniewic.Data.Dtos.Term;
 using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
@@ -32,9 +33,9 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var createdTerm = await _termService.CreateTermAsync(term);
-        var termFromDb = await _dbAccessAsync.GetConnection().GetAsync<Term>(createdTerm.TermId);
+        var termFromDb = await _dbAccessAsync.GetConnection().GetAsync<Term>(createdTerm.Value.TermId);
 
-        termFromDb.Should().BeEquivalentTo(createdTerm);
+        termFromDb.Should().BeEquivalentTo(createdTerm.Value);
     }
 
     
@@ -52,8 +53,8 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
 
         var createdTerm = await _termService.CreateTermAsync(term);
 
-        await _termService.DeleteTermAsync(createdTerm.TermId);
-        var termFromDb = await _dbAccessAsync.GetConnection().Table<Term>().Where(x => x.TermId == createdTerm.TermId).FirstOrDefaultAsync();
+        await _termService.DeleteTermAsync(createdTerm.Value.TermId);
+        var termFromDb = await _dbAccessAsync.GetConnection().Table<Term>().Where(x => x.TermId == createdTerm.Value.TermId).FirstOrDefaultAsync();
         termFromDb.Should().BeNull();
     }
 
@@ -73,17 +74,17 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
 
         var updateRequest = new UpdateTermRequest()
         {
-            TermId = createdTerm.TermId,
+            TermId = createdTerm.Value.TermId,
             Title = "Updated Term",
             StartDate = new DateTime(2023, 3, 3),
             EndDate = new DateTime(2023, 4, 4)
         };
 
         var updatedTerm = await _termService.UpdateTermAsync(updateRequest);
-        var termFromDb = await _dbAccessAsync.GetConnection().GetAsync<Term>(createdTerm.TermId);
-        termFromDb.Should().BeEquivalentTo(updatedTerm);
-        termFromDb.Should().NotBeEquivalentTo(createdTerm);
-        termFromDb.TermId.Should().Be(createdTerm.TermId);
+        var termFromDb = await _dbAccessAsync.GetConnection().GetAsync<Term>(createdTerm.Value.TermId);
+        termFromDb.Should().BeEquivalentTo(updatedTerm.Value);
+        termFromDb.Should().NotBeEquivalentTo(createdTerm.Value);
+        termFromDb.TermId.Should().Be(createdTerm.Value.TermId);
     }
 
     [Fact]
@@ -110,8 +111,8 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
         var createdTerm2 = await _termService.CreateTermAsync(term2);
 
         var terms = await _termService.GetAllTermsAsync();
-        terms.Should().ContainEquivalentOf(createdTerm);
-        terms.Should().ContainEquivalentOf(createdTerm2);
+        terms.Should().ContainEquivalentOf(createdTerm.Value);
+        terms.Should().ContainEquivalentOf(createdTerm2.Value);
     }
 
     [Theory]
@@ -131,12 +132,13 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
 
         if (message != null)
         {
-            var exception = await Assert.ThrowsAsync<UserException>(() => termService.ValidateTermAsync(term));
-            exception.Message.Should().Be(message);
+            var result = await termService.ValidateTermAsync(term);
+            result.IsError().Should().BeTrue();
+            result.Errors.First().Should().Be(message);
         } else
         {
             var result = await termService.ValidateTermAsync(term);
-            result.Should().Be(true);
+            result.IsError().Should().BeFalse();
         }
     }
 
