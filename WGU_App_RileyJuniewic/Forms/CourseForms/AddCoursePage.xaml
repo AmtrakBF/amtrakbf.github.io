@@ -4,14 +4,22 @@
             xmlns:courseComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.CourseComponents"
             xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components">
 
-    <VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout>
 
-        <Label FontSize="Title" Text="Create Course" HorizontalOptions="Center" Margin="0,20,0,20"/>
+            <Label FontSize="Title" Text="Create Course" HorizontalOptions="Center" Margin="0,20,0,20"/>
 
-        <courseComponents:ModifyCourseCard CardTitle="Course Details" Title="{Binding CreateCourseRequest.Title}" 
-            Status="Dropped" StartDate="{Binding CreateCourseRequest.StartDate}" 
-            EndDate="{Binding CreateCourseRequest.EndDate}" />
+            <courseComponents:ModifyCourseCard CardTitle="Course Details" Title="{Binding CreateCourseRequest.Title}" 
+                Status="Dropped" StartDate="{Binding CreateCourseRequest.StartDate}" 
+                EndDate="{Binding CreateCourseRequest.EndDate}" />
 
-        <Button Text="Add Course" Margin="0,20,0,20" HorizontalOptions="Center" />
-    </VerticalStackLayout>
+            <courseComponents:InstructorCard SelectedInstructor="{Binding CreateCourseRequest.Instructor}"/>
+
+            <courseComponents:ModifyAssessmentCard CardTitle="Assessment Details" Name="{Binding CreateCourseRequest.Assessment.Name}" 
+                Type="{Binding CreateCourseRequest.Assessment.Type}" StartDate="{Binding CreateCourseRequest.Assessment.StartDate}" 
+                EndDate="{Binding CreateCourseRequest.Assessment.EndDate}" />
+
+            <Button Text="Add Course" Margin="0,20,0,20" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

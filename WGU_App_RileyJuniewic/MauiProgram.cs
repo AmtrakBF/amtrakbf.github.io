@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using WGU_App_RileyJuniewic.Data.Repository;
 using WGU_App_RileyJuniewic.Data.Services;
 using WGU_App_RileyJuniewic.Data.ViewModels;
+using WGU_App_RileyJuniewic.Data.ViewModels.Course;
 using WGU_App_RileyJuniewic.Forms;
 using WGU_App_RileyJuniewic.Forms.CourseForms;
 
@@ -38,6 +39,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<AddCoursePage>();
 		
 		builder.Services.AddTransient<HomeViewModel>();
+		builder.Services.AddTransient<InstructorCardViewModel>();
 
 		builder.Services.AddScoped<ITermService, TermService>();
 		builder.Services.AddScoped<ICourseService, CourseService>();
@@ -51,4 +53,14 @@ public static class MauiProgram
 
 		return builder.Build();
 	}
+}
+
+public static class ServiceHelper
+{
+	public static T GetService<T>() =>
+		Current.GetService<T>() ?? throw new InvalidOperationException("Unable to locate the MAUI service provider.");
+
+	public static IServiceProvider Current =>
+		Application.Current?.Handler?.MauiContext?.Services
+		?? throw new InvalidOperationException("Unable to locate the MAUI service provider.");
 }

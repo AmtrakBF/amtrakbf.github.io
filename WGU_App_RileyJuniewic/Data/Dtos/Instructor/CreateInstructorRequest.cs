@@ -13,7 +13,7 @@ public class CreateInstructorRequest : BindingModel
         {
             _name = value;
             OnPropertyChanged(nameof(Name));
-            Validate(nameof(Name), _name);
+            Validate(nameof(Name), value);
         }
     }
 
@@ -26,7 +26,7 @@ public class CreateInstructorRequest : BindingModel
         {
             _email = value;
             OnPropertyChanged(nameof(Email));
-            Validate(nameof(Email), _email);
+            Validate(nameof(Email), value);
         }
     }
 
@@ -41,7 +41,7 @@ public class CreateInstructorRequest : BindingModel
         {
             _phone = value;
             OnPropertyChanged(nameof(Phone));
-            Validate(nameof(Phone), _phone);
+            Validate(nameof(Phone), value);
         }
     }
 

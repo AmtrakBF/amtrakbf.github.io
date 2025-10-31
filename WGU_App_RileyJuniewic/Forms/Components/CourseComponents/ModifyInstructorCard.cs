@@ -1,11 +1,9 @@
-using WGU_App_RileyJuniewic.Data.Models.Enums;
-
 namespace WGU_App_RileyJuniewic.Forms.Components.CourseComponents;
 
 public sealed partial class ModifyInstructorCard : ContentView
 {
     public static readonly BindableProperty CardTitleProperty =
-        BindableProperty.Create(nameof(CardTitle), typeof(string), typeof(ModifyInstructorCard), null);
+        BindableProperty.Create(nameof(CardTitle), typeof(string), typeof(ModifyInstructorCard), string.Empty, BindingMode.TwoWay);
 
     public string CardTitle
     {
@@ -14,7 +12,7 @@ public sealed partial class ModifyInstructorCard : ContentView
     }
 
     public static readonly BindableProperty NameProperty =
-        BindableProperty.Create(nameof(Name), typeof(string), typeof(ModifyInstructorCard), string.Empty);
+        BindableProperty.Create(nameof(Name), typeof(string), typeof(ModifyInstructorCard), string.Empty, BindingMode.TwoWay);
 
     public string Name
     {
@@ -23,7 +21,7 @@ public sealed partial class ModifyInstructorCard : ContentView
     }
 
     public static readonly BindableProperty PhoneProperty =
-        BindableProperty.Create(nameof(Phone), typeof(string), typeof(ModifyInstructorCard), string.Empty);
+        BindableProperty.Create(nameof(Phone), typeof(string), typeof(ModifyInstructorCard), string.Empty, BindingMode.TwoWay);
 
     public string Phone
     {
@@ -32,7 +30,7 @@ public sealed partial class ModifyInstructorCard : ContentView
     }
 
     public static readonly BindableProperty EmailProperty =
-        BindableProperty.Create(nameof(Email), typeof(string), typeof(ModifyInstructorCard), string.Empty);
+        BindableProperty.Create(nameof(Email), typeof(string), typeof(ModifyInstructorCard), string.Empty, BindingMode.TwoWay);
 
     public string Email
     {

@@ -1,7 +1,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WGU_App_RileyJuniewic.Forms.Components.CourseComponents.CourseCard"
-             x:Name="component">
+             x:Name="courseCard">
     <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
         <VerticalStackLayout>
             <VerticalStackLayout.Resources>
@@ -9,14 +9,14 @@
                     <Setter Property="Margin" Value="10"/>
                 </Style>
             </VerticalStackLayout.Resources>
-            <Label FontSize="Large" Text="{Binding Course.Title, Source={x:Reference component}}"/>
-            <Label Text="{Binding Instructor.Name, StringFormat='Instructor: {0}', Source={x:Reference component}}" />
+            <Label FontSize="Large" Text="{Binding Course.Title, Source={x:Reference courseCard}}"/>
+            <Label Text="{Binding Instructor.Name, StringFormat='Instructor: {0}', Source={x:Reference courseCard}}" />
             <Button Text="Open" />
 
             <VerticalStackLayout HorizontalOptions="End">
-                <Label Text="{Binding Course.Status, StringFormat='Status: {0}', Source={x:Reference component}}" HorizontalTextAlignment="End"/>
-                <Label Text="{Binding Course.StartDate, StringFormat='Start Date: {0}', Source={x:Reference component}}" HorizontalTextAlignment="End"/>
-                <Label Text="{Binding Course.EndDate, StringFormat='End Date: {0}', Source={x:Reference component}}" HorizontalTextAlignment="End"/>
+                <Label Text="{Binding Course.Status, StringFormat='Status: {0}', Source={x:Reference courseCard}}" HorizontalTextAlignment="End"/>
+                <Label Text="{Binding Course.StartDate, StringFormat='Start Date: {0}', Source={x:Reference courseCard}}" HorizontalTextAlignment="End"/>
+                <Label Text="{Binding Course.EndDate, StringFormat='End Date: {0}', Source={x:Reference courseCard}}" HorizontalTextAlignment="End"/>
             </VerticalStackLayout>
         </VerticalStackLayout>
     </Border>
