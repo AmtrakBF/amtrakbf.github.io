@@ -1,0 +1,39 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WGU_App_RileyJuniewic.Forms.Components.InstructorComponents.InstructorCard"
+             xmlns:courseComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.CourseComponents"
+             xmlns:instructorComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.InstructorComponents"
+             x:Name="instructorCard">
+    <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
+        <VerticalStackLayout>
+            <VerticalStackLayout IsVisible="{Binding ChooseInstructor, Source={x:Reference instructorCard}}">
+                <Label FontSize="Large" Margin="0,0,0,30" Text="Select an Instructor" HorizontalTextAlignment="Center"/>
+
+                <Picker Title="Select Instructor" ItemsSource="{Binding Instructors}"
+                    SelectedItem="{Binding SelectedInstructor, Source={x:Reference instructorCard}}"
+                    ItemDisplayBinding="{Binding Name}"/>
+
+                <Label Margin="0,30,0,0" Text="Or"  HorizontalTextAlignment="Center"/>
+                <Button Margin="0,30,0,0" Text="Create New Instructor" Clicked="Show_New_Instructor_Card" />
+                <Button Margin="0,30,0,0" IsVisible="{Binding InstructorSelected, Source={x:Reference instructorCard }}" 
+                        Text="Modify Selected Instructor" Clicked="Show_Update_Instructor_Card" />
+            </VerticalStackLayout>
+
+
+            <VerticalStackLayout IsVisible="{Binding AddNewInstructor, Source={x:Reference instructorCard}}">
+                <instructorComponents:AddInstructorCard 
+                    OnCancel="{Binding OnCancelCommand, Source={x:Reference instructorCard }}"
+                    OnSubmit="{Binding OnModifyInstructorEvent, Source={x:Reference instructorCard }}"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout IsVisible="{Binding ModifyInstructor, Source={x:Reference instructorCard}}">
+                <instructorComponents:UpdateInstructorCard
+                    Instructor="{Binding SelectedInstructor, Source={x:Reference instructorCard }}"
+                    OnCancel="{Binding OnCancelCommand, Source={x:Reference instructorCard }}"
+                    OnSubmit="{Binding OnModifyInstructorEvent, Source={x:Reference instructorCard }}"
+                    OnDelete="{Binding OnDeleteInstructorEvent, Source={x:Reference instructorCard }}"/>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </Border>
+
+</ContentView>

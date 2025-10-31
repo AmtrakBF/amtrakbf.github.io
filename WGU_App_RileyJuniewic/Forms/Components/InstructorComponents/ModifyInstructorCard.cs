@@ -1,4 +1,4 @@
-namespace WGU_App_RileyJuniewic.Forms.Components.CourseComponents;
+namespace WGU_App_RileyJuniewic.Forms.Components.InstructorComponents;
 
 public sealed partial class ModifyInstructorCard : ContentView
 {

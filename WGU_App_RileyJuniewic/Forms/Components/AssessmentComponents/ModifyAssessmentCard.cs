@@ -1,6 +1,6 @@
 using WGU_App_RileyJuniewic.Data.Models.Enums;
 
-namespace WGU_App_RileyJuniewic.Forms.Components.CourseComponents;
+namespace WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents;
 
 public sealed partial class ModifyAssessmentCard : ContentView
 {

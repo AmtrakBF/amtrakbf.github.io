@@ -1,31 +1,18 @@
-using System.Diagnostics;
 using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos;
 using WGU_App_RileyJuniewic.Data.Dtos.Instructor;
 using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Misc.Commands;
 using WGU_App_RileyJuniewic.Data.Misc.Events;
-using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Services;
 
-namespace WGU_App_RileyJuniewic.Data.ViewModels.Course;
+namespace WGU_App_RileyJuniewic.Data.ViewModels.InstructorViewModels;
 
-public class InstructorCardViewModel : BindingModel
+public class AddInstructorViewModel : BindingModel
 {
     private readonly IInstructorService _instructorService;
 
-    private List<Instructor> _instructors = new();
-    public List<Instructor> Instructors
-    {
-        get => _instructors;
-        set
-        {
-            _instructors = value;
-            OnPropertyChanged(nameof(Instructors));
-        }
-    }
-
-    private CreateInstructorRequest _createInstructorRequest;
+    private CreateInstructorRequest _createInstructorRequest = new();
     public CreateInstructorRequest CreateInstructorRequest
     {
         get => _createInstructorRequest;
@@ -36,24 +23,15 @@ public class InstructorCardViewModel : BindingModel
         }
     }
 
+    public event EventHandler<InstructorEventArgs>? OnCreateInstructor;
     public OnClickCommandAsync CreateInstructorCommandAsync { get; set; }
-    public event EventHandler<CreateInstructorEventArgs>? OnCreateInstructor;
 
-    public InstructorCardViewModel(IInstructorService instructorService)
+    public AddInstructorViewModel(IInstructorService instructorService)
     {
-        _createInstructorRequest = new();
         _instructorService = instructorService;
 
         CreateInstructorCommandAsync = new OnClickCommandAsync(CreateInstructorAsync, (obj) => !CreateInstructorRequest.HasErrors);
         CreateInstructorRequest.PropertyChanged += (sender, args) => CreateInstructorCommandAsync.RaiseCanExecuteChanged();
-
-        _ = GetAllInstructorsAsync();
-    }
-
-    private async Task GetAllInstructorsAsync()
-    {
-        Instructors = (await _instructorService.GetAllInstructorsAsync()).ToList();
-        CreateInstructorCommandAsync.RaiseCanExecuteChanged();
     }
 
     private async Task CreateInstructorAsync()
@@ -68,7 +46,6 @@ public class InstructorCardViewModel : BindingModel
         CreateInstructorRequest = new();
         CreateInstructorRequest.PropertyChanged += (sender, args) => CreateInstructorCommandAsync.RaiseCanExecuteChanged();
 
-        await GetAllInstructorsAsync();
-        OnCreateInstructor?.Invoke(this, new CreateInstructorEventArgs(instructorResult.Value));
+        OnCreateInstructor?.Invoke(this, new InstructorEventArgs(instructorResult.Value));
     }
 }

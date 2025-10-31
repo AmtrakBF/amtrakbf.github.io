@@ -31,7 +31,7 @@ public class UserError
 				ToastDuration duration = ToastDuration.Long;
 				double fontSize = 16;
 
-				var toast = Toast.Make(message, duration, fontSize);
+				var toast = Toast.Make($"Error: {message}", duration, fontSize);
 
 				await toast.Show(cancellationTokenSource.Token);
             }	

@@ -2,6 +2,8 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             x:Class="WGU_App_RileyJuniewic.Forms.CourseForms.AddCoursePage"
             xmlns:courseComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.CourseComponents"
+            xmlns:assessmentComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents"
+            xmlns:instructorComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.InstructorComponents"
             xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components">
 
     <ScrollView>
@@ -13,9 +15,9 @@
                 Status="Dropped" StartDate="{Binding CreateCourseRequest.StartDate}" 
                 EndDate="{Binding CreateCourseRequest.EndDate}" />
 
-            <courseComponents:InstructorCard SelectedInstructor="{Binding CreateCourseRequest.Instructor}"/>
+            <instructorComponents:InstructorCard/>
 
-            <courseComponents:ModifyAssessmentCard CardTitle="Assessment Details" Name="{Binding CreateCourseRequest.Assessment.Name}" 
+            <assessmentComponents:ModifyAssessmentCard CardTitle="Assessment Details" Name="{Binding CreateCourseRequest.Assessment.Name}" 
                 Type="{Binding CreateCourseRequest.Assessment.Type}" StartDate="{Binding CreateCourseRequest.Assessment.StartDate}" 
                 EndDate="{Binding CreateCourseRequest.Assessment.EndDate}" />
 

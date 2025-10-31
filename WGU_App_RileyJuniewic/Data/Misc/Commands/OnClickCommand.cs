@@ -42,8 +42,8 @@ public class OnClickCommandAsync(Func<Task> action, Predicate<object>? canExecut
         return true;
     }
 
-    public async void Execute(object? parameter)
+    public void Execute(object? parameter)
     {
-        await action();
+        _ = action();
     }
 }

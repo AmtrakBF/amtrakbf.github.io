@@ -1,0 +1,18 @@
+<instructorComponents:ModifyInstructorContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WGU_App_RileyJuniewic.Forms.Components.InstructorComponents.UpdateInstructorCard"
+             xmlns:instructorComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.InstructorComponents"
+             x:Name="updateInstructorCard">
+
+    <VerticalStackLayout>
+        <instructorComponents:ModifyInstructorCard CardTitle="Modify Instructor" Name="{Binding UpdateInstructorRequest.Name}"
+            Phone="{Binding UpdateInstructorRequest.Phone}" Email="{Binding UpdateInstructorRequest.Email}"/>
+
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+            <Button Text="Cancel" Clicked="Close_View"/>
+            <Button Text="Delete" Command="{Binding DeleteInstructorCommandAsync}"/>
+            <Button Text="Update Instructor" Command="{Binding UpdateInstructorCommandAsync}"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+
+</instructorComponents:ModifyInstructorContentView>
