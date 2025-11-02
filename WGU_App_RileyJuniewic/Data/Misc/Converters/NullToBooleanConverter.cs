@@ -9,16 +9,9 @@ public class NullToBooleanConverter : IValueConverter
         var parameterString = parameter as string;
         var inverse = bool.TryParse(parameterString, out var parameterBoolValue) ? parameterBoolValue : false;
 
-        if (inverse)
-        {
-            if (value is null)
-                return true;
-            return false;
-        }
-
-        if (value is null)
-            return false;
-        return true;
+        if (value is null || (value is IEnumerable<object> list && !list.Any()))
+            return inverse ? true : false;
+        return !inverse ? true : false;
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
