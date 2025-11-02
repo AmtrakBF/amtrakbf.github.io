@@ -6,7 +6,7 @@
 
     <VerticalStackLayout>
         <instructorComponents:ModifyInstructorCard CardTitle="Modify Instructor" Name="{Binding UpdateInstructorRequest.Name}"
-            Phone="{Binding UpdateInstructorRequest.Phone}" Email="{Binding UpdateInstructorRequest.Email}" ValidationErrors="{Binding ValidationErrors}"/>
+            Phone="{Binding UpdateInstructorRequest.Phone}" Email="{Binding UpdateInstructorRequest.Email}" ValidationErrors="{Binding UpdateInstructorRequest.ValidationErrors}"/>
 
         <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
             <Button Text="Cancel" Clicked="Close_View"/>

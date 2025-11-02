@@ -68,8 +68,7 @@ public class BindingModel : INotifyDataErrorInfo, INotifyPropertyChanged
         if (results.Count > 0)
         {
             var errors = results.Select(r => r.ErrorMessage).ToList();
-            if (errors is not null && errors.Count > 0)
-                ValidationErrors.Add(propertyName, errors);
+            ValidationErrors[propertyName] = errors;
         }
         else
         {
