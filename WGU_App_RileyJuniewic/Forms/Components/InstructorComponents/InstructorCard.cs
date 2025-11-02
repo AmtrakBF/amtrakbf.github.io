@@ -87,6 +87,7 @@ public sealed partial class InstructorCard : ContentView
     {
         _ = _viewModel.GetAllInstructorsAsync();
         SelectedInstructor = null;
+        InstructorSelected = false;
         Show_Picker();
     }
 

@@ -2,17 +2,8 @@ using WGU_App_RileyJuniewic.Data.Models.Enums;
 
 namespace WGU_App_RileyJuniewic.Forms.Components.CourseComponents;
 
-public sealed partial class ModifyCourseCard : ContentView
+public sealed partial class ModifyCourseCard : BaseInputContentView
 {
-    public static readonly BindableProperty CardTitleProperty =
-        BindableProperty.Create(nameof(CardTitle), typeof(string), typeof(ModifyCourseCard), null);
-
-    public string CardTitle
-    {
-        get => (string)GetValue(CardTitleProperty);
-        set => SetValue(CardTitleProperty, value);
-    }
-
     public static readonly BindableProperty TitleProperty =
         BindableProperty.Create(nameof(Title), typeof(string), typeof(ModifyCourseCard), null);
 

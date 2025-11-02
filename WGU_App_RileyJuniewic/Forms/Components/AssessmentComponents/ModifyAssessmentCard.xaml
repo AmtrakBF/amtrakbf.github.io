@@ -1,6 +1,7 @@
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<forms:BaseInputContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents.ModifyAssessmentCard"
+             xmlns:forms="clr-namespace:WGU_App_RileyJuniewic.Forms"
              x:Name="modifyAssessmentCard">
 
     <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
@@ -28,4 +29,4 @@
         </VerticalStackLayout>
     </Border>
 
-</ContentView>
+</forms:BaseInputContentView>

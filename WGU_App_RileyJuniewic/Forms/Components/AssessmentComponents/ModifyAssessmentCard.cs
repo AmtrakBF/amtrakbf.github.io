@@ -2,17 +2,8 @@ using WGU_App_RileyJuniewic.Data.Models.Enums;
 
 namespace WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents;
 
-public sealed partial class ModifyAssessmentCard : ContentView
+public sealed partial class ModifyAssessmentCard : BaseInputContentView
 {
-    public static readonly BindableProperty CardTitleProperty =
-        BindableProperty.Create(nameof(CardTitle), typeof(string), typeof(ModifyAssessmentCard), null);
-
-    public string CardTitle
-    {
-        get => (string)GetValue(CardTitleProperty);
-        set => SetValue(CardTitleProperty, value);
-    }
-
     public static readonly BindableProperty NameProperty =
         BindableProperty.Create(nameof(Name), typeof(string), typeof(ModifyAssessmentCard), null);
 

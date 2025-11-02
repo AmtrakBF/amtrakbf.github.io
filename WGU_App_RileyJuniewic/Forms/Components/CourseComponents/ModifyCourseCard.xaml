@@ -1,7 +1,14 @@
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<forms:BaseInputContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WGU_App_RileyJuniewic.Forms.Components.CourseComponents.ModifyCourseCard"
+             xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
+             xmlns:forms="clr-namespace:WGU_App_RileyJuniewic.Forms"
              x:Name="modifyCourseCard">
+
+    <ContentView.Resources>
+        <converters:ErrorsToStringConverter x:Key="ErrorsToString"/>
+        <converters:ErrorsToBoolConverter x:Key="ErrorsToBool"/>
+    </ContentView.Resources>
 
     <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
         <VerticalStackLayout>
@@ -10,6 +17,9 @@
             <VerticalStackLayout HorizontalOptions="Center" WidthRequest="250">
                 <Label Text="Title:"/>
                 <Entry Text="{Binding Title, Source={x:Reference modifyCourseCard}}"/>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyCourseCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=Title}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyCourseCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=Title}"/>
 
                 <Label Text="Status:"/>
                 <Picker Title="Select Status" SelectedItem="{Binding Status, Source={x:Reference modifyCourseCard}}">
@@ -20,14 +30,23 @@
                         <x:String>Dropped</x:String>
                     </Picker.Items>
                 </Picker>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyCourseCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=Status}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyCourseCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=Status}"/>
 
                 <Label Text="Start Date:"/>
                 <DatePicker Date="{Binding StartDate, Source={x:Reference modifyCourseCard}}"/>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyCourseCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=StartDate}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyCourseCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=StartDate}"/>
 
                 <Label Text="End Date:"/>
                 <DatePicker Date="{Binding EndDate, Source={x:Reference modifyCourseCard}}"/>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyCourseCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=EndDate}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyCourseCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=EndDate}"/>
             </VerticalStackLayout>
         </VerticalStackLayout>
     </Border>
 
-</ContentView>
+</forms:BaseInputContentView>
