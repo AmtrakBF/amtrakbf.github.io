@@ -1,7 +1,23 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WGU_App_RileyJuniewic.Forms.Components.InstructorComponents.ModifyInstructorCard"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
              x:Name="modifyInstructorCard">
+
+    <ContentView.Resources>
+        <Style x:Key="ValidStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Green"/>
+            <Setter Property="BackgroundColor" Value="Green"/>
+        </Style>
+        <Style x:Key="InvalidStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Red"/>
+            <Setter Property="BackgroundColor" Value="Red"/>
+        </Style>
+
+        <converters:ErrorsToStringConverter x:Key="ErrorsToString"/>
+        <converters:ErrorsToBoolConverter x:Key="ErrorsToBool"/>
+    </ContentView.Resources>
 
     <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
         <VerticalStackLayout>
@@ -9,13 +25,22 @@
 
             <VerticalStackLayout HorizontalOptions="Center" WidthRequest="250">
                 <Label Text="Name:"/>
-                <Entry Text="{Binding Name, Source={x:Reference modifyInstructorCard}}"/>
+                <Entry Text="{Binding Name, Source={x:Reference modifyInstructorCard}}" />
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyInstructorCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=Name}" 
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyInstructorCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=Name}"/>
 
                 <Label Text="Phone Number:"/>
                 <Entry Keyboard="Numeric" Text="{Binding Phone, Source={x:Reference modifyInstructorCard}}"/>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyInstructorCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=Phone}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10" 
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyInstructorCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=Phone}"/>
 
                 <Label Text="Email:"/>
                 <Entry Text="{Binding Email, Source={x:Reference modifyInstructorCard}}"/>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyInstructorCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=Email}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyInstructorCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=Email}"/>
 
             </VerticalStackLayout>
         </VerticalStackLayout>
