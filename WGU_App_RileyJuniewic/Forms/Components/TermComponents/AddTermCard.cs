@@ -1,10 +1,10 @@
 using WGU_App_RileyJuniewic.Data.ViewModels.InstructorViewModels;
 
-namespace WGU_App_RileyJuniewic.Forms.Components.InstructorComponents;
+namespace WGU_App_RileyJuniewic.Forms.Components.TermComponents;
 
-public sealed partial class AddInstructorCard : ModifyContentView
+public sealed partial class AddTermCard : ModifyContentView
 {
-    public AddInstructorCard()
+    public AddTermCard()
     {
         var viewModel = ServiceHelper.GetService<AddInstructorViewModel>();
         BindingContext = viewModel;

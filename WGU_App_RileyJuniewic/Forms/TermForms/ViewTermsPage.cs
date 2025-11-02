@@ -2,11 +2,11 @@ using WGU_App_RileyJuniewic.Data.ViewModels.TermViewModels;
 
 namespace WGU_App_RileyJuniewic.Forms;
 
-public partial class TermPage : ContentPage
+public partial class ViewTermsPage : ContentPage
 {
     private readonly ViewTermsViewModel _viewModel;
 
-    public TermPage(ViewTermsViewModel viewModel)
+    public ViewTermsPage(ViewTermsViewModel viewModel)
 	{
 		BindingContext = viewModel;
         _viewModel = viewModel;

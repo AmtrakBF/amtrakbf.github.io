@@ -18,8 +18,8 @@
 
         <ShellContent
             Title="Terms"
-            ContentTemplate="{DataTemplate forms:TermPage}"
-            Route="TermPage" />
+            ContentTemplate="{DataTemplate forms:ViewTermsPage}"
+            Route="ViewTermsPage" />
             
     </FlyoutItem>
 

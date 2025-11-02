@@ -1,6 +1,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WGU_App_RileyJuniewic.Forms.TermPage"
+             x:Class="WGU_App_RileyJuniewic.Forms.ViewTermsPage"
              xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
              xmlns:termComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.TermComponents"
              xmlns:converter="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"

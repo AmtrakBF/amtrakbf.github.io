@@ -1,7 +1,8 @@
-<instructorComponents:ModifyInstructorContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<forms:ModifyContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WGU_App_RileyJuniewic.Forms.Components.InstructorComponents.AddInstructorCard"
              xmlns:instructorComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.InstructorComponents"
+             xmlns:forms="clr-namespace:WGU_App_RileyJuniewic.Forms"
              x:Name="addInstructorCard">
 
      <VerticalStackLayout>
@@ -14,4 +15,4 @@
         </HorizontalStackLayout>
     </VerticalStackLayout>
 
-</instructorComponents:ModifyInstructorContentView>
+</forms:ModifyContentView>

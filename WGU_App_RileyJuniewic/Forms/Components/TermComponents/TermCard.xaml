@@ -27,7 +27,8 @@
 
             <Label Text="{Binding WeeksRemaining, Source={x:Reference termCard}}" />
 
-            <Button Text="Open" />
+            <Button Text="View" Margin="0,10"/>
+            <Button Text="Modify"/>
 
             <Label Text="{Binding StartDate, StringFormat='Start Date: {0}', Source={x:Reference termCard}}" HorizontalTextAlignment="End"/>
             <Label Text="{Binding EndDate, StringFormat='End Date: {0}', Source={x:Reference termCard}}"  HorizontalTextAlignment="End"/>

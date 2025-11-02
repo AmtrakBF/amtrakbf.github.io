@@ -3,7 +3,7 @@ using WGU_App_RileyJuniewic.Data.ViewModels.InstructorViewModels;
 
 namespace WGU_App_RileyJuniewic.Forms.Components.InstructorComponents;
 
-public sealed partial class UpdateInstructorCard : ModifyInstructorContentView
+public sealed partial class UpdateInstructorCard : ModifyContentView
 {
 
     public static readonly BindableProperty InstructorProperty =
@@ -20,7 +20,7 @@ public sealed partial class UpdateInstructorCard : ModifyInstructorContentView
     }
 
     public static readonly BindableProperty OnDeleteProperty =
-        BindableProperty.Create(nameof(OnDelete), typeof(EventHandler), typeof(ModifyInstructorContentView), null, BindingMode.TwoWay);
+        BindableProperty.Create(nameof(OnDelete), typeof(EventHandler), typeof(ModifyContentView), null, BindingMode.TwoWay);
 
     public EventHandler OnDelete
     {

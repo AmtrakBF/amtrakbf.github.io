@@ -1,0 +1,40 @@
+<forms:BaseInputContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="WGU_App_RileyJuniewic.Forms.Components.TermComponents.ModifyTermComponent"
+            xmlns:local="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.TermComponents"
+            xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
+            xmlns:forms="clr-namespace:WGU_App_RileyJuniewic.Forms"
+            x:Name="modifyTermComponent">
+    
+    <ContentView.Resources>
+        <converters:ErrorsToStringConverter x:Key="ErrorsToString"/>
+        <converters:ErrorsToBoolConverter x:Key="ErrorsToBool"/>
+    </ContentView.Resources>
+
+    <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
+        <VerticalStackLayout>
+            <Label FontSize="Large" Margin="0,0,0,30" Text="{Binding CardTitle, Source={x:Reference modifyTermComponent}}" HorizontalTextAlignment="Center"/>
+
+            <VerticalStackLayout HorizontalOptions="Center" WidthRequest="250">
+                <Label Text="Title:"/>
+                <Entry Text="{Binding Title, Source={x:Reference modifyTermComponent}}" />
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyTermComponent}, Converter={StaticResource ErrorsToString}, ConverterParameter=Title}" 
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyTermComponent}, Converter={StaticResource ErrorsToBool}, ConverterParameter=Title}"/>
+
+                <Label Text="Start Date:"/>
+                <DatePicker Date="{Binding StartDate, Source={x:Reference modifyTermComponent}}"/>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyTermComponent}, Converter={StaticResource ErrorsToString}, ConverterParameter=StartDate}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10" 
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyTermComponent}, Converter={StaticResource ErrorsToBool}, ConverterParameter=StartDate}"/>
+
+                <Label Text="End Date:"/>
+                <DatePicker Date="{Binding EndDate, Source={x:Reference modifyTermComponent}}"/>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyTermComponent}, Converter={StaticResource ErrorsToString}, ConverterParameter=EndDate}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyTermComponent}, Converter={StaticResource ErrorsToBool}, ConverterParameter=EndDate}"/>
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </Border>
+</forms:BaseInputContentView>

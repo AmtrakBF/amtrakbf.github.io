@@ -1,12 +1,12 @@
 using System.Windows.Input;
 using WGU_App_RileyJuniewic.Data.Misc.Events;
 
-namespace WGU_App_RileyJuniewic.Forms.Components.InstructorComponents;
+namespace WGU_App_RileyJuniewic.Forms;
 
-public partial class ModifyInstructorContentView : ContentView
+public partial class ModifyContentView : ContentView
 {
     public static readonly BindableProperty OnCancelProperty =
-        BindableProperty.Create(nameof(OnCancel), typeof(ICommand), typeof(ModifyInstructorContentView), null, BindingMode.TwoWay);
+        BindableProperty.Create(nameof(OnCancel), typeof(ICommand), typeof(ModifyContentView), null, BindingMode.TwoWay);
 
     public ICommand OnCancel
     {
@@ -15,7 +15,7 @@ public partial class ModifyInstructorContentView : ContentView
     }
 
     public static readonly BindableProperty OnSubmitProperty =
-        BindableProperty.Create(nameof(OnSubmit), typeof(EventHandler<InstructorEventArgs>), typeof(ModifyInstructorContentView), null, BindingMode.TwoWay);
+        BindableProperty.Create(nameof(OnSubmit), typeof(EventHandler<InstructorEventArgs>), typeof(ModifyContentView), null, BindingMode.TwoWay);
 
     public EventHandler<InstructorEventArgs> OnSubmit
     {
