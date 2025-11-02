@@ -19,7 +19,7 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) : IAssessmentSe
     public async Task<Result<Assessment>> CreateAssessmentAsync(CreateAssessmentRequest request)
     {
         if (request.HasErrors)
-            return Result.Error(request.GetAllErrors());
+            return Result.Error(request.GetErrorList());
 
         var assessment = Assessment.CreateNewInstance(request.CourseId, request.Name, request.Type, request.StartDate, request.EndDate);
         var result = await ValidateAssessmentAsync(assessment);
@@ -46,7 +46,7 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) : IAssessmentSe
     public async Task<Result<Assessment>> UpdateAssessmentAsync(UpdateAssessmentRequest request)
     {
         if (request.HasErrors)
-            return Result.Error(request.GetAllErrors());
+            return Result.Error(request.GetErrorList());
 
         var assessment = Assessment.CreateInstance(request.AssessmentId, request.CourseId, request.Name, request.Type, request.StartDate, request.EndDate);
         var result = await ValidateAssessmentAsync(assessment);

@@ -9,7 +9,18 @@ namespace WGU_App_RileyJuniewic.Data.Dtos;
 public class BindingModel : INotifyDataErrorInfo, INotifyPropertyChanged
 {
     protected Dictionary<string, List<string?>> _errors = [];
-    public bool HasErrors => _errors.Count > 0;
+
+    public Dictionary<string, List<string?>> ValidationErrors
+    {
+        get => _errors;
+        set
+        {
+            _errors = value;
+            OnPropertyChanged(nameof(ValidationErrors));
+        }
+    }
+    
+    public bool HasErrors => ValidationErrors.Count > 0;
 
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -21,22 +32,32 @@ public class BindingModel : INotifyDataErrorInfo, INotifyPropertyChanged
 
     public IEnumerable GetErrors(string? propertyName)
     {
-        if (propertyName is not null && _errors.ContainsKey(propertyName))
+        if (propertyName is not null && ValidationErrors.ContainsKey(propertyName))
         {
-            return _errors[propertyName];
+            return ValidationErrors[propertyName];
         }
 
         return Enumerable.Empty<DataErrorsChangedEventArgs>();
     }
 
-    public ErrorList GetAllErrors()
+    public ErrorList GetErrorList()
     {
         var errors = new List<string?>();
-        foreach (var error in _errors.Values)
+        foreach (var error in ValidationErrors.Values)
         {
             errors.AddRange(error);
         }
         return new ErrorList(errors);
+    }
+
+    public IEnumerable GetAllErrors()
+    {
+        var errors = new List<string?>();
+        foreach (var error in ValidationErrors.Values)
+        {
+            errors.AddRange(error);
+        }
+        return errors;
     }
 
     public virtual void Validate(string propertyName, object? propertyValue)
@@ -46,19 +67,16 @@ public class BindingModel : INotifyDataErrorInfo, INotifyPropertyChanged
 
         if (results.Count > 0)
         {
-            _errors.Remove(propertyName);
-
             var errors = results.Select(r => r.ErrorMessage).ToList();
             if (errors is not null && errors.Count > 0)
-                _errors.Add(propertyName, errors);
-
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+                ValidationErrors.Add(propertyName, errors);
         }
         else
         {
-            _errors.Remove(propertyName);
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+            ValidationErrors.Remove(propertyName);
         }
+        ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+        ValidationErrors = new Dictionary<string, List<string?>>(ValidationErrors);
     }
 
     public virtual void ValidateAll<T>()
@@ -73,13 +91,14 @@ public class BindingModel : INotifyDataErrorInfo, INotifyPropertyChanged
 
         foreach (var propertyName in props)
         {
-            _errors.Remove(propertyName);
+            ValidationErrors.Remove(propertyName);
 
             var errors = results.Where(x => x.MemberNames.Contains(propertyName)).Select(r => r.ErrorMessage).ToList();
             if (errors is not null && errors.Count > 0)
-                _errors.Add(propertyName, errors);
+                ValidationErrors.Add(propertyName, errors);
 
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
+        ValidationErrors = new Dictionary<string, List<string?>>(ValidationErrors);
     }
 }

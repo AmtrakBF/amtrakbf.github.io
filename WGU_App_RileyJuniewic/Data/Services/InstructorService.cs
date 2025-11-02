@@ -19,7 +19,7 @@ public class InstructorService(SqlDataAccessAsync sqlDataAccess) : IInstructorSe
     public async Task<Result<Instructor>> CreateInstructorAsync(CreateInstructorRequest request)
     {
         if (request.HasErrors)
-            return Result.Error(request.GetAllErrors());
+            return Result.Error(request.GetErrorList());
 
         var instructor = Instructor.CreateNewInstance(request.Name, request.Email, request.Phone);
         var result = await ValidateInstructorAsync(instructor);
@@ -47,7 +47,7 @@ public class InstructorService(SqlDataAccessAsync sqlDataAccess) : IInstructorSe
     public async Task<Result<Instructor>> UpdateInstructorAsync(UpdateInstructorRequest request)
     {
         if (request.HasErrors)
-            return Result.Error(request.GetAllErrors());
+            return Result.Error(request.GetErrorList());
             
         var instructor = Instructor.CreateInstance(request.InstructorId, request.Name, request.Email, request.Phone);
         var result = await ValidateInstructorAsync(instructor);

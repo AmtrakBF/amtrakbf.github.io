@@ -19,7 +19,7 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) : ITermService
     public async Task<Result<Term>> CreateTermAsync(CreateTermRequest request)
     {
         if (request.HasErrors)
-            return Result.Error(request.GetAllErrors());
+            return Result.Error(request.GetErrorList());
 
         var term = Term.CreateNewInstance(request.Title, request.StartDate, request.EndDate);
         var result = await ValidateTermAsync(term);
@@ -60,7 +60,7 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) : ITermService
     public async Task<Result<Term>> UpdateTermAsync(UpdateTermRequest request)
     {
         if (request.HasErrors)
-            return Result.Error(request.GetAllErrors());
+            return Result.Error(request.GetErrorList());
             
         var term = Term.CreateInstance(request.TermId, request.Title, request.StartDate, request.EndDate);
         var result = await ValidateTermAsync(term);
