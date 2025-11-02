@@ -1,5 +1,5 @@
 using WGU_App_RileyJuniewic.Data.Models;
-using WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModesl;
+using WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModes;
 
 namespace WGU_App_RileyJuniewic.Forms.CourseForms;
 

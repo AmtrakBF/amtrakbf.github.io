@@ -9,7 +9,7 @@ using WGU_App_RileyJuniewic.Forms;
 using WGU_App_RileyJuniewic.Forms.CourseForms;
 using CommunityToolkit.Maui;
 using WGU_App_RileyJuniewic.Data.ViewModels.InstructorViewModels;
-using WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModesl;
+using WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModes;
 
 
 namespace WGU_App_RileyJuniewic;

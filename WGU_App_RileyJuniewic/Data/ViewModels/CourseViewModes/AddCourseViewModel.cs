@@ -4,7 +4,7 @@ using WGU_App_RileyJuniewic.Data.Dtos.Assessment;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
 using WGU_App_RileyJuniewic.Data.Models;
 
-namespace WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModesl;
+namespace WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModes;
 
 public class AddCourseViewModel : BindingModel
 {
