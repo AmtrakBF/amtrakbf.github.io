@@ -1,0 +1,33 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WGU_App_RileyJuniewic.Forms.TermPage"
+             xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
+             xmlns:termComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.TermComponents"
+             xmlns:converter="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:NullToBooleanConverter x:Key="NullToBoolean" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout>
+        <components:HeaderComp />
+
+        <CollectionView ItemsSource="{Binding Terms}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <termComponents:TermCard Title="{Binding Title}" StartDate="{Binding StartDate}" EndDate="{Binding EndDate}" 
+                        TotalCourses="{Binding TotalCourses}" TotalCoursesFinished="{Binding TotalCoursesFinished}"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <VerticalStackLayout IsVisible="{Binding Terms, Converter={StaticResource NullToBoolean}, ConverterParameter=True}">
+            <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No current term found" FontSize="Large"/>
+        </VerticalStackLayout>
+
+        <Button Text="Add Term" Margin="40"/>
+
+    </VerticalStackLayout>
+</ContentPage>

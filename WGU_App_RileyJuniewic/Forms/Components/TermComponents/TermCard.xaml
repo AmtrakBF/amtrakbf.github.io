@@ -1,0 +1,36 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="WGU_App_RileyJuniewic.Forms.Components.TermComponents.TermCard"
+            xmlns:local="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.TermComponents"
+            x:Name="termCard">
+    
+    <ContentView.Resources> 
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="0,10,0,10"/>
+        </Style>
+    </ContentView.Resources>
+    <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
+        <VerticalStackLayout HorizontalOptions="Center" WidthRequest="250">
+            <VerticalStackLayout.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Margin" Value="0,10,0,10"/>
+                </Style>
+            </VerticalStackLayout.Resources>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="{Binding Title, Source={x:Reference termCard}}" FontSize="Title" FontAttributes="Bold"/>
+                <Label Grid.Column="1" Text="{Binding CourseCompletion, Source={x:Reference termCard}}"/>
+            </Grid>
+
+            <Label Text="{Binding WeeksRemaining, Source={x:Reference termCard}}" />
+
+            <Button Text="Open" />
+
+            <Label Text="{Binding StartDate, StringFormat='Start Date: {0}', Source={x:Reference termCard}}" HorizontalTextAlignment="End"/>
+            <Label Text="{Binding EndDate, StringFormat='End Date: {0}', Source={x:Reference termCard}}"  HorizontalTextAlignment="End"/>
+        </VerticalStackLayout>
+    </Border>
+</ContentView>

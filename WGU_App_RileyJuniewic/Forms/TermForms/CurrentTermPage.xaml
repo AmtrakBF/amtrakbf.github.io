@@ -32,6 +32,8 @@
 
         <VerticalStackLayout IsVisible="{Binding Term, Converter={StaticResource NullToBoolean}, ConverterParameter=True}">
             <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No current term found" FontSize="Large"/>
+            <Button Text="Add Term" Margin="40"/>
         </VerticalStackLayout>
+
     </VerticalStackLayout>
 </ContentPage>
