@@ -12,4 +12,9 @@ public partial class ViewTermsPage : ContentPage
         _viewModel = viewModel;
 		InitializeComponent();
     }
+
+    private void Add_Term_Clicked(object sender, EventArgs e)
+    {
+        _ = Shell.Current.GoToAsync(nameof(AddTermPage));
+    }
 }

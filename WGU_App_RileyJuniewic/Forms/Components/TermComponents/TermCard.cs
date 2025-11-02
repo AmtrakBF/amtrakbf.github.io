@@ -69,4 +69,9 @@ public sealed partial class TermCard : ContentView
     {
         this.InitializeComponent();
     }
+
+    private void Modify_Term_Clicked(object sender, EventArgs e)
+    {
+        _ = Shell.Current.GoToAsync(nameof(ModifyTermPage));
+    }
 }

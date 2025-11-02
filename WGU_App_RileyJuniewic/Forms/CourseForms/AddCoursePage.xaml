@@ -4,7 +4,8 @@
             xmlns:courseComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.CourseComponents"
             xmlns:assessmentComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents"
             xmlns:instructorComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.InstructorComponents"
-            xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components">
+            xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
+            Shell.NavBarIsVisible="True">
 
     <ScrollView>
         <VerticalStackLayout>

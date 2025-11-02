@@ -27,7 +27,7 @@
             <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No current term found" FontSize="Large"/>
         </VerticalStackLayout>
 
-        <Button Text="Add Term" Margin="40"/>
+        <Button Text="Add Term" Clicked="Add_Term_Clicked" Margin="40"/>
 
     </VerticalStackLayout>
 </ContentPage>

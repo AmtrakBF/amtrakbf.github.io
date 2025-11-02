@@ -14,7 +14,7 @@ public partial class CurrentTermPage : ContentPage
 		InitializeComponent();
     }
 
-    private void Button_Clicked(object sender, EventArgs e)
+    private void Add_Course_Clicked(object sender, EventArgs e)
 	{
 		if (_viewModel.Term is null) return;
 
@@ -23,5 +23,10 @@ public partial class CurrentTermPage : ContentPage
 			{ "Term", _viewModel.Term }
 		};
         _ = Shell.Current.GoToAsync(nameof(AddCoursePage), navigationParameter);
+    }
+
+    private void Add_Term_Clicked(object sender, EventArgs e)
+	{
+        _ = Shell.Current.GoToAsync(nameof(AddTermPage));
     }
 }

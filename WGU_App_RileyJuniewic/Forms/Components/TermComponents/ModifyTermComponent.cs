@@ -4,7 +4,7 @@ public sealed partial class ModifyTermComponent : BaseInputContentView
 {
 
     public static readonly BindableProperty TitleProperty =
-        BindableProperty.Create(nameof(Title), typeof(DateTime), typeof(BaseInputContentView), null);
+        BindableProperty.Create(nameof(Title), typeof(string), typeof(ModifyTermComponent), string.Empty);
 
     public string Title
     {
@@ -13,7 +13,7 @@ public sealed partial class ModifyTermComponent : BaseInputContentView
     }
 
     public static readonly BindableProperty StartDateProperty =
-        BindableProperty.Create(nameof(StartDate), typeof(DateTime), typeof(BaseInputContentView), DateTime.Now);
+        BindableProperty.Create(nameof(StartDate), typeof(DateTime), typeof(ModifyTermComponent), DateTime.Now);
 
     public DateTime StartDate
     {
@@ -22,7 +22,7 @@ public sealed partial class ModifyTermComponent : BaseInputContentView
     }
 
     public static readonly BindableProperty EndDateProperty =
-        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(BaseInputContentView), DateTime.Now.AddMonths(1));
+        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(ModifyTermComponent), DateTime.Now.AddMonths(1));
 
     public DateTime EndDate
     {
