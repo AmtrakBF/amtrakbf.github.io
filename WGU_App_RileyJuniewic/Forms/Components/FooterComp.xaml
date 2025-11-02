@@ -1,0 +1,22 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="WGU_App_RileyJuniewic.Forms.Components.FooterComp"
+            xmlns:local="clr-namespace:WGU_App_RileyJuniewic.Forms.Components">
+    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Stroke="White" Padding="0,10">
+        <Border.Shadow>
+            <Shadow Offset="0,10"
+                    Radius="10"
+                    Opacity="0.1" />
+        </Border.Shadow>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Text="Courses" FontSize="Title"
+                VerticalOptions="Center" HorizontalOptions="Center"/>
+            <Label Grid.Column="1" Text="Terms" FontSize="Title" 
+                VerticalOptions="Center" HorizontalOptions="Center"/>
+        </Grid>
+    </Border>
+</ContentView>

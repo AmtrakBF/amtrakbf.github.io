@@ -1,0 +1,37 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WGU_App_RileyJuniewic.Forms.CurrentTermPage"
+             xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
+             xmlns:courseComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.CourseComponents"
+             xmlns:converter="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:NullToBooleanConverter x:Key="NullToBoolean" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout>
+        <components:HeaderComp />
+
+        <VerticalStackLayout IsVisible="{Binding Term, Converter={StaticResource NullToBoolean}}">
+            <CollectionView ItemsSource="{Binding FullCourses}" HorizontalOptions="Center">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <ContentView>
+                            <VerticalStackLayout>
+                                <courseComponents:CourseCard Course="{Binding Course}" Instructor="{Binding Instructor}" />
+                            </VerticalStackLayout>
+                        </ContentView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Add Course" Margin="0,20,0,20" Clicked="Button_Clicked" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout IsVisible="{Binding Term, Converter={StaticResource NullToBoolean}, ConverterParameter=True}">
+            <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No current term found" FontSize="Large"/>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

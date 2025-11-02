@@ -4,11 +4,23 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:forms="clr-namespace:WGU_App_RileyJuniewic.Forms"
-    Title="WGU_App_RileyJuniewic">
+    Title="WGU_App_RileyJuniewic"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.TabBarUnselectedColor="Black"
+    Shell.TabBarTitleColor="{StaticResource Primary}"
+    Shell.NavBarIsVisible="False">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate forms:HomePage}"
-        Route="MainPage" />
+    <FlyoutItem Title="Home">
+        <ShellContent
+            Title="Current Term"
+            ContentTemplate="{DataTemplate forms:CurrentTermPage}"
+            Route="CurrentTermPage" />
+
+        <ShellContent
+            Title="Terms"
+            ContentTemplate="{DataTemplate forms:TermPage}"
+            Route="TermPage" />
+            
+    </FlyoutItem>
 
 </Shell>

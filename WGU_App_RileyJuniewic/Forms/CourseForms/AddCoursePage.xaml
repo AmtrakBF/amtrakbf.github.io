@@ -12,10 +12,19 @@
             <Label FontSize="Title" Text="Create Course" HorizontalOptions="Center" Margin="0,20,0,20"/>
 
             <courseComponents:ModifyCourseCard CardTitle="Course Details" Title="{Binding CreateCourseRequest.Title}" 
-                Status="Dropped" StartDate="{Binding CreateCourseRequest.StartDate}" 
-                EndDate="{Binding CreateCourseRequest.EndDate}" />
+                Status="{Binding CreateCourseRequest.Status}" StartDate="{Binding CreateCourseRequest.StartDate}" 
+                EndDate="{Binding CreateCourseRequest.EndDate}" ValidationErrors="{Binding CreateCourseRequest.ValidationErrors}"/>
 
-            <instructorComponents:InstructorCard/>
+            <instructorComponents:InstructorCard SelectedInstructor="{Binding Instructor}"/>
+
+            <CollectionView ItemsSource="{Binding CreateCourseRequest.Assessments}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <assessmentComponents:ModifyAssessmentCard CardTitle="Create Assessment" Name="{Binding Name}" 
+                            Type="{Binding Type}" StartDate="{Binding StartDate}" EndDate="{Binding EndDate}" ValidationErrors="{Binding ValidationErrors}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
             <assessmentComponents:ModifyAssessmentCard CardTitle="Assessment Details" Name="{Binding CreateCourseRequest.Assessment.Name}" 
                 Type="{Binding CreateCourseRequest.Assessment.Type}" StartDate="{Binding CreateCourseRequest.Assessment.StartDate}" 

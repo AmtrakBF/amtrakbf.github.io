@@ -9,6 +9,7 @@ using WGU_App_RileyJuniewic.Forms;
 using WGU_App_RileyJuniewic.Forms.CourseForms;
 using CommunityToolkit.Maui;
 using WGU_App_RileyJuniewic.Data.ViewModels.InstructorViewModels;
+using WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModesl;
 
 
 namespace WGU_App_RileyJuniewic;
@@ -39,14 +40,16 @@ public static class MauiProgram
 			return dbAccess;
 		});
 
-		builder.Services.AddTransient<HomePage>();
+		builder.Services.AddTransient<CurrentTermPage>();
 		builder.Services.AddTransient<AddCoursePage>();
 		
-		builder.Services.AddTransient<HomeViewModel>();
-		builder.Services.AddTransient<InstructorCardViewModel>();
+		builder.Services.AddTransient<CurrentTermViewModel>();
 		
+		builder.Services.AddTransient<InstructorCardViewModel>();
 		builder.Services.AddTransient<UpdateInstructorViewModel>();
 		builder.Services.AddTransient<AddInstructorViewModel>();
+		
+		builder.Services.AddTransient<AddCourseViewModel>();
 
 		builder.Services.AddScoped<ITermService, TermService>();
 		builder.Services.AddScoped<ICourseService, CourseService>();
