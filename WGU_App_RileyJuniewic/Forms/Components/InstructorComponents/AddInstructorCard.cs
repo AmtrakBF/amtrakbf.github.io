@@ -11,11 +11,11 @@ public sealed partial class AddInstructorCard : ModifyContentView
 
         viewModel.OnCreateInstructor += (sender, args) =>
         {
-            OnSubmit.Invoke(sender, args);
+            OnSubmit?.Invoke(sender, args);
         };
 
         InitializeComponent();
     }
 
-    private void Close_View(object sender, EventArgs e) => OnCancel.Execute(sender);
+    private void Close_View(object sender, EventArgs e) => OnCancel?.Invoke(sender, e);
 }

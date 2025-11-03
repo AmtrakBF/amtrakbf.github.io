@@ -1,12 +1,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WGU_App_RileyJuniewic.Forms.TermForms.AddTermPage"
+             x:Class="WGU_App_RileyJuniewic.Forms.TermForms.UpdateTermPage"
              xmlns:termComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.TermComponents"
              Shell.NavBarIsVisible="True"
-             x:Name="addTermPage">
+             x:Name="updateTermPage">
 
     <VerticalStackLayout>
-        <termComponents:AddTermCard OnSubmit="{Binding OnSubmitEvent, Source={x:Reference addTermPage}}" />
+        <termComponents:UpdateTermComponent 
+            OnSubmit="{Binding OnCloseEvent, Source={x:Reference updateTermPage}}" 
+            Term="{Binding Term, Source={x:Reference updateTermPage}}" />
 
     </VerticalStackLayout>
 </ContentPage>

@@ -41,7 +41,7 @@ public sealed partial class UpdateInstructorCard : ModifyContentView
         InitializeComponent();
     }
 
-    private void Close_View(object sender, EventArgs e) => OnCancel.Execute(sender);
+    private void Close_View(object sender, EventArgs e) => OnCancel?.Invoke(sender, e);
 
     private static void OnInstructorChanged(BindableObject bindable, object oldValue, object newValue)
     {

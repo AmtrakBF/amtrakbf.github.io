@@ -6,20 +6,20 @@ namespace WGU_App_RileyJuniewic.Forms;
 public partial class ModifyContentView : ContentView
 {
     public static readonly BindableProperty OnCancelProperty =
-        BindableProperty.Create(nameof(OnCancel), typeof(ICommand), typeof(ModifyContentView), null, BindingMode.TwoWay);
+        BindableProperty.Create(nameof(OnCancel), typeof(EventHandler), typeof(ModifyContentView), null, BindingMode.TwoWay);
 
-    public ICommand OnCancel
+    public EventHandler? OnCancel
     {
-        get => (ICommand)GetValue(OnCancelProperty);
+        get => (EventHandler?)GetValue(OnCancelProperty);
         set => SetValue(OnCancelProperty, value);
     }
 
     public static readonly BindableProperty OnSubmitProperty =
-        BindableProperty.Create(nameof(OnSubmit), typeof(EventHandler<InstructorEventArgs>), typeof(ModifyContentView), null, BindingMode.TwoWay);
+        BindableProperty.Create(nameof(OnSubmit), typeof(EventHandler), typeof(ModifyContentView), null, BindingMode.TwoWay);
 
-    public EventHandler<InstructorEventArgs> OnSubmit
+    public EventHandler? OnSubmit
     {
-        get => (EventHandler<InstructorEventArgs>)GetValue(OnSubmitProperty);
+        get => (EventHandler?)GetValue(OnSubmitProperty);
         set => SetValue(OnSubmitProperty, value);
     }
 }

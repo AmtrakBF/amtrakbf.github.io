@@ -3,8 +3,7 @@ using WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModes;
 
 namespace WGU_App_RileyJuniewic.Forms.CourseForms;
 
-[QueryProperty(nameof(Term), "Term")]
-public sealed partial class AddCoursePage : ContentPage
+public sealed partial class AddCoursePage : ContentPage, IQueryAttributable
 {
     private Term? _term;
     public Term? Term
@@ -23,5 +22,13 @@ public sealed partial class AddCoursePage : ContentPage
         BindingContext = viewModel;
 
         InitializeComponent();
+    }
+
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (query.TryGetValue("Term", out var termValue) && termValue is Term term)
+        {
+            Term = term;
+        }
     }
 }

@@ -1,15 +1,28 @@
-using WGU_App_RileyJuniewic.Data.ViewModels;
+using WGU_App_RileyJuniewic.Data.Misc.Events;
 
-namespace WGU_App_RileyJuniewic.Forms;
+namespace WGU_App_RileyJuniewic.Forms.TermForms;
 
 public partial class AddTermPage : ContentPage
 {
-    private readonly CurrentTermViewModel _viewModel;
+    private EventHandler? _onSubmitEvent;
+    public EventHandler? OnSubmitEvent
+    {
+        get => _onSubmitEvent;
+        set
+        {
+            _onSubmitEvent = value;
+            OnPropertyChanged(nameof(OnSubmitEvent));
+        }
+    }
 
-    public AddTermPage(CurrentTermViewModel viewModel)
-	{
-		BindingContext = viewModel;
-        _viewModel = viewModel;
-		InitializeComponent();
+    public AddTermPage()
+    {
+        InitializeComponent();
+        OnSubmitEvent += OnSubmitEventHandler;
+    }
+    
+    private void OnSubmitEventHandler(object? sender, EventArgs e)
+    {
+        _ = Shell.Current.GoToAsync("..", true);
     }
 }

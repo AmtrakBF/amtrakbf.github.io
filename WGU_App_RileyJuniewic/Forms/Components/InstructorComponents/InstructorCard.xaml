@@ -31,7 +31,7 @@
                     Instructor="{Binding SelectedInstructor, Source={x:Reference instructorCard }}"
                     OnCancel="{Binding OnCancelCommand, Source={x:Reference instructorCard }}"
                     OnSubmit="{Binding OnModifyInstructorEvent, Source={x:Reference instructorCard }}"
-                    OnDelete="{Binding OnDeleteInstructorEvent, Source={x:Reference instructorCard }}"/>
+                    OnDelete="{Binding OnModifyInstructorEvent, Source={x:Reference instructorCard }}"/>
             </VerticalStackLayout>
         </VerticalStackLayout>
     </Border>

@@ -28,6 +28,7 @@ public class CreateTermRequest : BindingModel
             _startDate = value;
             OnPropertyChanged(nameof(StartDate));
             Validate(nameof(StartDate), _startDate);
+            Validate(nameof(EndDate), _endDate);
         }
     }
 
@@ -42,6 +43,7 @@ public class CreateTermRequest : BindingModel
             _endDate = value;
             OnPropertyChanged(nameof(EndDate));
             Validate(nameof(EndDate), _endDate);
+            Validate(nameof(StartDate), _startDate);
         }
     }
 

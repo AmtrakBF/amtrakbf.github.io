@@ -11,6 +11,7 @@ using CommunityToolkit.Maui;
 using WGU_App_RileyJuniewic.Data.ViewModels.InstructorViewModels;
 using WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModes;
 using WGU_App_RileyJuniewic.Data.ViewModels.TermViewModels;
+using WGU_App_RileyJuniewic.Forms.TermForms;
 
 
 namespace WGU_App_RileyJuniewic;
@@ -43,9 +44,13 @@ public static class MauiProgram
 
 		builder.Services.AddTransient<CurrentTermPage>();
 		builder.Services.AddTransient<AddCoursePage>();
+		builder.Services.AddTransient<AddTermPage>();
+		builder.Services.AddTransient<UpdateTermPage>();
 		
 		builder.Services.AddTransient<CurrentTermViewModel>();
 		builder.Services.AddTransient<ViewTermsViewModel>();
+		builder.Services.AddTransient<AddTermViewModel>();
+		builder.Services.AddTransient<UpdateTermViewModel>();
 		
 		builder.Services.AddTransient<InstructorCardViewModel>();
 		builder.Services.AddTransient<UpdateInstructorViewModel>();

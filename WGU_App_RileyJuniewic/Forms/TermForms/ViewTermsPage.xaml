@@ -4,30 +4,39 @@
              xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
              xmlns:termComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.TermComponents"
              xmlns:converter="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             x:Name="viewTermsPage">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converter:NullToBooleanConverter x:Key="NullToBoolean" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <VerticalStackLayout>
-        <components:HeaderComp />
+    <RefreshView Command="{Binding LoadDataCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <ScrollView>
+            <VerticalStackLayout>
+                <components:HeaderComp />
 
-        <CollectionView ItemsSource="{Binding Terms}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <termComponents:TermCard Title="{Binding Title}" StartDate="{Binding StartDate}" EndDate="{Binding EndDate}" 
-                        TotalCourses="{Binding TotalCourses}" TotalCoursesFinished="{Binding TotalCoursesFinished}"/>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                <VerticalStackLayout IsVisible="{Binding !IsRefreshing}">
+                    <CollectionView  x:Name="collectionView" ItemsSource="{Binding Terms}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <termComponents:TermCard Title="{Binding Title}" StartDate="{Binding StartDate}" EndDate="{Binding EndDate}" 
+                                    TotalCourses="{Binding TotalCourses}" TotalCoursesFinished="{Binding TotalCoursesFinished}" TermId="{Binding TermId}"
+                                    OnModifyEvent="{Binding OnModifyEvent, Source={x:Reference viewTermsPage}}"/> 
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
-        <VerticalStackLayout IsVisible="{Binding Terms, Converter={StaticResource NullToBoolean}, ConverterParameter=True}">
-            <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No current term found" FontSize="Large"/>
-        </VerticalStackLayout>
+                    <VerticalStackLayout IsVisible="{Binding Terms, Converter={StaticResource NullToBoolean}, ConverterParameter=True}">
+                        <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No current term found" FontSize="Large"/>
+                    </VerticalStackLayout>
 
-        <Button Text="Add Term" Clicked="Add_Term_Clicked" Margin="40"/>
+                    <Button Text="Add Term" Clicked="Add_Term_Clicked" Margin="40"/>
+                </VerticalStackLayout>
 
-    </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+    
 </ContentPage>

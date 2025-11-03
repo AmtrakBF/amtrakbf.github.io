@@ -1,4 +1,4 @@
-using WGU_App_RileyJuniewic.Data.ViewModels.InstructorViewModels;
+using WGU_App_RileyJuniewic.Data.ViewModels.TermViewModels;
 
 namespace WGU_App_RileyJuniewic.Forms.Components.TermComponents;
 
@@ -6,16 +6,16 @@ public sealed partial class AddTermCard : ModifyContentView
 {
     public AddTermCard()
     {
-        var viewModel = ServiceHelper.GetService<AddInstructorViewModel>();
+        var viewModel = ServiceHelper.GetService<AddTermViewModel>();
         BindingContext = viewModel;
 
-        viewModel.OnCreateInstructor += (sender, args) =>
+        viewModel.OnCreateTerm += (sender, args) =>
         {
-            OnSubmit.Invoke(sender, args);
+            OnSubmit?.Invoke(sender, args);
         };
 
         InitializeComponent();
     }
 
-    private void Close_View(object sender, EventArgs e) => OnCancel.Execute(sender);
+    private void Close_View(object sender, EventArgs e) => OnSubmit?.Invoke(sender, e);
 }

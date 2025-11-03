@@ -60,10 +60,12 @@ public class CurrentTermViewModel : BindingModel
             return;
         }
 
+        Term = currentTerm;
+
         var courses = await _courseService.GetAllCoursesAsync();
         var instructors = await _instructorService.GetAllInstructorsAsync();
 
-        var fullCourses = courses.Select(c => new FullCourseDto
+        var fullCourses = courses.Where(x => x.TermId == Term.TermId).Select(c => new FullCourseDto
         {
             Course = c,
             Instructor = instructors.FirstOrDefault(i => i.InstructorId == c.InstructorId) ?? new()
