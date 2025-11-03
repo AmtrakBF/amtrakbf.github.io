@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
 using WGU_App_RileyJuniewic.Data.Models;
+using WGU_App_RileyJuniewic.Data.Models.Enums;
 using WGU_App_RileyJuniewic.Data.Repository;
 
 namespace WGU_App_RileyJuniewic.Data.Services;
@@ -21,7 +22,10 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) : ICourseService
         if (request.HasErrors)
             return Result.Error(request.GetErrorList());
 
-        var course = Course.CreateNewInstance(request.TermId, request.InstructorId, request.Title, request.Status, request.StartDate, request.EndDate);
+        var type = Enum.TryParse(request.Status, out CourseStatus statusEnum);
+        if (!type) return Result.Error("Invalid course status");
+
+        var course = Course.CreateNewInstance(request.TermId, request.InstructorId, request.Title, statusEnum, request.StartDate, request.EndDate);
         var result = await ValidateCourseAsync(course);
         if (result.IsError())
             return result;
@@ -55,8 +59,11 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) : ICourseService
     {
         if (request.HasErrors)
             return Result.Error(request.GetErrorList());
+
+        var type = Enum.TryParse(request.Status, out CourseStatus statusEnum);
+        if (!type) return Result.Error("Invalid course status");
             
-        var course = Course.CreateInstance(request.CourseId, request.TermId, request.InstructorId, request.Title, request.Status, request.StartDate, request.EndDate);
+        var course = Course.CreateInstance(request.CourseId, request.TermId, request.InstructorId, request.Title, statusEnum, request.StartDate, request.EndDate);
         
         var result = await ValidateCourseAsync(course);
         if (result.IsError())

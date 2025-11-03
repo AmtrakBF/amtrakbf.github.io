@@ -66,7 +66,7 @@ public sealed partial class InstructorCard : ContentView
 
     private InstructorCardViewModel _viewModel;
 
-    public OnClickCommand OnCancelCommand { get; set; }
+    public EventHandler? OnCancelEvent { get; set; }
     public EventHandler? OnModifyInstructorEvent { get; set; }
 
     public InstructorCard()
@@ -74,8 +74,7 @@ public sealed partial class InstructorCard : ContentView
         _viewModel = ServiceHelper.GetService<InstructorCardViewModel>();
         BindingContext = _viewModel;
 
-        OnCancelCommand = new OnClickCommand(Show_Picker);
-
+        OnCancelEvent += (sender, e) => Show_Picker();
         OnModifyInstructorEvent += OnInstructorEventHandler;
 
         InitializeComponent();

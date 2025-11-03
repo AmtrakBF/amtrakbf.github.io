@@ -22,14 +22,14 @@
 
             <VerticalStackLayout IsVisible="{Binding AddNewInstructor, Source={x:Reference instructorCard}}">
                 <instructorComponents:AddInstructorCard 
-                    OnCancel="{Binding OnCancelCommand, Source={x:Reference instructorCard }}"
+                    OnCancel="{Binding OnCancelEvent, Source={x:Reference instructorCard }}"
                     OnSubmit="{Binding OnModifyInstructorEvent, Source={x:Reference instructorCard }}"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout IsVisible="{Binding ModifyInstructor, Source={x:Reference instructorCard}}">
                 <instructorComponents:UpdateInstructorCard
                     Instructor="{Binding SelectedInstructor, Source={x:Reference instructorCard }}"
-                    OnCancel="{Binding OnCancelCommand, Source={x:Reference instructorCard }}"
+                    OnCancel="{Binding OnCancelEvent, Source={x:Reference instructorCard }}"
                     OnSubmit="{Binding OnModifyInstructorEvent, Source={x:Reference instructorCard }}"
                     OnDelete="{Binding OnModifyInstructorEvent, Source={x:Reference instructorCard }}"/>
             </VerticalStackLayout>

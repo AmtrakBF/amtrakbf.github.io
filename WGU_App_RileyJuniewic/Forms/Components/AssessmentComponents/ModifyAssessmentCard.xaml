@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents.ModifyAssessmentCard"
              xmlns:forms="clr-namespace:WGU_App_RileyJuniewic.Forms"
+             xmlns:enum="clr-namespace:WGU_App_RileyJuniewic.Data.Models.Enums"
              x:Name="modifyAssessmentCard">
 
     <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
@@ -11,6 +12,9 @@
             <VerticalStackLayout HorizontalOptions="Center" WidthRequest="250">
                 <Label Text="Name:"/>
                 <Entry Text="{Binding Name, Source={x:Reference modifyAssessmentCard}}"/>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyAssessmentCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=Name}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyAssessmentCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=Name}"/>
 
                 <Label Text="Assessment Type:"/>
                 <Picker Title="Select Status" SelectedItem="{Binding Type, Source={x:Reference modifyAssessmentCard}}">
@@ -19,12 +23,21 @@
                         <x:String>Objective</x:String>
                     </Picker.Items>
                 </Picker>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyAssessmentCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=Type}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyAssessmentCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=Type}"/>
 
                 <Label Text="Start Date:"/>
                 <DatePicker Date="{Binding StartDate, Source={x:Reference modifyAssessmentCard}}"/>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyAssessmentCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=StartDate}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyAssessmentCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=StartDate}"/>
 
                 <Label Text="End Date:"/>
                 <DatePicker Date="{Binding EndDate, Source={x:Reference modifyAssessmentCard}}"/>
+                <Label Text="{Binding ValidationErrors, Source={x:Reference modifyAssessmentCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=EndDate}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10"
+                    IsVisible="{Binding ValidationErrors, Source={x:Reference modifyAssessmentCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=EndDate}"/>
             </VerticalStackLayout>
         </VerticalStackLayout>
     </Border>

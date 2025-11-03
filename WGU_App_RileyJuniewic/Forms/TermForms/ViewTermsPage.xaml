@@ -28,8 +28,8 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
-                    <VerticalStackLayout IsVisible="{Binding Terms, Converter={StaticResource NullToBoolean}, ConverterParameter=True}">
-                        <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No current term found" FontSize="Large"/>
+                    <VerticalStackLayout IsVisible="{Binding EmptyTermsList}">
+                        <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No terms found" FontSize="Large"/>
                     </VerticalStackLayout>
 
                     <Button Text="Add Term" Clicked="Add_Term_Clicked" Margin="40"/>

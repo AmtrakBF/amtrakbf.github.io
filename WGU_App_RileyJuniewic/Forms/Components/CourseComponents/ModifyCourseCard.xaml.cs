@@ -5,7 +5,7 @@ namespace WGU_App_RileyJuniewic.Forms.Components.CourseComponents;
 public sealed partial class ModifyCourseCard : BaseInputContentView
 {
     public static readonly BindableProperty TitleProperty =
-        BindableProperty.Create(nameof(Title), typeof(string), typeof(ModifyCourseCard), null);
+        BindableProperty.Create(nameof(Title), typeof(string), typeof(ModifyCourseCard), null, BindingMode.TwoWay);
 
     public string Title
     {
@@ -14,7 +14,7 @@ public sealed partial class ModifyCourseCard : BaseInputContentView
     }
 
     public static readonly BindableProperty StatusProperty =
-        BindableProperty.Create(nameof(Status), typeof(string), typeof(ModifyCourseCard), CourseStatus.InProgress.ToString());
+        BindableProperty.Create(nameof(Status), typeof(string), typeof(ModifyCourseCard), CourseStatus.InProgress.ToString(), BindingMode.TwoWay);
 
     public string Status
     {
@@ -23,7 +23,7 @@ public sealed partial class ModifyCourseCard : BaseInputContentView
     }
 
     public static readonly BindableProperty StartDateProperty =
-        BindableProperty.Create(nameof(StartDate), typeof(DateTime), typeof(ModifyCourseCard), DateTime.Now);
+        BindableProperty.Create(nameof(StartDate), typeof(DateTime), typeof(ModifyCourseCard), DateTime.Now, BindingMode.TwoWay);
 
     public DateTime StartDate
     {
@@ -32,7 +32,7 @@ public sealed partial class ModifyCourseCard : BaseInputContentView
     }
 
     public static readonly BindableProperty EndDateProperty =
-        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(ModifyCourseCard), DateTime.Now.AddMonths(1));
+        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(ModifyCourseCard), DateTime.Now.AddMonths(1), BindingMode.TwoWay);
 
     public DateTime EndDate
     {

@@ -26,6 +26,10 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
+            <VerticalStackLayout IsVisible="{Binding EmptyCoursesList}">
+                <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No courses found" FontSize="Large"/>
+            </VerticalStackLayout>
+
             <Button Text="Add Course" Margin="0,20,0,20" Clicked="Add_Course_Clicked" HorizontalOptions="Center" />
         </VerticalStackLayout>
 

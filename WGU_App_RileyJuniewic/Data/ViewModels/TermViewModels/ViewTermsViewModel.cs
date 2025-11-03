@@ -34,6 +34,17 @@ public class ViewTermsViewModel : BindingModel
         }
     }
 
+    private bool _emptyTermsList = false;
+    public bool EmptyTermsList
+    {
+        get => _emptyTermsList;
+        set
+        {
+            _emptyTermsList = value;
+            OnPropertyChanged(nameof(EmptyTermsList));
+        }
+    }
+
     public Command LoadDataCommand { get; set; }
 
     public ViewTermsViewModel(ITermService termService, ICourseService courseService)
@@ -64,6 +75,7 @@ public class ViewTermsViewModel : BindingModel
             }).OrderBy(term => term.StartDate).ToList();
 
         Terms = new BindingList<TermDisplayDto>(termCourses);
+        EmptyTermsList = Terms.Count == 0;
 
         IsRefreshing = false;
     }

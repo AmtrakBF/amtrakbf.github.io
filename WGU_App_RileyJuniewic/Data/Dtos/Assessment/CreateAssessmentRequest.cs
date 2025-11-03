@@ -33,9 +33,9 @@ public class CreateAssessmentRequest : BindingModel
         }
     }
 
-    protected AssessmentType _type;
+    protected string _type = AssessmentType.Performance.ToString();
     [Required]
-    public AssessmentType Type
+    public string Type
     {
         get => _type;
         set

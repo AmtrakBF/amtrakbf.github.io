@@ -5,7 +5,7 @@ namespace WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents;
 public sealed partial class ModifyAssessmentCard : BaseInputContentView
 {
     public static readonly BindableProperty NameProperty =
-        BindableProperty.Create(nameof(Name), typeof(string), typeof(ModifyAssessmentCard), null);
+        BindableProperty.Create(nameof(Name), typeof(string), typeof(ModifyAssessmentCard), null, BindingMode.TwoWay);
 
     public string Name
     {
@@ -14,7 +14,7 @@ public sealed partial class ModifyAssessmentCard : BaseInputContentView
     }
 
     public static readonly BindableProperty TypeProperty =
-        BindableProperty.Create(nameof(Type), typeof(string), typeof(ModifyAssessmentCard), CourseStatus.InProgress.ToString());
+        BindableProperty.Create(nameof(Type), typeof(string), typeof(ModifyAssessmentCard), AssessmentType.Performance.ToString(), BindingMode.TwoWay);
 
     public string Type
     {
@@ -23,7 +23,7 @@ public sealed partial class ModifyAssessmentCard : BaseInputContentView
     }
 
     public static readonly BindableProperty StartDateProperty =
-        BindableProperty.Create(nameof(StartDate), typeof(DateTime), typeof(ModifyAssessmentCard), DateTime.Now);
+        BindableProperty.Create(nameof(StartDate), typeof(DateTime), typeof(ModifyAssessmentCard), DateTime.Now, BindingMode.TwoWay);
 
     public DateTime StartDate
     {
@@ -32,7 +32,7 @@ public sealed partial class ModifyAssessmentCard : BaseInputContentView
     }
 
     public static readonly BindableProperty EndDateProperty =
-        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(ModifyAssessmentCard), DateTime.Now.AddMonths(1));
+        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(ModifyAssessmentCard), DateTime.Now.AddMonths(1), BindingMode.TwoWay);
 
     public DateTime EndDate
     {

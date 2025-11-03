@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos.Assessment;
 using WGU_App_RileyJuniewic.Data.Models;
+using WGU_App_RileyJuniewic.Data.Models.Enums;
 using WGU_App_RileyJuniewic.Data.Repository;
 
 namespace WGU_App_RileyJuniewic.Data.Services;
@@ -21,7 +22,10 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) : IAssessmentSe
         if (request.HasErrors)
             return Result.Error(request.GetErrorList());
 
-        var assessment = Assessment.CreateNewInstance(request.CourseId, request.Name, request.Type, request.StartDate, request.EndDate);
+        var type = Enum.TryParse(request.Type, out AssessmentType typeEnum);
+        if (!type) return Result.Error("Invalid assessment type");
+
+        var assessment = Assessment.CreateNewInstance(request.CourseId, request.Name, typeEnum, request.StartDate, request.EndDate);
         var result = await ValidateAssessmentAsync(assessment);
         if (result.IsError())
             return result;
@@ -48,7 +52,10 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) : IAssessmentSe
         if (request.HasErrors)
             return Result.Error(request.GetErrorList());
 
-        var assessment = Assessment.CreateInstance(request.AssessmentId, request.CourseId, request.Name, request.Type, request.StartDate, request.EndDate);
+        var type = Enum.TryParse(request.Type, out AssessmentType typeEnum);
+        if (!type) return Result.Error("Invalid assessment type");
+
+        var assessment = Assessment.CreateInstance(request.AssessmentId, request.CourseId, request.Name, typeEnum, request.StartDate, request.EndDate);
         var result = await ValidateAssessmentAsync(assessment);
         if (result.IsError())
             return result;

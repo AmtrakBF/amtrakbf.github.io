@@ -45,9 +45,9 @@ public class CreateCourseRequest : BindingModel
     }
 
 
-    protected CourseStatus _status;
+    protected string _status = CourseStatus.InProgress.ToString();
     [Required]
-    public CourseStatus Status
+    public string Status
     {
         get => _status;
         set

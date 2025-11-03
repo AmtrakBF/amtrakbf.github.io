@@ -36,6 +36,17 @@ public class CurrentTermViewModel : BindingModel
         }
     }
 
+    private bool _emptyCoursesList = false;
+    public bool EmptyCoursesList
+    {
+        get => _emptyCoursesList;
+        set
+        {
+            _emptyCoursesList = value;
+            OnPropertyChanged(nameof(EmptyCoursesList));
+        }
+    }
+
     public OnClickCommandAsync LoadDataCommand { get; set; }
 
     public CurrentTermViewModel(ICourseService courseService, IInstructorService instructorService, ITermService termService)
@@ -72,6 +83,7 @@ public class CurrentTermViewModel : BindingModel
         }).ToList();
 
         FullCourses = new(fullCourses);
+        EmptyCoursesList = FullCourses.Count == 0;
         OnPropertyChanged(nameof(FullCourses));
     }
 }

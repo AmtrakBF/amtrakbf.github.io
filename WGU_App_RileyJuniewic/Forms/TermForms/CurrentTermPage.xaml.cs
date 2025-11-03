@@ -19,7 +19,7 @@ public partial class CurrentTermPage : ContentPage
 	{
 		if (_viewModel.Term is null) return;
 
-		var navigationParameter = new Dictionary<string, object>
+		var navigationParameter = new ShellNavigationQueryParameters
 		{
 			{ "Term", _viewModel.Term }
 		};
