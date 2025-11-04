@@ -10,7 +10,7 @@ public abstract class CreateViewModelBase<TRequest, TResponse> : BindingModel
     where TRequest : BindingModel, new()
     where TResponse : class
 {
-    private readonly ICreateService<TRequest, TResponse> _createService;
+    protected readonly ICreateService<TRequest, TResponse> _createService;
 
     private TRequest _createRequest = new();
     public TRequest CreateRequest
@@ -23,7 +23,7 @@ public abstract class CreateViewModelBase<TRequest, TResponse> : BindingModel
         }
     }
 
-    public event EventHandler<EventArgs>? OnCreate;
+    public virtual event EventHandler<EventArgs>? OnCreate;
     public OnClickCommandAsync CreateCommandAsync { get; set; }
 
     protected CreateViewModelBase(ICreateService<TRequest, TResponse> createService)

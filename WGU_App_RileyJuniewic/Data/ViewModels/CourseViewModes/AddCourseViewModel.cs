@@ -41,6 +41,7 @@ public class AddCourseViewModel : CreateViewModelBase<CreateCourseRequest, Model
         }
     }
 
+    public override event EventHandler<EventArgs>? OnCreate;
     public OnClickCommand AddAssessmentCommand { get; set; }
 
     public AddCourseViewModel(
@@ -65,16 +66,38 @@ public class AddCourseViewModel : CreateViewModelBase<CreateCourseRequest, Model
 
     protected override async Task CreateAsync()
     {
-        await base.CreateAsync();
+        if (CreateRequest.HasErrors)
+        {
+            new UserError(errors: CreateRequest.GetAllErrors());
+            return;
+        }
 
         foreach (var assessment in Assessments)
         {
-            var result = await _assessmentService.CreateAssessmentAsync(assessment);
-            if (result.IsError())
+            if (assessment.HasErrors)
             {
-                new UserError(result.Errors);
+                new UserError(errors: assessment.GetAllErrors());
                 return;
             }
         }
+
+        var requestResult = await _createService.CreateAsync(CreateRequest);
+        if (requestResult.IsError())
+        {
+            new UserError(requestResult.Errors);
+            return;
+        }
+
+        foreach (var assessment in Assessments)
+        {
+            assessment.CourseId = requestResult.Value.CourseId;
+            var assessmentResult = await _assessmentService.CreateAssessmentAsync(assessment);
+            if (assessmentResult.IsError())
+            {
+                new UserError(assessmentResult.Errors);
+            }
+        }
+        
+        OnCreate?.Invoke(this, EventArgs.Empty);
     }
 }
