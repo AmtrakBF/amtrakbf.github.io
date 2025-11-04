@@ -56,7 +56,7 @@ public class CreateCourseRequest : BindingModel
         }
     }
 
-    protected string _status = CourseStatus.InProgress.ToString();
+    protected string _status = CourseStatus.Active.ToString();
     [Required]
     public string Status
     {

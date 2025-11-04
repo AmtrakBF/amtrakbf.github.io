@@ -15,7 +15,7 @@ public class CourseTests : BaseTest
     [Fact]
     public async Task CreateCourse_CreatesDBEntryAsync()
     {
-        var course = Course.CreateNewInstance(Guid.NewGuid(), Guid.NewGuid(), "Test Course", CourseStatus.InProgress, DateTime.Now, DateTime.Now.AddDays(1));
+        var course = Course.CreateNewInstance(Guid.NewGuid(), Guid.NewGuid(), "Test Course", CourseStatus.Active, DateTime.Now, DateTime.Now.AddDays(1));
 
         await _dbAccessAsync.GetConnection().InsertAsync(course);
         var courseFromDb = await _dbAccessAsync.GetConnection().GetAsync<Course>(course.CourseId);
