@@ -1,0 +1,38 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="WGU_App_RileyJuniewic.Forms.CourseForms.ViewCoursePage"
+            xmlns:courseComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.CourseComponents"
+            xmlns:assessmentComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents"
+            xmlns:instructorComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.InstructorComponents"
+            xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
+            xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
+            x:Name="addCoursePage"
+            Shell.NavBarIsVisible="True">
+
+    <ContentPage.Resources>
+        <converters:ErrorsToStringConverter x:Key="ErrorsToString"/>
+        <converters:ErrorsToBoolConverter x:Key="ErrorsToBool"/>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout>
+
+            <Label FontSize="Title" Text="View Course" HorizontalOptions="Center" Margin="0,20,0,20"/>
+
+            <courseComponents:CourseCard Course="{Binding FullCourse.Course}" Instructor="{Binding FullCourse.Instructor}"/>
+
+            <CollectionView ItemsSource="{Binding Assessments}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <assessmentComponents:ModifyAssessmentCard CardTitle="Create Assessment" Name="{Binding Name}" 
+                            Type="{Binding Type}" StartDate="{Binding StartDate}" EndDate="{Binding EndDate}" ValidationErrors="{Binding ValidationErrors}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+    
+            <Button Text="Add Assessment" Command="{Binding AddAssessmentCommand}" Margin="0,20,0,20" HorizontalOptions="Center" />
+            <Button Text="Add Course" Command="{Binding CreateCommandAsync}" Margin="0,20,0,20" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,4 +1,5 @@
 using WGU_App_RileyJuniewic.Data.Models;
+using WGU_App_RileyJuniewic.Forms.CourseForms;
 
 namespace WGU_App_RileyJuniewic.Forms.Components.CourseComponents;
 
@@ -25,5 +26,14 @@ public sealed partial class CourseCard : ContentView
     public CourseCard()
     {
         this.InitializeComponent();
+    }
+
+    private void View_Course(object sender, EventArgs e)
+    {
+        var navigationParameter = new ShellNavigationQueryParameters
+        {
+            { "Course", Course }
+        };
+        _ = Shell.Current.GoToAsync(nameof(ViewCoursePage), true, navigationParameter);
     }
 }

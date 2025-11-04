@@ -64,6 +64,7 @@ public static class MauiProgram
 
 
 		builder.Services.AddTransient<AddCourseViewModel>();
+		builder.Services.AddTransient<ViewCourseViewModel>();
 
 		builder.Services.AddScoped<ICreateService<CreateAssessmentRequest, Assessment>, AssessmentService>();
 		builder.Services.AddScoped<IModifyService<UpdateAssessmentRequest, Assessment>, AssessmentService>();
