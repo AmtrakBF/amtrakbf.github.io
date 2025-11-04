@@ -1,8 +1,11 @@
+using WGU_App_RileyJuniewic.Data.Misc.Attributes;
+
 namespace WGU_App_RileyJuniewic.Data.Dtos.Course;
 
 public class UpdateCourseRequest : CreateCourseRequest
 {
     protected Guid _courseId;
+    [RequireNonDefault]
     public Guid CourseId
     {
         get => _courseId;

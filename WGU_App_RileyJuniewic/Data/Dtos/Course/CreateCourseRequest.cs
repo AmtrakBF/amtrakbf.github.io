@@ -8,6 +8,7 @@ public class CreateCourseRequest : BindingModel
 {
     protected Guid _termId;
     [Required]
+    [RequireNonDefault]
     public Guid TermId
     {
         get => _termId;
@@ -20,6 +21,8 @@ public class CreateCourseRequest : BindingModel
     }
 
     protected Guid _instructorId;
+    [RequireNonDefault]
+    [Required]
     public Guid InstructorId
     {
         get => _instructorId;

@@ -6,13 +6,13 @@
              x:Name="updateInstructorCard">
 
     <VerticalStackLayout>
-        <instructorComponents:ModifyInstructorCard CardTitle="Modify Instructor" Name="{Binding UpdateRequest.Name}"
-            Phone="{Binding UpdateRequest.Phone}" Email="{Binding UpdateRequest.Email}" ValidationErrors="{Binding UpdateRequest.ValidationErrors}"/>
+        <instructorComponents:ModifyInstructorCard CardTitle="Modify Instructor" Name="{Binding ModifyRequest.Name}"
+            Phone="{Binding ModifyRequest.Phone}" Email="{Binding ModifyRequest.Email}" ValidationErrors="{Binding ModifyRequest.ValidationErrors}"/>
 
         <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
             <Button Text="Cancel" Clicked="Close_View"/>
             <Button Text="Delete" Command="{Binding DeleteCommandAsync}"/>
-            <Button Text="Update Instructor" Command="{Binding UpdateCommandAsync}"/>
+            <Button Text="Update Instructor" Command="{Binding ModifyCommandAsync}"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 

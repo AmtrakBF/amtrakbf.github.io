@@ -6,17 +6,20 @@ namespace WGU_App_RileyJuniewic.Forms.Components.InstructorComponents;
 public sealed partial class InstructorCard : ContentView
 {
     public static readonly BindableProperty SelectedInstructorProperty =
-        BindableProperty.Create(nameof(SelectedInstructor), typeof(Instructor), typeof(InstructorCard), new Instructor(), BindingMode.TwoWay, propertyChanged: OnSelectedInstructorChanged);
+        BindableProperty.Create(nameof(SelectedInstructor), typeof(Instructor), typeof(InstructorCard), null, BindingMode.TwoWay, propertyChanged: OnSelectedInstructorChanged);
 
     private static void OnSelectedInstructorChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is InstructorCard card)
+        {
             card.InstructorSelected = true;
+            card.OnPropertyChanged(nameof(SelectedInstructor));
+        }
     }
 
-    public Instructor SelectedInstructor
+    public Instructor? SelectedInstructor
     {
-        get => (Instructor)GetValue(SelectedInstructorProperty);
+        get => (Instructor?)GetValue(SelectedInstructorProperty);
         set => SetValue(SelectedInstructorProperty, value);
     }
 
@@ -74,7 +77,7 @@ public sealed partial class InstructorCard : ContentView
         _viewModel = ServiceHelper.GetService<InstructorCardViewModel>();
         BindingContext = _viewModel;
 
-        OnCancelEvent += (sender, e) => Show_Picker();
+        OnCancelEvent += (sender, e) => Show_Picked();
         OnModifyInstructorEvent += OnInstructorEventHandler;
 
         InitializeComponent();
@@ -83,11 +86,12 @@ public sealed partial class InstructorCard : ContentView
     private void OnInstructorEventHandler(object? sender, EventArgs e)
     {
         _ = _viewModel.GetAllInstructorsAsync();
+        SelectedInstructor = null;
         InstructorSelected = false;
-        Show_Picker();
+        Show_Picked();
     }
 
-    private void Show_Picker()
+    private void Show_Picked()
     {
         AddNewInstructor = false;
         ModifyInstructor = false;

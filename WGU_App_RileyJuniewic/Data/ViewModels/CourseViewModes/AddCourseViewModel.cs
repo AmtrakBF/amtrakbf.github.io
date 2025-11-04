@@ -27,13 +27,16 @@ public class AddCourseViewModel : CreateViewModelBase<CreateCourseRequest, Model
     }
 
     
-    private Instructor _instructor = new();
-    public Instructor Instructor
+    private Instructor? _instructor;
+    public Instructor? Instructor
     {
         get => _instructor;
         set
         {
             _instructor = value;
+            if (CreateRequest is not null && value is null)
+                CreateRequest.InstructorId = Guid.Empty;
+
             if (CreateRequest is not null && value is not null)
                 CreateRequest.InstructorId = value.InstructorId;
                 

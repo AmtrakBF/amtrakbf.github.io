@@ -5,8 +5,14 @@
             xmlns:assessmentComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents"
             xmlns:instructorComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.InstructorComponents"
             xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
+            xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
             x:Name="addCoursePage"
             Shell.NavBarIsVisible="True">
+
+    <ContentPage.Resources>
+        <converters:ErrorsToStringConverter x:Key="ErrorsToString"/>
+        <converters:ErrorsToBoolConverter x:Key="ErrorsToBool"/>
+    </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout>
@@ -18,6 +24,9 @@
                 EndDate="{Binding CreateRequest.EndDate}" ValidationErrors="{Binding CreateRequest.ValidationErrors}"/>
 
             <instructorComponents:InstructorCard SelectedInstructor="{Binding Source={x:Reference addCoursePage}, Path=BindingContext.Instructor}" />
+            <Label Text="{Binding CreateRequest.ValidationErrors, Converter={StaticResource ErrorsToString}, ConverterParameter=InstructorId}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10" HorizontalTextAlignment="Center"
+                    IsVisible="{Binding CreateRequest.ValidationErrors, Converter={StaticResource ErrorsToBool}, ConverterParameter=InstructorId}"/>
 
 
             <CollectionView ItemsSource="{Binding Assessments}">
