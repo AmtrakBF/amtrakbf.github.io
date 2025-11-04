@@ -32,9 +32,9 @@ public partial class ModifyAssessmentForm : ContentPage, IQueryAttributable
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.TryGetValue("Course", out var course) && course is Course)
+        if (query.TryGetValue("Course", out var courseValue) && courseValue is Course course)
         {
-            Course = (Course)course;
+            Course = course;
         }
     }
 
