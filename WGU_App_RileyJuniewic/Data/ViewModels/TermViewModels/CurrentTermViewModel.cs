@@ -26,6 +26,17 @@ public class CurrentTermViewModel : BindingModel
         }
     }
 
+    private bool _isRefreshing;
+    public bool IsRefreshing
+    {
+        get => _isRefreshing;
+        set
+        {
+            _isRefreshing = value;
+            OnPropertyChanged(nameof(IsRefreshing));
+        }
+    }
+
     private ObservableCollection<FullCourseDto> _fullCourses = [];
     public ObservableCollection<FullCourseDto> FullCourses
     {
@@ -63,6 +74,7 @@ public class CurrentTermViewModel : BindingModel
 
     public async Task LoadDataAsync()
     {
+        IsRefreshing = true;
         var terms = await _termService.GetAllTermsAsync();
         var currentTerm = terms.Where(x => x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now).FirstOrDefault();
 
@@ -86,5 +98,6 @@ public class CurrentTermViewModel : BindingModel
         FullCourses = new(fullCourses);
         EmptyCoursesList = FullCourses.Count == 0;
         OnPropertyChanged(nameof(FullCourses));
+        IsRefreshing = false;
     }
 }

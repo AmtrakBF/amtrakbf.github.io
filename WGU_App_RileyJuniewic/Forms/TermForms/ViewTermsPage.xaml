@@ -17,7 +17,7 @@
             <VerticalStackLayout>
                 <components:HeaderComp />
 
-                <VerticalStackLayout IsVisible="{Binding !IsRefreshing}">
+                <VerticalStackLayout>
                     <CollectionView  x:Name="collectionView" ItemsSource="{Binding Terms}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>

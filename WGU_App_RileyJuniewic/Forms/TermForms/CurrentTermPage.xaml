@@ -10,33 +10,37 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <VerticalStackLayout>
-        <components:HeaderComp />
+    <RefreshView Command="{Binding LoadDataCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <ScrollView>
+            <VerticalStackLayout>
+                <components:HeaderComp />
 
-        <VerticalStackLayout IsVisible="{Binding Term, Converter={StaticResource NullToBoolean}}">
-            <CollectionView ItemsSource="{Binding FullCourses}" HorizontalOptions="Center">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <ContentView>
-                            <VerticalStackLayout>
-                                <courseComponents:CourseCard Course="{Binding Course}" Instructor="{Binding Instructor}" />
-                            </VerticalStackLayout>
-                        </ContentView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                <VerticalStackLayout IsVisible="{Binding Term, Converter={StaticResource NullToBoolean}}">
+                    <CollectionView ItemsSource="{Binding FullCourses}" HorizontalOptions="Center">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView>
+                                    <VerticalStackLayout>
+                                        <courseComponents:CourseCard Course="{Binding Course}" Instructor="{Binding Instructor}" />
+                                    </VerticalStackLayout>
+                                </ContentView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
-            <VerticalStackLayout IsVisible="{Binding EmptyCoursesList}">
-                <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No courses found" FontSize="Large"/>
+                    <VerticalStackLayout IsVisible="{Binding EmptyCoursesList}">
+                        <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No courses found" FontSize="Large"/>
+                    </VerticalStackLayout>
+
+                    <Button Text="Add Course" Margin="0,20,0,20" Clicked="Add_Course_Clicked" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout IsVisible="{Binding Term, Converter={StaticResource NullToBoolean}, ConverterParameter=True}">
+                    <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No current term found" FontSize="Large"/>
+                    <Button Text="Add Term" Clicked="Add_Term_Clicked" Margin="40"/>
+                </VerticalStackLayout>
+
             </VerticalStackLayout>
-
-            <Button Text="Add Course" Margin="0,20,0,20" Clicked="Add_Course_Clicked" HorizontalOptions="Center" />
-        </VerticalStackLayout>
-
-        <VerticalStackLayout IsVisible="{Binding Term, Converter={StaticResource NullToBoolean}, ConverterParameter=True}">
-            <Label Margin="0,50" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="No current term found" FontSize="Large"/>
-            <Button Text="Add Term" Clicked="Add_Term_Clicked" Margin="40"/>
-        </VerticalStackLayout>
-
-    </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
 </ContentPage>
