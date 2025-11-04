@@ -3,7 +3,7 @@ using WGU_App_RileyJuniewic.Data.ViewModels.AssessmentViewModels;
 
 namespace WGU_App_RileyJuniewic.Forms.AssessmentForms;
 
-public partial class ModifyAssessmentForm : ContentPage, IQueryAttributable
+public partial class ModifyAssessmentPage : ContentPage, IQueryAttributable
 {
     private readonly ModifyAssessmentViewModel _viewModel;
 
@@ -19,7 +19,7 @@ public partial class ModifyAssessmentForm : ContentPage, IQueryAttributable
         }
     }
 
-    public ModifyAssessmentForm()
+    public ModifyAssessmentPage()
     {
         _viewModel = ServiceHelper.GetService<ModifyAssessmentViewModel>();
         BindingContext = _viewModel;
