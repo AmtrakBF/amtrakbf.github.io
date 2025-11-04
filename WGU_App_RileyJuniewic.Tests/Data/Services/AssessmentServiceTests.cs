@@ -32,7 +32,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         {
             CourseId = course.CourseId,
             Name = "Assessment 1",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -54,7 +54,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         {
             CourseId = Guid.NewGuid(),
             Name = "Assessment 1",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -76,7 +76,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         {
             CourseId = course.CourseId,
             Name = "Assessment 1",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -87,7 +87,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         {
             CourseId = course.CourseId,
             Name = "Assessment 1",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -109,7 +109,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         {
             CourseId = course.CourseId,
             Name = "Assessment 1",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -120,7 +120,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         {
             CourseId = course.CourseId,
             Name = "Assessment 2",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now.AddDays(0.5),
             EndDate = DateTime.Now.AddDays(1.5)
         };
@@ -142,7 +142,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         {
             CourseId = course.CourseId,
             Name = "Assessment 1",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -166,7 +166,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         {
             CourseId = course.CourseId,
             Name = "Assessment 1",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -175,7 +175,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         {
             CourseId = course.CourseId,
             Name = "Assessment 2",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now.AddDays(2),
             EndDate = DateTime.Now.AddDays(3)
         };
@@ -200,7 +200,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         {
             CourseId = course.CourseId,
             Name = "Assessment 1",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -232,7 +232,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         {
             CourseId = course.CourseId,
             Name = "Assessment 1",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -243,7 +243,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
             Id = result.Value.AssessmentId,
             CourseId = result.Value.CourseId,
             Name = "Updated Assessment",
-            Type = AssessmentType.Objective,
+            Type = AssessmentType.Objective.ToString(),
             StartDate = DateTime.Now.AddDays(2),
             EndDate = DateTime.Now.AddDays(3)
         };

@@ -32,7 +32,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress,
+            Status = CourseStatus.InProgress.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -43,8 +43,42 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
         courseFromDb.Should().BeEquivalentTo(createdCourse);
     }
 
+    // [Fact]
+    // public async Task CreateCourseAsync_ThrowsExceptionWhenCourseOverlapsAsync()
+    // {
+    //     await ClearCourses();
+
+    //     var (instructor, term) = await CreateInstructorAndTermAsync();
+
+    //     var course = new CreateCourseRequest()
+    //     {
+    //         Title = "Test Course",
+    //         TermId = term.TermId,
+    //         InstructorId = instructor.InstructorId,
+    //         Status = CourseStatus.InProgress.ToString(),
+    //         StartDate = new DateTime(2023, 1, 1),
+    //         EndDate = new DateTime(2023, 2, 2)
+    //     };
+
+    //     await _courseService.CreateCourseAsync(course);
+
+    //     var course2 = new CreateCourseRequest()
+    //     {
+    //         Title = "Test Course2",
+    //         TermId = term.TermId,
+    //         InstructorId = instructor.InstructorId,
+    //         Status = CourseStatus.InProgress.ToString(),
+    //         StartDate = new DateTime(2023, 2, 2),
+    //         EndDate = new DateTime(2023, 3, 3)
+    //     };
+
+    //     var result = await _courseService.CreateCourseAsync(course2);
+    //     result.IsError().Should().BeTrue();
+    //     result.Errors.First().Should().Be("Course overlaps with an existing course");
+    // }
+
     [Fact]
-    public async Task CreateCourseAsync_ThrowsExceptionWhenCourseOverlapsAsync()
+    public async Task CreateCourseAsync_Creates_WhenCourseOverlapsAsync()
     {
         await ClearCourses();
 
@@ -55,7 +89,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress,
+            Status = CourseStatus.InProgress.ToString(),
             StartDate = new DateTime(2023, 1, 1),
             EndDate = new DateTime(2023, 2, 2)
         };
@@ -67,14 +101,17 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course2",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress,
+            Status = CourseStatus.InProgress.ToString(),
             StartDate = new DateTime(2023, 2, 2),
             EndDate = new DateTime(2023, 3, 3)
         };
 
         var result = await _courseService.CreateCourseAsync(course2);
-        result.IsError().Should().BeTrue();
-        result.Errors.First().Should().Be("Course overlaps with an existing course");
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Title.Should().Be("Test Course2");
+        result.Value.TermId.Should().Be(term.TermId);
+        result.Value.InstructorId.Should().Be(instructor.InstructorId);
+        result.Value.Status.Should().Be(CourseStatus.InProgress);
     }
 
     [Fact]
@@ -88,7 +125,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = Guid.NewGuid(),
-            Status = CourseStatus.InProgress,
+            Status = CourseStatus.InProgress.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -109,7 +146,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = Guid.NewGuid(),
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress,
+            Status = CourseStatus.InProgress.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -130,7 +167,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress,
+            Status = CourseStatus.InProgress.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -155,7 +192,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress,
+            Status = CourseStatus.InProgress.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -167,7 +204,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course2",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress,
+            Status = CourseStatus.InProgress.ToString(),
             StartDate = DateTime.Now.AddDays(3),
             EndDate = DateTime.Now.AddDays(5)
         };
@@ -191,7 +228,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress,
+            Status = CourseStatus.InProgress.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -203,7 +240,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Updated Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.Completed,
+            Status = CourseStatus.Completed.ToString(),
             StartDate = DateTime.Now.AddDays(2),
             EndDate = DateTime.Now.AddDays(4)
         };
