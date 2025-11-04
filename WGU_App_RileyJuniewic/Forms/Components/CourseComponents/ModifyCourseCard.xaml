@@ -25,7 +25,7 @@
                 <Picker Title="Select Status" SelectedItem="{Binding Status, Source={x:Reference modifyCourseCard}}">
                     <Picker.Items>
                         <x:String>Planned</x:String>
-                        <x:String>InProgress</x:String>
+                        <x:String>Active</x:String>
                         <x:String>Completed</x:String>
                         <x:String>Dropped</x:String>
                     </Picker.Items>

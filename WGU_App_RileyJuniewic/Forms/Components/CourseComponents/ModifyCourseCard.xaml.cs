@@ -14,7 +14,7 @@ public sealed partial class ModifyCourseCard : BaseInputContentView
     }
 
     public static readonly BindableProperty StatusProperty =
-        BindableProperty.Create(nameof(Status), typeof(string), typeof(ModifyCourseCard), CourseStatus.InProgress.ToString(), BindingMode.TwoWay);
+        BindableProperty.Create(nameof(Status), typeof(string), typeof(ModifyCourseCard), CourseStatus.Active.ToString(), BindingMode.TwoWay);
 
     public string Status
     {

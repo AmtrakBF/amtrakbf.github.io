@@ -32,7 +32,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress.ToString(),
+            Status = CourseStatus.Active.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -89,7 +89,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress.ToString(),
+            Status = CourseStatus.Active.ToString(),
             StartDate = new DateTime(2023, 1, 1),
             EndDate = new DateTime(2023, 2, 2)
         };
@@ -101,7 +101,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course2",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress.ToString(),
+            Status = CourseStatus.Active.ToString(),
             StartDate = new DateTime(2023, 2, 2),
             EndDate = new DateTime(2023, 3, 3)
         };
@@ -111,7 +111,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
         result.Value.Title.Should().Be("Test Course2");
         result.Value.TermId.Should().Be(term.TermId);
         result.Value.InstructorId.Should().Be(instructor.InstructorId);
-        result.Value.Status.Should().Be(CourseStatus.InProgress);
+        result.Value.Status.Should().Be(CourseStatus.Active);
     }
 
     [Fact]
@@ -126,7 +126,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress.ToString(),
+            Status = CourseStatus.Active.ToString(),
             StartDate = new DateTime(2023, 1, 1),
             EndDate = new DateTime(2023, 2, 2)
         };
@@ -138,7 +138,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress.ToString(),
+            Status = CourseStatus.Active.ToString(),
             StartDate = new DateTime(2023, 2, 2),
             EndDate = new DateTime(2023, 3, 3)
         };
@@ -159,7 +159,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = Guid.NewGuid(),
-            Status = CourseStatus.InProgress.ToString(),
+            Status = CourseStatus.Active.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -180,7 +180,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = Guid.NewGuid(),
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress.ToString(),
+            Status = CourseStatus.Active.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -201,7 +201,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress.ToString(),
+            Status = CourseStatus.Active.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -226,7 +226,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress.ToString(),
+            Status = CourseStatus.Active.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
@@ -238,7 +238,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course2",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress.ToString(),
+            Status = CourseStatus.Active.ToString(),
             StartDate = DateTime.Now.AddDays(3),
             EndDate = DateTime.Now.AddDays(5)
         };
@@ -262,7 +262,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             Title = "Test Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
-            Status = CourseStatus.InProgress.ToString(),
+            Status = CourseStatus.Active.ToString(),
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.AddDays(1)
         };
