@@ -1,3 +1,4 @@
+using WGU_App_RileyJuniewic.Data.Misc.Events;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Forms.CourseForms;
 
@@ -23,17 +24,32 @@ public sealed partial class CourseCard : ContentView
         set => SetValue(InstructorProperty, value);
     }
 
+    public static readonly BindableProperty ButtonTitleProperty =
+        BindableProperty.Create(nameof(ButtonTitle), typeof(string), typeof(CourseCard), null);
+
+    public string ButtonTitle
+    {
+        get => (string)GetValue(ButtonTitleProperty);
+        set => SetValue(ButtonTitleProperty, value);
+    }
+
+    public static readonly BindableProperty ButtonEventProperty =
+        BindableProperty.Create(nameof(ButtonEvent), typeof(EventHandler), typeof(CourseCard), null, BindingMode.TwoWay);
+
+    public EventHandler ButtonEvent
+    {
+        get => (EventHandler)GetValue(ButtonEventProperty);
+        set => SetValue(ButtonEventProperty, value);
+    }
+
     public CourseCard()
     {
         this.InitializeComponent();
     }
 
-    private void View_Course(object sender, EventArgs e)
+    private void On_Button_Click(object sender, EventArgs e)
     {
-        var navigationParameter = new ShellNavigationQueryParameters
-        {
-            { "Course", Course }
-        };
-        _ = Shell.Current.GoToAsync(nameof(ViewCoursePage), true, navigationParameter);
+        var args = new CourseEventArgs(Course);
+        ButtonEvent?.Invoke(this, args);
     }
 }

@@ -19,6 +19,8 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
         }
     }
 
+    public EventHandler? OnModifyEvent { get; set; }
+
     public ViewCoursePage()
     {
         _viewModel = ServiceHelper.GetService<ViewCourseViewModel>();
@@ -40,4 +42,5 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
             Course = course;
         }
     }
+    
 }

@@ -11,7 +11,7 @@
             </VerticalStackLayout.Resources>
             <Label FontSize="Large" Text="{Binding Course.Title, Source={x:Reference courseCard}}"/>
             <Label Text="{Binding Instructor.Name, StringFormat='Instructor: {0}', Source={x:Reference courseCard}}" />
-            <Button Text="Open" Clicked="View_Course"/>
+            <Button Text="{Binding ButtonTitle, Source={x:Reference courseCard}}" Clicked="On_Button_Click"/>
 
             <VerticalStackLayout HorizontalOptions="End">
                 <Label Text="{Binding Course.Status, StringFormat='Status: {0}', Source={x:Reference courseCard}}" HorizontalTextAlignment="End"/>

@@ -6,7 +6,7 @@
             xmlns:instructorComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.InstructorComponents"
             xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
             xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
-            x:Name="addCoursePage"
+            x:Name="viewCoursePage"
             Shell.NavBarIsVisible="True">
 
     <ContentPage.Resources>
@@ -19,7 +19,8 @@
 
             <Label FontSize="Title" Text="View Course" HorizontalOptions="Center" Margin="0,20,0,20"/>
 
-            <courseComponents:CourseCard Course="{Binding FullCourse.Course}" Instructor="{Binding FullCourse.Instructor}"/>
+            <courseComponents:CourseCard Course="{Binding FullCourse.Course}" Instructor="{Binding FullCourse.Instructor}" ButtonTitle="Modify" 
+                ButtonEvent="{Binding OnModifyEvent, Source={x:Reference viewCoursePage}}"/>
 
             <CollectionView ItemsSource="{Binding Assessments}">
                 <CollectionView.ItemTemplate>
