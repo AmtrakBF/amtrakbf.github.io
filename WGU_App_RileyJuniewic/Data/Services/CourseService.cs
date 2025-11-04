@@ -92,12 +92,14 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
         if (validTerm == null)
             return Result.Error("Term does not exist");
 
-        // var otherCourses = await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.TermId == course.TermId && x.CourseId != course.CourseId).ToListAsync();
-        // foreach (var otherCourse in otherCourses)
-        // {
-        //     if (otherCourse.StartDate <= course.EndDate && otherCourse.EndDate >= course.StartDate)
-        //         return Result.Error("Course overlaps with an existing course");
-        // }
+        var otherCourses = await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.TermId == course.TermId && x.CourseId != course.CourseId).ToListAsync();
+        foreach (var otherCourse in otherCourses)
+        {
+            // if (otherCourse.StartDate <= course.EndDate && otherCourse.EndDate >= course.StartDate)
+            //     return Result.Error("Course overlaps with an existing course");
+            if (otherCourse.Title == course.Title)
+                return Result.Error("Course title already exists");
+        }
 
         return Result.Success();
     }

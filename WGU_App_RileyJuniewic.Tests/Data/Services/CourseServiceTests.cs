@@ -115,6 +115,40 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
     }
 
     [Fact]
+    public async Task CreateCourseAsync_ReturnsErrorWhenCourseTitleExistsAsync()
+    {
+        await ClearCourses();
+
+        var (instructor, term) = await CreateInstructorAndTermAsync();
+
+        var course = new CreateCourseRequest()
+        {
+            Title = "Test Course",
+            TermId = term.TermId,
+            InstructorId = instructor.InstructorId,
+            Status = CourseStatus.InProgress.ToString(),
+            StartDate = new DateTime(2023, 1, 1),
+            EndDate = new DateTime(2023, 2, 2)
+        };
+
+        await _courseService.CreateCourseAsync(course);
+
+        var course2 = new CreateCourseRequest()
+        {
+            Title = "Test Course",
+            TermId = term.TermId,
+            InstructorId = instructor.InstructorId,
+            Status = CourseStatus.InProgress.ToString(),
+            StartDate = new DateTime(2023, 2, 2),
+            EndDate = new DateTime(2023, 3, 3)
+        };
+
+        var result = await _courseService.CreateCourseAsync(course2);
+        result.IsError().Should().BeTrue();
+        result.Errors.First().Should().Be("Course title already exists");
+    }
+
+    [Fact]
     public async Task CreateCourseAsync_ThrowsExceptionWhenInstructorDoesNotExistsAsync()
     {
         await ClearCourses();
