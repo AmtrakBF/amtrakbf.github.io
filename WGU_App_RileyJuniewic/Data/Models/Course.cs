@@ -16,11 +16,12 @@ public class Course
     public Guid InstructorId { get; set; }
 
     public string Title { get; set; } = "";
+    public string? Notes { get; set; }
     public CourseStatus Status { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
 
-    public static Course CreateNewInstance(Guid termId, Guid instructorId, string title, CourseStatus status, DateTime startDate, DateTime endDate)
+    public static Course CreateNewInstance(Guid termId, Guid instructorId, string title, CourseStatus status, DateTime startDate, DateTime endDate, string? notes = null)
     {
         return new Course()
         {
@@ -30,11 +31,12 @@ public class Course
             Title = title,
             Status = status,
             StartDate = startDate,
-            EndDate = endDate
+            EndDate = endDate,
+            Notes = notes
         };
     }
     
-    public static Course CreateInstance(Guid courseId, Guid termId, Guid instructorId, string title, CourseStatus status, DateTime startDate, DateTime endDate)
+    public static Course CreateInstance(Guid courseId, Guid termId, Guid instructorId, string title, CourseStatus status, DateTime startDate, DateTime endDate, string? notes = null)
     {
         return new Course()
         {
@@ -44,7 +46,8 @@ public class Course
             Title = title,
             Status = status,
             StartDate = startDate,
-            EndDate = endDate
+            EndDate = endDate,
+            Notes = notes
         };
     }
 }

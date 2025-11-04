@@ -44,6 +44,17 @@ public class CreateCourseRequest : BindingModel
         }
     }
 
+    protected string? _notes = "";
+    public string? Notes
+    {
+        get => _notes;
+        set
+        {
+            _notes = value;
+            OnPropertyChanged(nameof(Notes));
+            Validate(nameof(Notes), _notes);
+        }
+    }
 
     protected string _status = CourseStatus.InProgress.ToString();
     [Required]
