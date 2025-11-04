@@ -28,7 +28,7 @@ public partial class ViewTermsPage : ContentPage
         OnModifyEvent += Modify_Term_Clicked;
     }
 
-     protected override void OnAppearing()
+    protected override void OnAppearing()
     {
         base.OnAppearing();
         _viewModel.LoadDataCommand.Execute(null);

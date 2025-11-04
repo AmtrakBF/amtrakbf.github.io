@@ -9,10 +9,16 @@ public partial class CurrentTermPage : ContentPage
     private readonly CurrentTermViewModel _viewModel;
 
     public CurrentTermPage(CurrentTermViewModel viewModel)
-	{
-		BindingContext = viewModel;
+    {
+        BindingContext = viewModel;
         _viewModel = viewModel;
-		InitializeComponent();
+        InitializeComponent();
+    }
+    
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _viewModel.LoadDataCommand.Execute(null);
     }
 
     private void Add_Course_Clicked(object sender, EventArgs e)
