@@ -2,6 +2,7 @@ using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Models.Enums;
+using WGU_App_RileyJuniewic.Data.Models.Interfaces;
 using WGU_App_RileyJuniewic.Data.Repository;
 
 namespace WGU_App_RileyJuniewic.Data.Services;
@@ -15,8 +16,13 @@ public interface ICourseService
     public Task DeleteCourseAsync(Guid courseId);   
 }
 
-public class CourseService(SqlDataAccessAsync sqlDataAccess) : ICourseService
+public class CourseService(SqlDataAccessAsync sqlDataAccess) :
+    ICourseService,
+    ICreateService<CreateCourseRequest, Course>,
+    IModifyService<UpdateCourseRequest, Course>
 {
+    public async Task<Result<Course>> CreateAsync(CreateCourseRequest request) => await CreateCourseAsync(request);
+
     public async Task<Result<Course>> CreateCourseAsync(CreateCourseRequest request)
     {
         if (request.HasErrors)
@@ -34,6 +40,7 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) : ICourseService
         return course;
     }
 
+    public async Task DeleteAsync(Guid id) => await DeleteCourseAsync(id);
     public async Task DeleteCourseAsync(Guid courseId)
     {
         // Delete Assesements & Notes
@@ -54,6 +61,8 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) : ICourseService
             
         return course;
     }
+
+    public async Task<Result<Course>> UpdateAsync(UpdateCourseRequest request) => await UpdateCourseAsync(request);
 
     public async Task<Result<Course>> UpdateCourseAsync(UpdateCourseRequest request)
     {

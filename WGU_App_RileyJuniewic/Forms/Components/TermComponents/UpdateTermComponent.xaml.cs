@@ -27,12 +27,12 @@ public sealed partial class UpdateTermComponent : ModifyContentView
         BindingContext = viewModel;
         _viewModel = viewModel;
 
-        viewModel.OnUpdateTerm += (sender, args) =>
+        viewModel.OnModify += (sender, args) =>
         {
             OnSubmit?.Invoke(sender, args);
         };
 
-        viewModel.OnDeleteTerm += (sender, args) =>
+        viewModel.OnDelete += (sender, args) =>
         {
             OnSubmit?.Invoke(sender, args);
         };

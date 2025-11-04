@@ -151,7 +151,7 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
 
         var updateRequest = new UpdateInstructorRequest()
         {
-            InstructorId = instructor.InstructorId,
+            Id = instructor.InstructorId,
             Name = "Bob Smith 2",
             Email = "bob.smith@example.com",
             Phone = "54254535"
@@ -159,7 +159,7 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
 
         var result = await _instructorService.UpdateInstructorAsync(updateRequest);
         var instructorResult = result.Value;
-        instructorResult.InstructorId.Should().Be(updateRequest.InstructorId);
+        instructorResult.InstructorId.Should().Be(updateRequest.Id);
         instructorResult.Name.Should().Be(updateRequest.Name);
         instructorResult.Email.Should().Be(updateRequest.Email);
         instructorResult.Phone.Should().Be(updateRequest.Phone);

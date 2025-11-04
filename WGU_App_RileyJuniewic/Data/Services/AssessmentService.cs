@@ -2,7 +2,9 @@ using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos.Assessment;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Models.Enums;
+using WGU_App_RileyJuniewic.Data.Models.Interfaces;
 using WGU_App_RileyJuniewic.Data.Repository;
+using WGU_App_RileyJuniewic.Data.ViewModels;
 
 namespace WGU_App_RileyJuniewic.Data.Services;
 
@@ -15,7 +17,10 @@ public interface IAssessmentService
     Task DeleteAssessmentAsync(Guid id);
 }
 
-public class AssessmentService(SqlDataAccessAsync sqlDataAccess) : IAssessmentService
+public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
+    IAssessmentService,
+    ICreateService<CreateAssessmentRequest, Assessment>,
+    IModifyService<UpdateAssessmentRequest, Assessment>
 {
     public async Task<Result<Assessment>> CreateAssessmentAsync(CreateAssessmentRequest request)
     {
@@ -34,8 +39,12 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) : IAssessmentSe
         return assessment;
     }
 
+    public async Task<Result<Assessment>> CreateAsync(CreateAssessmentRequest request) => await CreateAssessmentAsync(request);
+
     public async Task DeleteAssessmentAsync(Guid id) =>
         await sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.AssessmentId == id).DeleteAsync();
+
+    public async Task DeleteAsync(Guid id) => await DeleteAssessmentAsync(id);
 
     public async Task<IEnumerable<Assessment>> GetAllAssessmentsAsync() => await sqlDataAccess.GetConnection().Table<Assessment>().ToListAsync();
 
@@ -55,7 +64,7 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) : IAssessmentSe
         var type = Enum.TryParse(request.Type, out AssessmentType typeEnum);
         if (!type) return Result.Error("Invalid assessment type");
 
-        var assessment = Assessment.CreateInstance(request.AssessmentId, request.CourseId, request.Name, typeEnum, request.StartDate, request.EndDate);
+        var assessment = Assessment.CreateInstance(request.Id, request.CourseId, request.Name, typeEnum, request.StartDate, request.EndDate);
         var result = await ValidateAssessmentAsync(assessment);
         if (result.IsError())
             return result;
@@ -63,6 +72,8 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) : IAssessmentSe
         await sqlDataAccess.GetConnection().UpdateAsync(assessment);
         return assessment;
     }
+
+    public async Task<Result<Assessment>> UpdateAsync(UpdateAssessmentRequest request) => await UpdateAssessmentAsync(request);
 
     public async Task<Result> ValidateAssessmentAsync(Assessment assessment)
     {

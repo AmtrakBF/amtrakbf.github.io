@@ -9,7 +9,7 @@ public sealed partial class AddInstructorCard : ModifyContentView
         var viewModel = ServiceHelper.GetService<AddInstructorViewModel>();
         BindingContext = viewModel;
 
-        viewModel.OnCreateInstructor += (sender, args) =>
+        viewModel.OnCreate += (sender, args) =>
         {
             OnSubmit?.Invoke(sender, args);
         };

@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos.Instructor;
 using WGU_App_RileyJuniewic.Data.Models;
+using WGU_App_RileyJuniewic.Data.Models.Interfaces;
 using WGU_App_RileyJuniewic.Data.Repository;
 
 namespace WGU_App_RileyJuniewic.Data.Services;
@@ -14,8 +15,13 @@ public interface IInstructorService
     Task DeleteInstructorAsync(Guid id);
 }
 
-public class InstructorService(SqlDataAccessAsync sqlDataAccess) : IInstructorService
+public class InstructorService(SqlDataAccessAsync sqlDataAccess) :
+    IInstructorService,
+    ICreateService<CreateInstructorRequest, Instructor>,
+    IModifyService<UpdateInstructorRequest, Instructor>
 {
+    public async Task<Result<Instructor>> CreateAsync(CreateInstructorRequest request) => await CreateInstructorAsync(request);
+
     public async Task<Result<Instructor>> CreateInstructorAsync(CreateInstructorRequest request)
     {
         if (request.HasErrors)
@@ -29,6 +35,8 @@ public class InstructorService(SqlDataAccessAsync sqlDataAccess) : IInstructorSe
         await sqlDataAccess.GetConnection().InsertAsync(instructor);
         return instructor;
     }
+
+    public async Task DeleteAsync(Guid id) => await DeleteInstructorAsync(id);
 
     public async Task DeleteInstructorAsync(Guid id) =>
         await sqlDataAccess.GetConnection().Table<Instructor>().Where(x => x.InstructorId == id).DeleteAsync();
@@ -44,12 +52,14 @@ public class InstructorService(SqlDataAccessAsync sqlDataAccess) : IInstructorSe
         return instructor;
     }
 
+    public async Task<Result<Instructor>> UpdateAsync(UpdateInstructorRequest request) => await UpdateInstructorAsync(request);
+
     public async Task<Result<Instructor>> UpdateInstructorAsync(UpdateInstructorRequest request)
     {
         if (request.HasErrors)
             return Result.Error(request.GetErrorList());
             
-        var instructor = Instructor.CreateInstance(request.InstructorId, request.Name, request.Email, request.Phone);
+        var instructor = Instructor.CreateInstance(request.Id, request.Name, request.Email, request.Phone);
         var result = await ValidateInstructorAsync(instructor);
         if (result.IsError())
             return result;

@@ -240,7 +240,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         var result = await _assessmentService.CreateAssessmentAsync(assessmentRequest);
         var updateRequest = new UpdateAssessmentRequest()
         {
-            AssessmentId = result.Value.AssessmentId,
+            Id = result.Value.AssessmentId,
             CourseId = result.Value.CourseId,
             Name = "Updated Assessment",
             Type = AssessmentType.Objective,

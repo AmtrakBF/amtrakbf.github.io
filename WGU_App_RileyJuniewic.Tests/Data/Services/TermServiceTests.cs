@@ -74,7 +74,7 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
 
         var updateRequest = new UpdateTermRequest()
         {
-            TermId = createdTerm.Value.TermId,
+            Id = createdTerm.Value.TermId,
             Title = "Updated Term",
             StartDate = new DateTime(2023, 3, 3),
             EndDate = new DateTime(2023, 4, 4)

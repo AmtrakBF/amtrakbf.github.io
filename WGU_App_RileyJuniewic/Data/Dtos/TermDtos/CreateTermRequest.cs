@@ -14,7 +14,7 @@ public class CreateTermRequest : BindingModel
         {
             _title = value;
             OnPropertyChanged(nameof(Title));
-            Validate(nameof(Title), _title); 
+            Validate(nameof(Title), _title);
         }
     }
 

@@ -35,8 +35,8 @@ public sealed partial class UpdateInstructorCard : ModifyContentView
         _viewModel = ServiceHelper.GetService<UpdateInstructorViewModel>();
         BindingContext = _viewModel;
 
-        _viewModel.OnUpdateInstructor += (sender, args) => OnSubmit?.Invoke(sender, args);
-        _viewModel.OnDeleteInstructor += (sender, args) => OnDelete?.Invoke(sender, args);
+        _viewModel.OnModify += (sender, args) => OnSubmit?.Invoke(sender, args);
+        _viewModel.OnDelete += (sender, args) => OnDelete?.Invoke(sender, args);
 
         InitializeComponent();
     }

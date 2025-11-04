@@ -1,5 +1,3 @@
-using WGU_App_RileyJuniewic.Data.Misc.Commands;
-using WGU_App_RileyJuniewic.Data.Misc.Events;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.ViewModels.Course;
 
@@ -8,16 +6,18 @@ namespace WGU_App_RileyJuniewic.Forms.Components.InstructorComponents;
 public sealed partial class InstructorCard : ContentView
 {
     public static readonly BindableProperty SelectedInstructorProperty =
-        BindableProperty.Create(nameof(SelectedInstructor), typeof(Instructor), typeof(InstructorCard), null, BindingMode.TwoWay);
+        BindableProperty.Create(nameof(SelectedInstructor), typeof(Instructor), typeof(InstructorCard), new Instructor(), BindingMode.TwoWay, propertyChanged: OnSelectedInstructorChanged);
 
-    public Instructor? SelectedInstructor
+    private static void OnSelectedInstructorChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is InstructorCard card)
+            card.InstructorSelected = true;
+    }
+
+    public Instructor SelectedInstructor
     {
         get => (Instructor)GetValue(SelectedInstructorProperty);
-        set
-        {
-            SetValue(SelectedInstructorProperty, value);
-            InstructorSelected = true;
-        }
+        set => SetValue(SelectedInstructorProperty, value);
     }
 
     private bool _instructorSelected;
@@ -83,7 +83,6 @@ public sealed partial class InstructorCard : ContentView
     private void OnInstructorEventHandler(object? sender, EventArgs e)
     {
         _ = _viewModel.GetAllInstructorsAsync();
-        SelectedInstructor = null;
         InstructorSelected = false;
         Show_Picker();
     }

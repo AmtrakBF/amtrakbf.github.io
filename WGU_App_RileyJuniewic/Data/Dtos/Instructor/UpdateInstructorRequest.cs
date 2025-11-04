@@ -1,19 +1,20 @@
 using System.ComponentModel.DataAnnotations;
+using WGU_App_RileyJuniewic.Data.Models.Interfaces;
 
 namespace WGU_App_RileyJuniewic.Data.Dtos.Instructor;
 
-public class UpdateInstructorRequest : CreateInstructorRequest
+public class UpdateInstructorRequest : CreateInstructorRequest, IRequestIdentity
 {
-    protected Guid _instructorId;
+    protected Guid _id;
     [Required]
-    public Guid InstructorId
+    public Guid Id
     {
-        get => _instructorId;
+        get => _id;
         set
         {
-            _instructorId = value;
-            OnPropertyChanged(nameof(InstructorId));
-            Validate(nameof(InstructorId), _instructorId);
+            _id = value;
+            OnPropertyChanged(nameof(Id));
+            Validate(nameof(Id), _id);
         }
     }
     

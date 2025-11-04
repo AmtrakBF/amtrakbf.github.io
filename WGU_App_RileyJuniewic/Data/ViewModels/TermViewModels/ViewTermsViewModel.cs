@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using WGU_App_RileyJuniewic.Data.Dtos;
 using WGU_App_RileyJuniewic.Data.Dtos.TermDtos;
@@ -12,8 +13,8 @@ public class ViewTermsViewModel : BindingModel
     private readonly ITermService _termService;
     private readonly ICourseService _courseService;
 
-    private BindingList<TermDisplayDto> _terms = [];
-    public BindingList<TermDisplayDto> Terms
+    private ObservableCollection<TermDisplayDto> _terms = [];
+    public ObservableCollection<TermDisplayDto> Terms
     {
         get => _terms;
         set
@@ -74,7 +75,7 @@ public class ViewTermsViewModel : BindingModel
                 EndDate = term.EndDate
             }).OrderBy(term => term.StartDate).ToList();
 
-        Terms = new BindingList<TermDisplayDto>(termCourses);
+        Terms = new ObservableCollection<TermDisplayDto>(termCourses);
         EmptyTermsList = Terms.Count == 0;
 
         IsRefreshing = false;

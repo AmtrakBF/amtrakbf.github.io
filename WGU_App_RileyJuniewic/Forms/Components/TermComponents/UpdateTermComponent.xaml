@@ -6,13 +6,13 @@
             xmlns:forms="clr-namespace:WGU_App_RileyJuniewic.Forms"
             x:Name="updateTermComponent">
     <VerticalStackLayout>
-        <termComponents:ModifyTermComponent CardTitle="Update Term" Title="{Binding UpdateTermRequest.Title}" 
-            StartDate="{Binding UpdateTermRequest.StartDate}" EndDate="{Binding UpdateTermRequest.EndDate}" ValidationErrors="{Binding UpdateTermRequest.ValidationErrors}"/>
+        <termComponents:ModifyTermComponent CardTitle="Update Term" Title="{Binding ModifyRequest.Title}" 
+            StartDate="{Binding ModifyRequest.StartDate}" EndDate="{Binding ModifyRequest.EndDate}" ValidationErrors="{Binding ModifyRequest.ValidationErrors}"/>
 
         <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
             <Button Text="Cancel" Clicked="Close_View"/>
-            <Button Text="Delete" Command="{Binding DeleteTermCommandAsync}"/>
-            <Button Text="Update Term" Command="{Binding UpdateTermCommandAsync}"/>
+            <Button Text="Delete" Command="{Binding DeleteCommandAsync}"/>
+            <Button Text="Update Term" Command="{Binding ModifyCommandAsync}"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </forms:ModifyContentView>

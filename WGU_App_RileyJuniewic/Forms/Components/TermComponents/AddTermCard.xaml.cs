@@ -9,7 +9,7 @@ public sealed partial class AddTermCard : ModifyContentView
         var viewModel = ServiceHelper.GetService<AddTermViewModel>();
         BindingContext = viewModel;
 
-        viewModel.OnCreateTerm += (sender, args) =>
+        viewModel.OnCreate += (sender, args) =>
         {
             OnSubmit?.Invoke(sender, args);
         };

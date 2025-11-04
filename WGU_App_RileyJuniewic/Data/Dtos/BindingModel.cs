@@ -50,7 +50,7 @@ public class BindingModel : INotifyDataErrorInfo, INotifyPropertyChanged
         return new ErrorList(errors);
     }
 
-    public IEnumerable GetAllErrors()
+    public IEnumerable<string?> GetAllErrors()
     {
         var errors = new List<string?>();
         foreach (var error in ValidationErrors.Values)

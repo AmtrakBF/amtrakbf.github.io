@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using WGU_App_RileyJuniewic.Data.Dtos;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
@@ -25,8 +26,8 @@ public class CurrentTermViewModel : BindingModel
         }
     }
 
-    private BindingList<FullCourseDto> _fullCourses = [];
-    public BindingList<FullCourseDto> FullCourses
+    private ObservableCollection<FullCourseDto> _fullCourses = [];
+    public ObservableCollection<FullCourseDto> FullCourses
     {
         get => _fullCourses;
         set

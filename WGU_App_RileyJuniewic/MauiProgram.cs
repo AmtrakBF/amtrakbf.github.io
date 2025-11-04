@@ -12,6 +12,12 @@ using WGU_App_RileyJuniewic.Data.ViewModels.InstructorViewModels;
 using WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModes;
 using WGU_App_RileyJuniewic.Data.ViewModels.TermViewModels;
 using WGU_App_RileyJuniewic.Forms.TermForms;
+using WGU_App_RileyJuniewic.Data.Models.Interfaces;
+using WGU_App_RileyJuniewic.Data.Models;
+using WGU_App_RileyJuniewic.Data.Dtos.Assessment;
+using WGU_App_RileyJuniewic.Data.Dtos.Term;
+using WGU_App_RileyJuniewic.Data.Dtos.Instructor;
+using WGU_App_RileyJuniewic.Data.Dtos.Course;
 
 
 namespace WGU_App_RileyJuniewic;
@@ -56,8 +62,21 @@ public static class MauiProgram
 		builder.Services.AddTransient<UpdateInstructorViewModel>();
 		builder.Services.AddTransient<AddInstructorViewModel>();
 
+
 		builder.Services.AddTransient<AddCourseViewModel>();
+
+		builder.Services.AddScoped<ICreateService<CreateAssessmentRequest, Assessment>, AssessmentService>();
+		builder.Services.AddScoped<IModifyService<UpdateAssessmentRequest, Assessment>, AssessmentService>();
+
+
+		builder.Services.AddScoped<ICreateService<CreateInstructorRequest, Instructor>, InstructorService>();
+		builder.Services.AddScoped<IModifyService<UpdateInstructorRequest, Instructor>, InstructorService>();
 		
+		builder.Services.AddScoped<ICreateService<CreateCourseRequest, Course>, CourseService>();
+		builder.Services.AddScoped<IModifyService<UpdateCourseRequest, Course>, CourseService>();
+
+		builder.Services.AddScoped<ICreateService<CreateTermRequest, Term>, TermService>();
+		builder.Services.AddScoped<IModifyService<UpdateTermRequest, Term>, TermService>();
 
 		builder.Services.AddScoped<ITermService, TermService>();
 		builder.Services.AddScoped<ICourseService, CourseService>();

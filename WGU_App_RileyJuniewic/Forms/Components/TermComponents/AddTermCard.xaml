@@ -6,12 +6,12 @@
              x:Name="addTermCard">
 
      <VerticalStackLayout>
-        <termComponents:ModifyTermComponent CardTitle="Add Term" Title="{Binding CreateTermRequest.Title}"
-            StartDate="{Binding CreateTermRequest.StartDate}" EndDate="{Binding CreateTermRequest.EndDate}" ValidationErrors="{Binding CreateTermRequest.ValidationErrors}"/>
+        <termComponents:ModifyTermComponent CardTitle="Add Term" Title="{Binding CreateRequest.Title}"
+            StartDate="{Binding CreateRequest.StartDate}" EndDate="{Binding CreateRequest.EndDate}" ValidationErrors="{Binding CreateRequest.ValidationErrors}"/>
 
         <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
             <Button Text="Cancel" Clicked="Close_View"/>
-            <Button Text="Create Term" Command="{Binding CreateTermCommandAsync}"/>
+            <Button Text="Create Term" Command="{Binding CreateCommandAsync}"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 

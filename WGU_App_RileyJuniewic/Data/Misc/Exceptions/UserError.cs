@@ -11,10 +11,11 @@ public class UserError
 		ShowErrorMessage(message);
 	}
 	
-	public UserError(IEnumerable<string> errors)
+	public UserError(IEnumerable<string?> errors)
     {
         foreach (var error in errors)
-        {
+		{
+			if (error is null) continue;
             ShowErrorMessage(error);
         }
     }

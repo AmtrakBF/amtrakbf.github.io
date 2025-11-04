@@ -2,8 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents.ModifyAssessmentCard"
              xmlns:forms="clr-namespace:WGU_App_RileyJuniewic.Forms"
-             xmlns:enum="clr-namespace:WGU_App_RileyJuniewic.Data.Models.Enums"
+             xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
              x:Name="modifyAssessmentCard">
+
+    <ContentView.Resources>
+        <converters:ErrorsToStringConverter x:Key="ErrorsToString"/>
+        <converters:ErrorsToBoolConverter x:Key="ErrorsToBool"/>
+    </ContentView.Resources>
 
     <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
         <VerticalStackLayout>

@@ -5,6 +5,7 @@
             xmlns:assessmentComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents"
             xmlns:instructorComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.InstructorComponents"
             xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
+            x:Name="addCoursePage"
             Shell.NavBarIsVisible="True">
 
     <ScrollView>
@@ -12,13 +13,14 @@
 
             <Label FontSize="Title" Text="Create Course" HorizontalOptions="Center" Margin="0,20,0,20"/>
 
-            <courseComponents:ModifyCourseCard CardTitle="Course Details" Title="{Binding CreateCourseRequest.Title}" 
-                Status="{Binding CreateCourseRequest.Status}" StartDate="{Binding CreateCourseRequest.StartDate}" 
-                EndDate="{Binding CreateCourseRequest.EndDate}" ValidationErrors="{Binding CreateCourseRequest.ValidationErrors}"/>
+            <courseComponents:ModifyCourseCard CardTitle="Course Details" Title="{Binding CreateRequest.Title}" 
+                Status="{Binding CreateRequest.Status}" StartDate="{Binding CreateRequest.StartDate}" 
+                EndDate="{Binding CreateRequest.EndDate}" ValidationErrors="{Binding CreateRequest.ValidationErrors}"/>
 
-            <instructorComponents:InstructorCard SelectedInstructor="{Binding Instructor}"/>
+            <instructorComponents:InstructorCard SelectedInstructor="{Binding Source={x:Reference addCoursePage}, Path=BindingContext.Instructor}" />
 
-            <CollectionView ItemsSource="{Binding CreateCourseRequest.Assessments}">
+
+            <CollectionView ItemsSource="{Binding Assessments}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <assessmentComponents:ModifyAssessmentCard CardTitle="Create Assessment" Name="{Binding Name}" 
@@ -27,11 +29,9 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <assessmentComponents:ModifyAssessmentCard CardTitle="Assessment Details" Name="{Binding CreateCourseRequest.Assessment.Name}" 
-                Type="{Binding CreateCourseRequest.Assessment.Type}" StartDate="{Binding CreateCourseRequest.Assessment.StartDate}" 
-                EndDate="{Binding CreateCourseRequest.Assessment.EndDate}" />
-
-            <Button Text="Add Course" Margin="0,20,0,20" HorizontalOptions="Center" />
+    
+            <Button Text="Add Assessment" Command="{Binding AddAssessmentCommand}" Margin="0,20,0,20" HorizontalOptions="Center" />
+            <Button Text="Add Course" Command="{Binding CreateCommandAsync}" Margin="0,20,0,20" HorizontalOptions="Center" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

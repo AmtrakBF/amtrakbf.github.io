@@ -1,6 +1,3 @@
-using System.Windows.Input;
-using WGU_App_RileyJuniewic.Data.Misc.Events;
-
 namespace WGU_App_RileyJuniewic.Forms;
 
 public partial class ModifyContentView : ContentView

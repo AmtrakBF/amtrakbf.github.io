@@ -13,7 +13,7 @@
         <converters:DateTimeToDateConverter x:Key="DateTimeConverter"/>
     </ContentView.Resources>
     <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
-        <VerticalStackLayout HorizontalOptions="Center" WidthRequest="250">
+        <VerticalStackLayout >
             <VerticalStackLayout.Resources>
                 <Style TargetType="Label">
                     <Setter Property="Margin" Value="0,10,0,10"/>

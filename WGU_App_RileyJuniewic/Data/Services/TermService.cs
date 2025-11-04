@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos.Term;
 using WGU_App_RileyJuniewic.Data.Models;
+using WGU_App_RileyJuniewic.Data.Models.Interfaces;
 using WGU_App_RileyJuniewic.Data.Repository;
 
 namespace WGU_App_RileyJuniewic.Data.Services;
@@ -14,7 +15,10 @@ public interface ITermService
     Task DeleteTermAsync(Guid termId);
 }
 
-public class TermService(SqlDataAccessAsync sqlDataAccess) : ITermService
+public class TermService(SqlDataAccessAsync sqlDataAccess) :
+    ITermService,
+    ICreateService<CreateTermRequest, Term>,
+    IModifyService<UpdateTermRequest, Term>
 {
     public async Task<Result<Term>> CreateTermAsync(CreateTermRequest request)
     {
@@ -62,7 +66,7 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) : ITermService
         if (request.HasErrors)
             return Result.Error(request.GetErrorList());
             
-        var term = Term.CreateInstance(request.TermId, request.Title, request.StartDate, request.EndDate);
+        var term = Term.CreateInstance(request.Id, request.Title, request.StartDate, request.EndDate);
         var result = await ValidateTermAsync(term);
         if (result.IsError())
             return result;
@@ -85,4 +89,10 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) : ITermService
         
         return Result.Success();
     }
+
+    public async Task<Result<Term>> CreateAsync(CreateTermRequest request) => await CreateTermAsync(request);
+
+    public async Task<Result<Term>> UpdateAsync(UpdateTermRequest request) => await UpdateTermAsync(request);
+
+    public async Task DeleteAsync(Guid id) => await DeleteTermAsync(id);
 }
