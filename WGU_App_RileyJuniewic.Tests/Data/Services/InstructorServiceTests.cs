@@ -104,6 +104,26 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
     }
 
     [Fact]
+    public async Task DeleteInstructor_ReturnsErrorWhenInstructorHasCoursesAsync()
+    {
+        await ClearInstructors();
+
+        var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
+        await _dbAccessAsync.GetConnection().InsertAsync(instructor);
+
+        var course = new Course() { CourseId = Guid.NewGuid(), InstructorId = instructor.InstructorId };
+        await _dbAccessAsync.GetConnection().InsertAsync(course);
+
+        var results = await _instructorService.DeleteInstructorAsync(instructor.InstructorId);
+
+        var dbInstructor = await _dbAccessAsync.GetConnection().Table<Instructor>().Where(x => x.InstructorId == instructor.InstructorId).FirstOrDefaultAsync();
+        dbInstructor.Should().NotBeNull();
+
+        results.IsError().Should().BeTrue();
+        results.Errors.First().Should().Be("Cannot delete Instructor as they are assigned to a course");
+    }
+
+    [Fact]
     public async Task GetAllInstructorsAsync_ReturnsAllInstructorsAsync()
     {
         await ClearInstructors();

@@ -13,7 +13,7 @@ public interface ICourseService
     public Task<Result<Course>> GetCourseAsync(Guid courseId);
     public Task<Result<Course>> CreateCourseAsync(CreateCourseRequest request);
     public Task<Result<Course>> UpdateCourseAsync(UpdateCourseRequest request);
-    public Task DeleteCourseAsync(Guid courseId);   
+    public Task<Result> DeleteCourseAsync(Guid courseId);   
 }
 
 public class CourseService(SqlDataAccessAsync sqlDataAccess) :
@@ -41,8 +41,8 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
         return course;
     }
 
-    public async Task DeleteAsync(Guid id) => await DeleteCourseAsync(id);
-    public async Task DeleteCourseAsync(Guid courseId)
+    public async Task<Result> DeleteAsync(Guid id) => await DeleteCourseAsync(id);
+    public async Task<Result> DeleteCourseAsync(Guid courseId)
     {
         // Delete Assesements & Notes
         await sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.CourseId == courseId).DeleteAsync();
@@ -50,6 +50,8 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
 
         // Delete Courses
         await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.CourseId == courseId).DeleteAsync();
+
+        return Result.Success();
     }
 
     public Task<List<Course>> GetAllCoursesAsync() => sqlDataAccess.GetConnection().Table<Course>().ToListAsync();

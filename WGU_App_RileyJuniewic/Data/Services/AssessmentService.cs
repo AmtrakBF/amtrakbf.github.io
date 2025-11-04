@@ -14,7 +14,7 @@ public interface IAssessmentService
     Task<Result<Assessment>> GetAssessmentAsync(Guid id);
     Task<Result<Assessment>> CreateAssessmentAsync(CreateAssessmentRequest request);
     Task<Result<Assessment>> UpdateAssessmentAsync(UpdateAssessmentRequest request);
-    Task DeleteAssessmentAsync(Guid id);
+    Task<Result> DeleteAssessmentAsync(Guid id);
 }
 
 public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
@@ -41,10 +41,13 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
 
     public async Task<Result<Assessment>> CreateAsync(CreateAssessmentRequest request) => await CreateAssessmentAsync(request);
 
-    public async Task DeleteAssessmentAsync(Guid id) =>
+    public async Task<Result> DeleteAssessmentAsync(Guid id)
+    {
         await sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.AssessmentId == id).DeleteAsync();
+        return Result.Success();
+    }
 
-    public async Task DeleteAsync(Guid id) => await DeleteAssessmentAsync(id);
+    public async Task<Result> DeleteAsync(Guid id) => await DeleteAssessmentAsync(id);
 
     public async Task<IEnumerable<Assessment>> GetAllAssessmentsAsync() => await sqlDataAccess.GetConnection().Table<Assessment>().ToListAsync();
 

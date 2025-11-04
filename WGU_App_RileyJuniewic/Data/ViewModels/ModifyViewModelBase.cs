@@ -40,7 +40,12 @@ public class ModifyViewModelBase<TRequest, TResponse> : BindingModel
 
     private async Task DeleteAsync()
     {
-        await _modifyService.DeleteAsync(ModifyRequest.Id);
+        var result = await _modifyService.DeleteAsync(ModifyRequest.Id);
+        if (result.IsError())
+        {
+            new UserError(result.Errors);
+            return;
+        }
 
         OnDelete?.Invoke(this, EventArgs.Empty);
     }

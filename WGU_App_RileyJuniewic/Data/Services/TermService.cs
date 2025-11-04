@@ -12,7 +12,7 @@ public interface ITermService
     Task<Result<Term>> GetTermAsync(Guid termId);
     Task<Result<Term>> CreateTermAsync(CreateTermRequest request);
     Task<Result<Term>> UpdateTermAsync(UpdateTermRequest request);
-    Task DeleteTermAsync(Guid termId);
+    Task<Result> DeleteTermAsync(Guid termId);
 }
 
 public class TermService(SqlDataAccessAsync sqlDataAccess) :
@@ -34,7 +34,7 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) :
         return term;
     }
 
-    public async Task DeleteTermAsync(Guid termId)
+    public async Task<Result> DeleteTermAsync(Guid termId)
     {
         // Delete Assesements & Notes
         var courses = await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.TermId == termId).ToListAsync();
@@ -48,6 +48,8 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) :
 
         // Delete Term
         await sqlDataAccess.GetConnection().Table<Term>().Where(x => x.TermId == termId).DeleteAsync();
+
+        return Result.Success();
     }
 
     public async Task<Result<Term>> GetTermAsync(Guid termId)
@@ -98,5 +100,5 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) :
 
     public async Task<Result<Term>> UpdateAsync(UpdateTermRequest request) => await UpdateTermAsync(request);
 
-    public async Task DeleteAsync(Guid id) => await DeleteTermAsync(id);
+    public async Task<Result> DeleteAsync(Guid id) => await DeleteTermAsync(id);
 }
