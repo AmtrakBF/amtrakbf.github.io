@@ -119,6 +119,7 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
     [InlineData("358aa2d3-69e3-4123-8deb-d71ef308502a", "Test Term", "2023-07-01", "2023-08-01", "Term with the same title already exists")]
     [InlineData("358aa2d3-69e3-4123-8deb-d71ef308501a", "Test Term", "2023-07-01", "2023-08-01")]
     [InlineData("358aa2d3-69e3-4123-8deb-d71ef308502a", "Test Term2", "2023-05-01", "2023-08-01", "Term overlaps with an existing term")]
+    [InlineData("358aa2d3-69e3-4123-8deb-d71ef308502a", "Test Term2", "2022-05-01", "2022-12-01", "Term must be less than 6 months")]
     [InlineData("358aa2d3-69e3-4123-8deb-d71ef308501a", "Test Term2", "2023-05-01", "2023-08-01")]
     public async Task ValidateTermAsync_ValidatesTerm(Guid termId, string title, DateTime startDate, DateTime endDate, string? message = null)
     {

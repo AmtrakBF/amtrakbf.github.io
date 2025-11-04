@@ -86,8 +86,12 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) :
             if (existingTerm.Title == term.Title && existingTerm.TermId != term.TermId)
                 return Result.Error("Term with the same title already exists");
         }
-        
-        return Result.Success();
+
+        var monthSpan = term.EndDate.Month - term.StartDate.Month;
+        if (monthSpan > 6)
+            return Result.Error("Term must be less than 6 months");
+
+            return Result.Success();
     }
 
     public async Task<Result<Term>> CreateAsync(CreateTermRequest request) => await CreateTermAsync(request);
