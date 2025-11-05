@@ -68,6 +68,15 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
         _ = Shell.Current.GoToAsync(nameof(ModifyAssessmentPage), true, navigationParameter);
     }
 
+    public void ShareNotesEventHandler(object sender, EventArgs e)
+    {
+        _ = Share.Default.RequestAsync(new ShareTextRequest
+        {
+            Text = _viewModel.FullCourse.Course.Notes,
+            Title = "Share Notes"
+        });
+    }
+
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query.TryGetValue("Course", out var courseValue) && courseValue is Course course)

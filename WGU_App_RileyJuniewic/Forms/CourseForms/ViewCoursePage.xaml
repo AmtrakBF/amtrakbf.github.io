@@ -39,12 +39,13 @@
                 <VerticalStackLayout>
                     <Label Text="Notes" FontSize="Large"/>
 
-                    <Label IsVisible="{Binding FullCourse.Course.Notes, Converter={StaticResource NullToBoolean},ConverterParameter=True}" Text="{Binding FullCourse.Course.Notes}" Margin="20"/>
-                    <Label IsVisible="{Binding FullCourse.Course.Notes, Converter={StaticResource NullToBoolean}}" Text="No Notes... " Margin="20"/>
+                    <Label IsVisible="{Binding FullCourse.Course.Notes, Converter={StaticResource NullToBoolean}}" Text="{Binding FullCourse.Course.Notes}" Margin="20"/>
+                    <Label IsVisible="{Binding FullCourse.Course.Notes, Converter={StaticResource NullToBoolean},ConverterParameter=True}" Text="No Notes... " Margin="20"/>
 
                     <HorizontalStackLayout HorizontalOptions="Center">
-                        <Button Text="Modify Notes"/>
-                        <Button IsVisible="{Binding FullCourse.Course.Notes, Converter={StaticResource NullToBoolean},ConverterParameter=True}" Text="Share Notes"/>
+                        <Button Text="Modify Notes" Clicked="ModifyCourseEventHandler"/>
+                        <Button IsVisible="{Binding FullCourse.Course.Notes, Converter={StaticResource NullToBoolean}}" 
+                            Text="Share Notes" Clicked="ShareNotesEventHandler"/>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Border>
