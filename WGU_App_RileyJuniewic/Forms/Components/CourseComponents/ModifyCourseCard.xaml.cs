@@ -13,6 +13,15 @@ public sealed partial class ModifyCourseCard : BaseInputContentView
         set => SetValue(TitleProperty, value);
     }
 
+    public static readonly BindableProperty NotesProperty =
+        BindableProperty.Create(nameof(Notes), typeof(string), typeof(ModifyCourseCard), null, BindingMode.TwoWay);
+
+    public string Notes
+    {
+        get => (string)GetValue(NotesProperty);
+        set => SetValue(NotesProperty, value);
+    }
+
     public static readonly BindableProperty StatusProperty =
         BindableProperty.Create(nameof(Status), typeof(string), typeof(ModifyCourseCard), CourseStatus.Active.ToString(), BindingMode.TwoWay);
 
