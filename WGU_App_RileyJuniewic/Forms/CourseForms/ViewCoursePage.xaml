@@ -7,6 +7,7 @@
             xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
             xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
             x:Name="viewCoursePage"
+            Title="View Course"
             Shell.NavBarIsVisible="True">
 
     <ContentPage.Resources>
@@ -21,6 +22,13 @@
                 <Style TargetType="Label">
                     <Setter Property="Margin" Value="10"/>
                 </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                    <Setter Property="FontAttributes" Value="Bold"/>
+                    <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+                    <Setter Property="BackgroundColor" Value="White" />
+                </Style>
             </VerticalStackLayout.Resources>
 
 
@@ -34,7 +42,10 @@
                     <Label IsVisible="{Binding FullCourse.Course.Notes, Converter={StaticResource NullToBoolean}}" Text="{Binding FullCourse.Course.Notes}" Margin="20"/>
                     <Label IsVisible="{Binding !FullCourse.Course.Notes, Converter={StaticResource NullToBoolean}}" Text="No Notes... " Margin="20"/>
 
-                    <Button Text="Modify Notes"/>
+                    <HorizontalStackLayout HorizontalOptions="Center">
+                        <Button Text="Modify Notes"/>
+                        <Button IsVisible="{Binding !FullCourse.Course.Notes, Converter={StaticResource NullToBoolean}}" Text="Share Notes"/>
+                    </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Border>
 
@@ -75,7 +86,10 @@
                                     </VerticalStackLayout>
                                 </Grid>
 
-                                <Button Text="Modify Assessment" Clicked="ModifyAssessessmentEventHandler"/>
+                                <HorizontalStackLayout>
+                                    <Button Text="Modify Assessment" Clicked="ModifyAssessessmentEventHandler"/>
+                                    <Button Text="Set Alert" Clicked="ModifyAssessessmentEventHandler"/>
+                                </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </Border>
                     </DataTemplate>
