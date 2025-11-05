@@ -75,7 +75,7 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
         var type = Enum.TryParse(request.Status, out CourseStatus statusEnum);
         if (!type) return Result.Error("Invalid course status");
             
-        var course = Course.CreateInstance(request.CourseId, request.TermId, request.InstructorId,
+        var course = Course.CreateInstance(request.Id, request.TermId, request.InstructorId,
                         request.Title, statusEnum, request.StartDate, request.EndDate, request.Notes);
         
         var result = await ValidateCourseAsync(course);

@@ -26,7 +26,7 @@ public sealed partial class AddCoursePage : ContentPage, IQueryAttributable
 
         _viewModel.OnCreate += (sender, args) =>
         {
-            Shell.Current.GoToAsync("..");
+            Shell.Current.GoToAsync("..", true);
         };
 
         InitializeComponent();

@@ -10,13 +10,14 @@ public partial class AppShell : Shell
 	{
 		InitializeComponent();
 
-		Routing.RegisterRoute(nameof(AddCoursePage), typeof(AddCoursePage));
 		Routing.RegisterRoute(nameof(AddTermPage), typeof(AddTermPage));
 		Routing.RegisterRoute(nameof(UpdateTermPage), typeof(UpdateTermPage));
 
 		Routing.RegisterRoute(nameof(ModifyAssessmentPage), typeof(ModifyAssessmentPage));
 		Routing.RegisterRoute(nameof(CreateAssessmentPage), typeof(CreateAssessmentPage));
 		
+		Routing.RegisterRoute(nameof(AddCoursePage), typeof(AddCoursePage));
 		Routing.RegisterRoute(nameof(ViewCoursePage), typeof(ViewCoursePage));
+		Routing.RegisterRoute(nameof(ModifyCoursePage), typeof(ModifyCoursePage));
 	}
 }

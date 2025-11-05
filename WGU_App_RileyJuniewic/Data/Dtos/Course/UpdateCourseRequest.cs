@@ -1,19 +1,20 @@
 using WGU_App_RileyJuniewic.Data.Misc.Attributes;
+using WGU_App_RileyJuniewic.Data.Models.Interfaces;
 
 namespace WGU_App_RileyJuniewic.Data.Dtos.Course;
 
-public class UpdateCourseRequest : CreateCourseRequest
+public class UpdateCourseRequest : CreateCourseRequest, IRequestIdentity
 {
-    protected Guid _courseId;
+    protected Guid _id;
     [RequireNonDefault]
-    public Guid CourseId
+    public Guid Id
     {
-        get => _courseId;
+        get => _id;
         set
         {
-            _courseId = value;
-            OnPropertyChanged(nameof(CourseId));
-            Validate(nameof(CourseId), _courseId);
+            _id = value;
+            OnPropertyChanged(nameof(Id));
+            Validate(nameof(Id), _id);
         }
     }
 

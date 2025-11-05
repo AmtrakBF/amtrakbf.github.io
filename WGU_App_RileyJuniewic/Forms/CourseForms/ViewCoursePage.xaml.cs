@@ -21,14 +21,25 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
         }
     }
 
-    public EventHandler? OnModifyEvent { get; set; }
+    public EventHandler? OnModifyCourseEvent { get; set; }
 
     public ViewCoursePage()
     {
         _viewModel = ServiceHelper.GetService<ViewCourseViewModel>();
         BindingContext = _viewModel;
 
+        OnModifyCourseEvent += ModifyCourseEventHandler;
+
         InitializeComponent();
+    }
+
+    public void ModifyCourseEventHandler(object? sender, EventArgs e)
+    {
+        var navigationParameter = new ShellNavigationQueryParameters
+        {
+            { "Course", Course }
+        };
+        _ = Shell.Current.GoToAsync(nameof(ModifyCoursePage), true, navigationParameter);
     }
 
     public void AddAssessmentEventHandler(object? sender, EventArgs e)
