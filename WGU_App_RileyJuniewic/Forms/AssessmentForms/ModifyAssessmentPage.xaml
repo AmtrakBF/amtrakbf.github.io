@@ -5,10 +5,8 @@
              xmlns:assessmentComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents"
              Shell.NavBarIsVisible="True">
     <ScrollView>
-        <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
+        <VerticalStackLayout Spacing="25" Padding="30">
             
-            <Label Text="{Binding Course.Title}" />
-
             <assessmentComponents:ModifyAssessmentCard CardTitle="Modify Assessment" Name="{Binding ModifyRequest.Name}"
                 Type="{Binding ModifyRequest.Type}" StartDate="{Binding ModifyRequest.StartDate}" EndDate="{Binding ModifyRequest.EndDate}"
                 ValidationErrors="{Binding ModifyRequest.ValidationErrors}"/>
