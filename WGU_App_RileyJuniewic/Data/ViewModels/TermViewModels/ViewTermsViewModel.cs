@@ -1,8 +1,6 @@
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using WGU_App_RileyJuniewic.Data.Dtos;
 using WGU_App_RileyJuniewic.Data.Dtos.TermDtos;
-using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Models.Enums;
 using WGU_App_RileyJuniewic.Data.Services;
 

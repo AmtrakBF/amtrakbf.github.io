@@ -1,5 +1,7 @@
+using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModes;
+using WGU_App_RileyJuniewic.Forms.AssessmentForms;
 
 namespace WGU_App_RileyJuniewic.Forms.CourseForms;
 
@@ -29,10 +31,30 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
         InitializeComponent();
     }
 
-    protected override void OnAppearing()
+    public void AddAssessmentEventHandler(object? sender, EventArgs e)
     {
-        base.OnAppearing();
-        _ = _viewModel.LoadDataAsync(Course);
+        var navigationParameter = new ShellNavigationQueryParameters
+        {
+            { "Course", Course }
+        };
+        _ = Shell.Current.GoToAsync(nameof(CreateAssessmentPage), true, navigationParameter);
+    }
+
+    public void ModifyAssessessmentEventHandler(object? sender, EventArgs e)
+    {
+        var senderButton = sender as Button;
+        var assessment = senderButton?.BindingContext as Assessment;
+        if (assessment is null)
+        {
+            new UserError("Cannot modify assessment");
+            return;
+        }
+
+        var navigationParameter = new ShellNavigationQueryParameters
+        {
+            { "Assessment", assessment }
+        };
+        _ = Shell.Current.GoToAsync(nameof(ModifyAssessmentPage), true, navigationParameter);
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -43,4 +65,9 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
         }
     }
     
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _ = _viewModel.LoadDataAsync(Course);
+    }
 }

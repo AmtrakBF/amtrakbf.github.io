@@ -18,6 +18,7 @@ using WGU_App_RileyJuniewic.Data.Dtos.Assessment;
 using WGU_App_RileyJuniewic.Data.Dtos.Term;
 using WGU_App_RileyJuniewic.Data.Dtos.Instructor;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
+using WGU_App_RileyJuniewic.Data.ViewModels.AssessmentViewModels;
 
 
 namespace WGU_App_RileyJuniewic;
@@ -62,9 +63,11 @@ public static class MauiProgram
 		builder.Services.AddTransient<UpdateInstructorViewModel>();
 		builder.Services.AddTransient<AddInstructorViewModel>();
 
-
 		builder.Services.AddTransient<AddCourseViewModel>();
 		builder.Services.AddTransient<ViewCourseViewModel>();
+
+		builder.Services.AddTransient<CreateAssessmentViewModel>();
+		builder.Services.AddTransient<ModifyAssessmentViewModel>();
 
 		builder.Services.AddScoped<ICreateService<CreateAssessmentRequest, Assessment>, AssessmentService>();
 		builder.Services.AddScoped<IModifyService<UpdateAssessmentRequest, Assessment>, AssessmentService>();

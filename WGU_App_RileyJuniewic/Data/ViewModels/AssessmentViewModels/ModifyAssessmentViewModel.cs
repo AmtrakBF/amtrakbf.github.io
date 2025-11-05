@@ -9,8 +9,13 @@ public class ModifyAssessmentViewModel : ModifyViewModelBase<UpdateAssessmentReq
     {
     }
 
-    public void SetCourse(Models.Course course)
+    public void SetAssessment(Assessment assessment)
     {
-        ModifyRequest.CourseId = course.CourseId;
+        ModifyRequest.Id = assessment.AssessmentId;
+        ModifyRequest.CourseId = assessment.CourseId;
+        ModifyRequest.Name = assessment.Name;
+        ModifyRequest.Type = assessment.Type.ToString();
+        ModifyRequest.StartDate = assessment.StartDate;
+        ModifyRequest.EndDate = assessment.EndDate;
     }
 }

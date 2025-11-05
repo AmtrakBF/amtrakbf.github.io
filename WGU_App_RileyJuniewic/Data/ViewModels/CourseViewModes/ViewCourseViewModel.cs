@@ -64,7 +64,6 @@ public class ViewCourseViewModel : BindingModel
         }
         FullCourse.Instructor = instructor.Value;
 
-
         var assessments = await _assessmentService.GetAllAssessmentsAsync();
         Assessments = new ObservableCollection<Assessment>(assessments.Where(x => x.CourseId == course.CourseId));
     }

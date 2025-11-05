@@ -3,7 +3,7 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:assessmentComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.AssessmentComponents"
-             Title="CreateAssessmentPage">
+             Shell.NavBarIsVisible="True">
     <ScrollView>
         <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
             
@@ -15,7 +15,7 @@
 
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
                 <Button Text="Cancel" Clicked="GoBackEventHandler"/>
-                <Button Text="Update Instructor" Command="{Binding CreateCommandAsync}"/>
+                <Button Text="Create Assessment" Command="{Binding CreateCommandAsync}"/>
             </HorizontalStackLayout>
 
         </VerticalStackLayout>

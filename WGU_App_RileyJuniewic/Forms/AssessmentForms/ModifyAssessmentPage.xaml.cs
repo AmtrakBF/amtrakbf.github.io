@@ -7,15 +7,15 @@ public partial class ModifyAssessmentPage : ContentPage, IQueryAttributable
 {
     private readonly ModifyAssessmentViewModel _viewModel;
 
-    private Course _course = new();
-    public Course Course
+    private Assessment _assessment = new();
+    public Assessment Assessment
     {
-        get => _course;
+        get => _assessment;
         set
         {
-            _course = value;
-            _viewModel.SetCourse(value);
-            OnPropertyChanged(nameof(Course));
+            _assessment = value;
+            _viewModel.SetAssessment(value);
+            OnPropertyChanged(nameof(Assessment));
         }
     }
 
@@ -32,9 +32,9 @@ public partial class ModifyAssessmentPage : ContentPage, IQueryAttributable
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.TryGetValue("Course", out var courseValue) && courseValue is Course course)
+        if (query.TryGetValue("Assessment", out var assessmentValue) && assessmentValue is Assessment assessment)
         {
-            Course = course;
+            Assessment = assessment;
         }
     }
 
