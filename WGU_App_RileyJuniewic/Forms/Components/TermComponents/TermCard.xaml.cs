@@ -35,7 +35,7 @@ public sealed partial class TermCard : ContentView
     }
     
     public static readonly BindableProperty EndDateProperty =
-        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(TermCard), DateTime.Now.AddMonths(1), propertyChanged: OnDateChanged);
+        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(TermCard), DateTime.Now.AddDays(1), propertyChanged: OnDateChanged);
     public DateTime EndDate
     {
         get => (DateTime)GetValue(EndDateProperty);

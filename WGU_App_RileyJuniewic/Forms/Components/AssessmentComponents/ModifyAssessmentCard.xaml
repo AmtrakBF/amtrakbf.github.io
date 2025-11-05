@@ -47,7 +47,7 @@
 
                 <Button IsVisible="{Binding ButtonText, Source={x:Reference modifyAssessmentCard},Converter={StaticResource NullToBool}}"
                     Text="{Binding ButtonText, Source={x:Reference modifyAssessmentCard}}" 
-                    Clicked="Button_Clicked" Margin="0,20"/>
+                    Clicked="Button_Clicked" Margin="0,20" BackgroundColor="{Binding ButtonBackgroundColor, Source={x:Reference modifyAssessmentCard}}"/>
             </VerticalStackLayout>
         </VerticalStackLayout>
     </Border>

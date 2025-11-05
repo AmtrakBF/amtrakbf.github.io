@@ -24,7 +24,7 @@
     
             <HorizontalStackLayout HorizontalOptions="Center"  Spacing="20">
                 <Button Text="Cancel" Clicked="OnCancelEventHandler" Margin="0,20,0,20" HorizontalOptions="Center" />
-                <Button Text="Delete" Command="{Binding DeleteCommandAsync}" Margin="0,20,0,20" HorizontalOptions="Center" />
+                <Button Text="Delete" BackgroundColor="{StaticResource Red}" Command="{Binding DeleteCommandAsync}" Margin="0,20,0,20" HorizontalOptions="Center" />
                 <Button Text="Save" Command="{Binding ModifyCommandAsync}" Margin="0,20,0,20" HorizontalOptions="Center" />
             </HorizontalStackLayout>
         </VerticalStackLayout>

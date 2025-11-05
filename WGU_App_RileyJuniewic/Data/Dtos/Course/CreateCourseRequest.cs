@@ -85,7 +85,7 @@ public class CreateCourseRequest : BindingModel
         }
     }
 
-    protected DateTime _endDate = DateTime.Now.AddMonths(1);
+    protected DateTime _endDate = DateTime.Now.AddDays(1);
     [Required]
     [DateTimeComparer(nameof(StartDate), true)]
     public DateTime EndDate

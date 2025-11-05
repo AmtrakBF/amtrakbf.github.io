@@ -26,6 +26,9 @@ public sealed partial class ModifyAssessmentCard : BaseInputContentView
     public static readonly BindableProperty ButtonEventProperty =
         BindableProperty.Create(nameof(ButtonEvent), typeof(EventHandler), typeof(ModifyAssessmentCard), null, BindingMode.TwoWay);
 
+    public static readonly BindableProperty ButtonBackgroundColorProperty =
+        BindableProperty.Create(nameof(ButtonBackgroundColor), typeof(Color), typeof(ModifyAssessmentCard), Color.FromArgb("#002f51"));
+
     public string Name
     {
         get => (string)GetValue(NameProperty);
@@ -60,6 +63,12 @@ public sealed partial class ModifyAssessmentCard : BaseInputContentView
     {
         get => (EventHandler)GetValue(ButtonEventProperty);
         set => SetValue(ButtonEventProperty, value);
+    }
+
+    public Color ButtonBackgroundColor
+    {
+        get => (Color)GetValue(ButtonBackgroundColorProperty);
+        set => SetValue(ButtonBackgroundColorProperty, value);
     }
 
     public ModifyAssessmentCard()

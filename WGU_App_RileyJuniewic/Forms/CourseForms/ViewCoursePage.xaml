@@ -24,10 +24,9 @@
                 </Style>
                 <Style TargetType="Button">
                     <Setter Property="Margin" Value="10"/>
-                    <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                    <Setter Property="TextColor" Value="{StaticResource Gray600}" />
                     <Setter Property="FontAttributes" Value="Bold"/>
-                    <Setter Property="BorderColor" Value="{StaticResource Primary}" />
-                    <Setter Property="BackgroundColor" Value="White" />
+                    <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
                 </Style>
             </VerticalStackLayout.Resources>
 

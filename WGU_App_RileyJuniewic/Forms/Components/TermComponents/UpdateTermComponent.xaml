@@ -11,7 +11,7 @@
 
         <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
             <Button Text="Cancel" Clicked="Close_View"/>
-            <Button Text="Delete" Command="{Binding DeleteCommandAsync}"/>
+            <Button Text="Delete" BackgroundColor="{StaticResource Red}" Command="{Binding DeleteCommandAsync}"/>
             <Button Text="Update Term" Command="{Binding ModifyCommandAsync}"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>

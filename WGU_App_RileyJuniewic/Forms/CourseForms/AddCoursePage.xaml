@@ -31,7 +31,7 @@
             <CollectionView ItemsSource="{Binding Assessments}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <assessmentComponents:ModifyAssessmentCard CardTitle="Create Assessment" Name="{Binding Name}" 
+                        <assessmentComponents:ModifyAssessmentCard CardTitle="Create Assessment" Name="{Binding Name}" ButtonBackgroundColor="{StaticResource Red}"
                             ButtonText="Delete Assessment" ButtonEvent="{Binding ButtonEvent, Source={x:Reference addCoursePage}}"
                             Type="{Binding Type}" StartDate="{Binding StartDate}" EndDate="{Binding EndDate}" ValidationErrors="{Binding ValidationErrors}" />
                                 

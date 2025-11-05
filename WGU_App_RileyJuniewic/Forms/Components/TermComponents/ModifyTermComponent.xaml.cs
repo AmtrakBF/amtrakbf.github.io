@@ -22,7 +22,7 @@ public sealed partial class ModifyTermComponent : BaseInputContentView
     }
 
     public static readonly BindableProperty EndDateProperty =
-        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(ModifyTermComponent), DateTime.Now.AddMonths(1), BindingMode.TwoWay);
+        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(ModifyTermComponent), DateTime.Now.AddDays(1), BindingMode.TwoWay);
 
     public DateTime EndDate
     {
