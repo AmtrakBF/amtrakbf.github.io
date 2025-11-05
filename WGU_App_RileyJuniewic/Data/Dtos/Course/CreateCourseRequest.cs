@@ -47,7 +47,7 @@ public class CreateCourseRequest : BindingModel
         }
     }
 
-    protected string? _notes = "";
+    protected string? _notes;
     public string? Notes
     {
         get => _notes;

@@ -22,7 +22,7 @@
                     IsVisible="{Binding ValidationErrors, Source={x:Reference modifyCourseCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=Title}"/>
 
                 <Label Text="Notes (Optional):"/>
-                <Entry Text="{Binding Notes}"/>
+                <Entry Text="{Binding Notes, Source={x:Reference modifyCourseCard}}"/>
                     <Label Text="{Binding ValidationErrors, Source={x:Reference modifyCourseCard}, Converter={StaticResource ErrorsToString}, ConverterParameter=Notes}"
                         TextColor="Red" FontSize="Small" Margin="0,0,0,10"
                         IsVisible="{Binding ValidationErrors, Source={x:Reference modifyCourseCard}, Converter={StaticResource ErrorsToBool}, ConverterParameter=Notes}"/>

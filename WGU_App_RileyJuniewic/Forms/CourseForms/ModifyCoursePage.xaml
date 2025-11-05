@@ -7,6 +7,7 @@
             xmlns:components="clr-namespace:WGU_App_RileyJuniewic.Forms.Components"
             xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
             x:Name="modifyCoursePage"
+            Title="Modify Course"
             Shell.NavBarIsVisible="True">
 
     <ContentPage.Resources>
@@ -17,10 +18,8 @@
     <ScrollView>
         <VerticalStackLayout>
 
-            <Label FontSize="Title" Text="Modify Course" HorizontalOptions="Center" Margin="0,20,0,20"/>
-
             <courseComponents:ModifyCourseCard CardTitle="Course Details" Title="{Binding ModifyRequest.Title}" 
-                Status="{Binding ModifyRequest.Status}" StartDate="{Binding ModifyRequest.StartDate}" 
+                Status="{Binding ModifyRequest.Status}" StartDate="{Binding ModifyRequest.StartDate}" Notes="{Binding ModifyRequest.Notes}"
                 EndDate="{Binding ModifyRequest.EndDate}" ValidationErrors="{Binding ModifyRequest.ValidationErrors}"/>
     
             <HorizontalStackLayout HorizontalOptions="Center"  Spacing="20">

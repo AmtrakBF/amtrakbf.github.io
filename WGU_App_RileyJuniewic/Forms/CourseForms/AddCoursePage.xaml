@@ -20,7 +20,7 @@
             <Label FontSize="Title" Text="Create Course" HorizontalOptions="Center" Margin="0,20,0,20"/>
 
             <courseComponents:ModifyCourseCard CardTitle="Course Details" Title="{Binding CreateRequest.Title}" 
-                Status="{Binding CreateRequest.Status}" StartDate="{Binding CreateRequest.StartDate}" 
+                Notes="{Binding CreateRequest.Notes}" Status="{Binding CreateRequest.Status}" StartDate="{Binding CreateRequest.StartDate}"
                 EndDate="{Binding CreateRequest.EndDate}" ValidationErrors="{Binding CreateRequest.ValidationErrors}"/>
 
             <instructorComponents:InstructorCard SelectedInstructor="{Binding Source={x:Reference addCoursePage}, Path=BindingContext.Instructor}" />
