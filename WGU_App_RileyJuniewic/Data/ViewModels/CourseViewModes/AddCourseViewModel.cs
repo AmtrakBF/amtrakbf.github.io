@@ -14,7 +14,7 @@ namespace WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModes;
 public class AddCourseViewModel : CreateViewModelBase<CreateCourseRequest, Models.Course>
 {
     private readonly IAssessmentService _assessmentService;
-    
+    private readonly ICourseService _courseService;
     private ObservableCollection<CreateAssessmentRequest> _assessments = new();
     public ObservableCollection<CreateAssessmentRequest> Assessments
     {
@@ -49,10 +49,12 @@ public class AddCourseViewModel : CreateViewModelBase<CreateCourseRequest, Model
 
     public AddCourseViewModel(
         ICreateService<CreateCourseRequest, Models.Course> createService,
-        IAssessmentService assessmentService
+        IAssessmentService assessmentService,
+        ICourseService courseService
     ) : base(createService)
     {
         _assessmentService = assessmentService;
+        _courseService = courseService;
 
         AddAssessmentCommand = new OnClickCommand(AddAssessment);
     }
@@ -98,6 +100,11 @@ public class AddCourseViewModel : CreateViewModelBase<CreateCourseRequest, Model
             if (assessmentResult.IsError())
             {
                 new UserError(assessmentResult.Errors);
+
+                //! Reverse course creation
+                await _courseService.DeleteCourseAsync(requestResult.Value.CourseId);
+
+                return;
             }
         }
         

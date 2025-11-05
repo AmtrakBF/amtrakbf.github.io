@@ -41,7 +41,7 @@ public sealed partial class ModifyCourseCard : BaseInputContentView
     }
 
     public static readonly BindableProperty EndDateProperty =
-        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(ModifyCourseCard), DateTime.Now.AddMonths(1), BindingMode.TwoWay);
+        BindableProperty.Create(nameof(EndDate), typeof(DateTime), typeof(ModifyCourseCard), DateTime.Now.AddDays(1), BindingMode.TwoWay);
 
     public DateTime EndDate
     {

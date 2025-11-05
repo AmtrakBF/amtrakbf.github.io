@@ -1,3 +1,6 @@
+using System.Collections.ObjectModel;
+using WGU_App_RileyJuniewic.Data.Dtos.Assessment;
+using WGU_App_RileyJuniewic.Data.Misc.Events;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModes;
 
@@ -19,10 +22,14 @@ public sealed partial class AddCoursePage : ContentPage, IQueryAttributable
         }
     }
 
+    public EventHandler ButtonEvent { get; set; }
+
     public AddCoursePage()
     {
         _viewModel = ServiceHelper.GetService<AddCourseViewModel>();
         BindingContext = _viewModel;
+
+        ButtonEvent = OnAddAssessmentClicked;
 
         _viewModel.OnCreate += (sender, args) =>
         {
@@ -30,6 +37,15 @@ public sealed partial class AddCoursePage : ContentPage, IQueryAttributable
         };
 
         InitializeComponent();
+    }
+
+    private void OnAddAssessmentClicked(object? sender, EventArgs e)
+    {
+        var request = (sender as Button)?.BindingContext as CreateAssessmentRequest;
+        if (request != null)
+        {
+            _viewModel.Assessments.Remove(request);
+        }
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
