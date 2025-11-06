@@ -11,8 +11,7 @@ public class SqlDataAccessAsync
 
     public SqlDataAccessAsync(IConfiguration configuration)
     {
-        var connectionString =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        var connectionString = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             configuration.GetConnectionString("Default") ?? "mysqliteasync.db");
 
         _connection = new SQLiteAsyncConnection(connectionString);
@@ -20,6 +19,11 @@ public class SqlDataAccessAsync
 
     public async Task InitializeAsync()
     {
+        //! Check if the table exists
+        var tableInfo = await _connection.GetTableInfoAsync("Term");
+        if (tableInfo.Count != 0)
+            return;
+
         await _connection.CreateTableAsync<Term>();
         await _connection.CreateTableAsync<Course>();
         await _connection.CreateTableAsync<Assessment>();
@@ -28,7 +32,7 @@ public class SqlDataAccessAsync
 
         var instructor = new Instructor
         {
-            InstructorId = Guid.NewGuid(),
+            InstructorId = new Guid("e9b409b9-4054-41d9-9f55-c9d8dae73696"),
             Name = "Anika Patel",
             Email = "anika.patel@strimeuniversity.edu",
             Phone = "555-123-4567"
