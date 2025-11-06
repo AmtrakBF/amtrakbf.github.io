@@ -68,7 +68,7 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
         var assessment = senderButton?.BindingContext as Assessment;
         if (assessment is null)
         {
-            new UserError("Cannot modify assessment");
+            new ToastNotification("Cannot modify assessment");
             return;
         }
 
@@ -86,7 +86,7 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
 
         if (assessment is null)
         {
-            new UserError("Cannot set assessment alert");
+            new ToastNotification("Cannot set assessment alert");
             return;
         }
 
@@ -100,7 +100,7 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
 
         if (assessment is null)
         {
-            new UserError("Cannot set assessment alert");
+            new ToastNotification("Cannot set assessment alert");
             return;
         }
 

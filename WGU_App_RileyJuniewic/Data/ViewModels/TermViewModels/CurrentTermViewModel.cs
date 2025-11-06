@@ -28,7 +28,7 @@ public class CurrentTermViewModel : ViewTermViewModelBase, ITermViewModel
 
         if (currentTerm is null)
         {
-            new UserError("No current term found.");
+            new ToastNotification("No current term found.", true);
             IsRefreshing = false;
             return;
         }

@@ -4,23 +4,23 @@ using CommunityToolkit.Maui.Core;
 
 namespace WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 
-public class UserError
+public class ToastNotification
 {
-	public UserError(string message)
+	public ToastNotification(string message, bool isError = true)
 	{
-		ShowErrorMessage(message);
+		ShowMessage(message, isError);
 	}
 	
-	public UserError(IEnumerable<string?> errors)
+	public ToastNotification(IEnumerable<string?> errors)
     {
         foreach (var error in errors)
 		{
 			if (error is null) continue;
-            ShowErrorMessage(error);
+            ShowMessage(error, true);
         }
     }
 
-    private void ShowErrorMessage(string message)
+    private void ShowMessage(string message, bool isError)
 	{
 		MainThread.BeginInvokeOnMainThread(async () =>
 		{
@@ -32,7 +32,12 @@ public class UserError
 				ToastDuration duration = ToastDuration.Long;
 				double fontSize = 16;
 
-				var toast = Toast.Make($"Error: {message}", duration, fontSize);
+				var toastMessage = message;
+				if (isError)
+					toastMessage = $"Error: {message}";
+					
+				var toast = Toast.Make(toastMessage, duration, fontSize);
+
 
 				await toast.Show(cancellationTokenSource.Token);
             }	

@@ -43,7 +43,7 @@ public class ModifyViewModelBase<TRequest, TResponse> : BindingModel
         var result = await _modifyService.DeleteAsync(ModifyRequest.Id);
         if (result.IsError())
         {
-            new UserError(result.Errors);
+            new ToastNotification(result.Errors);
             return;
         }
 
@@ -55,7 +55,7 @@ public class ModifyViewModelBase<TRequest, TResponse> : BindingModel
         var result = await _modifyService.UpdateAsync(ModifyRequest);
         if (result.IsError())
         {
-            new UserError(result.Errors);
+            new ToastNotification(result.Errors);
             return;
         }
 

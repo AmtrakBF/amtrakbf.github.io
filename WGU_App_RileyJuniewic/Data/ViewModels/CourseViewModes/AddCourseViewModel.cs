@@ -73,7 +73,7 @@ public class AddCourseViewModel : CreateViewModelBase<CreateCourseRequest, Model
     {
         if (CreateRequest.HasErrors)
         {
-            new UserError(errors: CreateRequest.GetAllErrors());
+            new ToastNotification(errors: CreateRequest.GetAllErrors());
             return;
         }
 
@@ -81,7 +81,7 @@ public class AddCourseViewModel : CreateViewModelBase<CreateCourseRequest, Model
         {
             if (assessment.HasErrors)
             {
-                new UserError(errors: assessment.GetAllErrors());
+                new ToastNotification(errors: assessment.GetAllErrors());
                 return;
             }
         }
@@ -89,7 +89,7 @@ public class AddCourseViewModel : CreateViewModelBase<CreateCourseRequest, Model
         var requestResult = await _createService.CreateAsync(CreateRequest);
         if (requestResult.IsError())
         {
-            new UserError(requestResult.Errors);
+            new ToastNotification(requestResult.Errors);
             return;
         }
 
@@ -99,7 +99,7 @@ public class AddCourseViewModel : CreateViewModelBase<CreateCourseRequest, Model
             var assessmentResult = await _assessmentService.CreateAssessmentAsync(assessment);
             if (assessmentResult.IsError())
             {
-                new UserError(assessmentResult.Errors);
+                new ToastNotification(assessmentResult.Errors);
 
                 //! Reverse course creation
                 await _courseService.DeleteCourseAsync(requestResult.Value.CourseId);

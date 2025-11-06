@@ -51,10 +51,10 @@ public class ViewCourseViewModel : BindingModel
         var result = await _courseService.SetNotificationAsync(courseId, notificationStartId, notificationEndId);
         if (result.IsError())
         {
-            new UserError(errors: result.Errors);
+            new ToastNotification(errors: result.Errors);
             return;
         }
-        new UserError("Course alert set");
+        new ToastNotification("Course alert set", false);
         await LoadDataAsync(FullCourse.Course);
     }
 
@@ -63,10 +63,10 @@ public class ViewCourseViewModel : BindingModel
         var result = await _assessmentService.SetNotificationAsync(assessmentId, notificationStartId, notificationEndId);
         if (result.IsError())
         {
-            new UserError(errors: result.Errors);
+            new ToastNotification(errors: result.Errors);
             return;
         }
-        new UserError("Assessment alert set");
+        new ToastNotification("Assessment alert set", false);
         Assessments = new ObservableCollection<Assessment>(Assessments);
         await LoadDataAsync(FullCourse.Course);
     }
@@ -76,10 +76,10 @@ public class ViewCourseViewModel : BindingModel
         var result = await _courseService.RemoveNotificationAsync(courseId);
         if (result.IsError())
         {
-            new UserError(errors: result.Errors);
+            new ToastNotification(errors: result.Errors);
             return;
         }
-        new UserError("Course alert removed");
+        new ToastNotification("Course alert removed", false);
         await LoadDataAsync(FullCourse.Course);
     }
 
@@ -88,10 +88,10 @@ public class ViewCourseViewModel : BindingModel
         var result = await _assessmentService.RemoveNotificationAsync(assessmentId);
         if (result.IsError())
         {
-            new UserError(errors: result.Errors);
+            new ToastNotification(errors: result.Errors);
             return;
         }
-        new UserError("Assessment alert removed");
+        new ToastNotification("Assessment alert removed", false);
         await LoadDataAsync(FullCourse.Course);
     }
 
@@ -100,7 +100,7 @@ public class ViewCourseViewModel : BindingModel
         var updatedCourse = await _courseService.GetCourseAsync(course.CourseId);
         if (updatedCourse.IsError())
         {
-            new UserError(errors: updatedCourse.Errors);
+            new ToastNotification(errors: updatedCourse.Errors);
             return;
         }
         FullCourse.Course = updatedCourse.Value;
@@ -108,7 +108,7 @@ public class ViewCourseViewModel : BindingModel
         var instructor = await _instructorService.GetInstructorAsync(updatedCourse.Value.InstructorId);
         if (instructor.IsError())
         {
-            new UserError(errors: instructor.Errors);
+            new ToastNotification(errors: instructor.Errors);
             return;
         }
         FullCourse.Instructor = instructor.Value;

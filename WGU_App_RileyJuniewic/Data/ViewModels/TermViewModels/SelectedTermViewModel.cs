@@ -36,7 +36,7 @@ public class SelectedTermViewModel : ViewTermViewModelBase, ITermViewModel
         var currentTerm = await _termService.GetTermAsync(_termId);
         if (currentTerm.IsError())
         {
-            new UserError(currentTerm.Errors);
+            new ToastNotification(currentTerm.Errors);
             IsRefreshing = false;
             return;
         }

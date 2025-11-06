@@ -38,14 +38,14 @@ public abstract class CreateViewModelBase<TRequest, TResponse> : BindingModel
         if (CreateRequest.HasErrors)
         {
             var errors = CreateRequest.GetAllErrors();
-            new UserError(errors: errors);
+            new ToastNotification(errors: errors);
             return;
         }
 
         var result = await _createService.CreateAsync(CreateRequest);
         if (result.IsError())
         {
-            new UserError(result.Errors);
+            new ToastNotification(result.Errors);
             return;
         }
 
