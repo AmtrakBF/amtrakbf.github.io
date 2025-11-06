@@ -2,7 +2,8 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             x:Class="WGU_App_RileyJuniewic.Forms.Components.HeaderComp"
             xmlns:local="clr-namespace:WGU_App_RileyJuniewic.Forms.Components">
-    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Stroke="White">
+    <Border StrokeShape="RoundRectangle 10"  BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" 
+        Stroke="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}">
         <Border.Shadow>
             <Shadow Offset="0,10"
                     Radius="10"

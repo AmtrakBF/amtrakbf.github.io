@@ -81,6 +81,7 @@ public class CurrentTermViewModel : BindingModel
         if (currentTerm is null)
         {
             new UserError("No current term found.");
+            IsRefreshing = false;
             return;
         }
 

@@ -6,8 +6,6 @@
     xmlns:forms="clr-namespace:WGU_App_RileyJuniewic.Forms"
     Title="WGU_App_RileyJuniewic"
     Shell.FlyoutBehavior="Flyout"
-    Shell.TabBarUnselectedColor="Black"
-    Shell.TabBarTitleColor="{StaticResource Primary}"
     Shell.NavBarIsVisible="False">
 
     <FlyoutItem Title="Home">
