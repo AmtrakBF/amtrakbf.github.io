@@ -16,6 +16,8 @@ public class Assessment
     public AssessmentType Type { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+    public int NotificationStartId { get; set; } = -1;
+    public int NotificationEndId { get; set; } = -1;
 
     public static Assessment CreateNewInstance(Guid courseId, string name, AssessmentType type, DateTime startDate, DateTime endDate)
     {

@@ -20,6 +20,8 @@ public class Course
     public CourseStatus Status { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+    public int NotificationStartId { get; set; } = -1;
+    public int NotificationEndId { get; set; } = -1;
 
     public static Course CreateNewInstance(Guid termId, Guid instructorId, string title, CourseStatus status, DateTime startDate, DateTime endDate, string? notes = null)
     {

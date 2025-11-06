@@ -35,7 +35,10 @@
             <courseComponents:CourseCard Course="{Binding FullCourse.Course}" Instructor="{Binding FullCourse.Instructor}" ButtonTitle="Modify Course" 
                 ButtonEvent="{Binding OnModifyCourseEvent, Source={x:Reference viewCoursePage}}"/>
 
-            <Button Text="Set Course Reminder" Clicked="SetCourseReminderEventHandler" Margin="40,0,40,40"/>
+            <Button Text="Set Course Reminder" Clicked="SetCourseReminderEventHandler" 
+                IsVisible="{Binding FullCourse.Course.NotificationStartId, Converter={StaticResource NullToBoolean},ConverterParameter=True}" Margin="40,0,40,40"/>
+            <Button Text="Remove Course Reminder" Clicked="RemoveCourseReminderEventHandler"
+                IsVisible="{Binding FullCourse.Course.NotificationStartId, Converter={StaticResource NullToBoolean}}" Margin="40,0,40,40"/>
 
             <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
                 <VerticalStackLayout>
@@ -91,7 +94,10 @@
 
                                 <HorizontalStackLayout>
                                     <Button Text="Modify Assessment" Clicked="ModifyAssessessmentEventHandler"/>
-                                    <Button Text="Set Alert" Clicked="SetAssessmentNotificationEventHandler"/>
+                                    <Button Text="Set Alert" Clicked="SetAssessmentReminderEventHandler" 
+                                        IsVisible="{Binding NotificationStartId, Converter={StaticResource NullToBoolean},ConverterParameter=True}"/>
+                                    <Button Text="Remove Alert" Clicked="RemoveAssessmentReminderEventHandler"
+                                        IsVisible="{Binding NotificationStartId, Converter={StaticResource NullToBoolean}}"/>
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </Border>

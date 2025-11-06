@@ -46,6 +46,55 @@ public class ViewCourseViewModel : BindingModel
         _assessmentService = assessmentService;
     }
 
+    public async Task SetCourseNotificationAsync(Guid courseId, int notificationStartId, int notificationEndId)
+    {
+        var result = await _courseService.SetNotificationAsync(courseId, notificationStartId, notificationEndId);
+        if (result.IsError())
+        {
+            new UserError(errors: result.Errors);
+            return;
+        }
+        new UserError("Course alert set");
+        await LoadDataAsync(FullCourse.Course);
+    }
+
+    public async Task SetAssessmentNotificationAsync(Guid assessmentId, int notificationStartId, int notificationEndId)
+    {
+        var result = await _assessmentService.SetNotificationAsync(assessmentId, notificationStartId, notificationEndId);
+        if (result.IsError())
+        {
+            new UserError(errors: result.Errors);
+            return;
+        }
+        new UserError("Assessment alert set");
+        Assessments = new ObservableCollection<Assessment>(Assessments);
+        await LoadDataAsync(FullCourse.Course);
+    }
+
+    public async Task RemoveCourseNotificationAsync(Guid courseId)
+    {
+        var result = await _courseService.RemoveNotificationAsync(courseId);
+        if (result.IsError())
+        {
+            new UserError(errors: result.Errors);
+            return;
+        }
+        new UserError("Course alert removed");
+        await LoadDataAsync(FullCourse.Course);
+    }
+
+    public async Task RemoveAssessmentNotificationAsync(Guid assessmentId)
+    {
+        var result = await _assessmentService.RemoveNotificationAsync(assessmentId);
+        if (result.IsError())
+        {
+            new UserError(errors: result.Errors);
+            return;
+        }
+        new UserError("Assessment alert removed");
+        await LoadDataAsync(FullCourse.Course);
+    }
+
     public async Task LoadDataAsync(Models.Course course)
     {
         var updatedCourse = await _courseService.GetCourseAsync(course.CourseId);

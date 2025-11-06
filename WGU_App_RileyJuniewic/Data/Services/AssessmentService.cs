@@ -1,10 +1,10 @@
 using Ardalis.Result;
+using Plugin.LocalNotification;
 using WGU_App_RileyJuniewic.Data.Dtos.Assessment;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Models.Enums;
 using WGU_App_RileyJuniewic.Data.Models.Interfaces;
 using WGU_App_RileyJuniewic.Data.Repository;
-using WGU_App_RileyJuniewic.Data.ViewModels;
 
 namespace WGU_App_RileyJuniewic.Data.Services;
 
@@ -15,6 +15,8 @@ public interface IAssessmentService
     Task<Result<Assessment>> CreateAssessmentAsync(CreateAssessmentRequest request);
     Task<Result<Assessment>> UpdateAssessmentAsync(UpdateAssessmentRequest request);
     Task<Result> DeleteAssessmentAsync(Guid id);
+    public Task<Result> SetNotificationAsync(Guid assessmentId, int startId, int endId);
+    public Task<Result> RemoveNotificationAsync(Guid assessmentId);
 }
 
 public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
@@ -43,6 +45,12 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
 
     public async Task<Result> DeleteAssessmentAsync(Guid id)
     {
+        var assessment = await GetAssessmentAsync(id);
+        if (!assessment.IsError())
+        {
+            LocalNotificationCenter.Current.Cancel(assessment.Value.NotificationStartId);
+            LocalNotificationCenter.Current.Cancel(assessment.Value.NotificationEndId);
+        }
         await sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.AssessmentId == id).DeleteAsync();
         return Result.Success();
     }
@@ -92,6 +100,40 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
         if (overlappingAssessments.Any(x => x.AssessmentId != assessment.AssessmentId))
             return Result.Error("Assessment overlaps with existing assessment");
 
+        return Result.Success();
+    }
+
+    public async Task<Result> RemoveNotificationAsync(Guid assessmentId)
+    {
+        var assessment = await GetAssessmentAsync(assessmentId);
+        if (assessment.IsError())
+            return Result.Error("Course not found");
+
+        LocalNotificationCenter.Current.Cancel(assessment.Value.NotificationStartId);
+        LocalNotificationCenter.Current.Cancel(assessment.Value.NotificationEndId);
+
+        assessment.Value.NotificationStartId = -1;
+        assessment.Value.NotificationEndId = -1;
+
+        await sqlDataAccess.GetConnection().UpdateAsync(assessment.Value);
+
+        return Result.Success();
+    }
+
+    public async Task<Result> SetNotificationAsync(Guid assessmentId, int startId, int endId)
+    {
+        var assessment = await GetAssessmentAsync(assessmentId);
+        if (assessment.IsError())
+            return Result.Error("Course not found");
+
+        //! Delete old notifications
+        LocalNotificationCenter.Current.Cancel(assessment.Value.NotificationStartId);
+        LocalNotificationCenter.Current.Cancel(assessment.Value.NotificationEndId);
+
+        assessment.Value.NotificationStartId = startId;
+        assessment.Value.NotificationEndId = endId;
+
+        await sqlDataAccess.GetConnection().UpdateAsync(assessment.Value);
         return Result.Success();
     }
 }

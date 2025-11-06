@@ -79,7 +79,7 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
         _ = Shell.Current.GoToAsync(nameof(ModifyAssessmentPage), true, navigationParameter);
     }
 
-    public void SetAssessmentNotificationEventHandler(object? sender, EventArgs e)
+    public void SetAssessmentReminderEventHandler(object? sender, EventArgs e)
     {
         var senderButton = sender as Button;
         var assessment = senderButton?.BindingContext as Assessment;
@@ -93,9 +93,28 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
         _ = ShowAssessmentNotification(assessment);
     }
 
+    public void RemoveAssessmentReminderEventHandler(object sender, EventArgs e)
+    {
+        var senderButton = sender as Button;
+        var assessment = senderButton?.BindingContext as Assessment;
+
+        if (assessment is null)
+        {
+            new UserError("Cannot set assessment alert");
+            return;
+        }
+
+        _ = _viewModel.RemoveAssessmentNotificationAsync(assessment.AssessmentId);
+    }
+
     public void SetCourseReminderEventHandler(object sender, EventArgs e)
     {
         _ = ShowCourseNotification();
+    }
+
+    public void RemoveCourseReminderEventHandler(object sender, EventArgs e)
+    {
+        _ = _viewModel.RemoveCourseNotificationAsync(Course.CourseId);
     }
 
     private async Task ShowAssessmentNotification(Assessment assessment)
@@ -114,13 +133,15 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
         var notifcationEndDate = _viewModel.FullCourse.Course.EndDate.AddDays(-7);
         if (_viewModel.FullCourse.Course.EndDate.AddDays(-7) < DateTime.Now)
             notifcationEndDate = DateTime.Now.AddSeconds(1);
-            
+
         var notificationId2 = await SetStartAndEndNotifcations(
             $"{assessment.Type} Assessment {assessment.Name} Ending Soon",
             $"The assessment ends {assessment.EndDate.Date:MMMM dd, yyyy}",
             notifcationEndDate,
             assessment.EndDate
         );
+        
+        await _viewModel.SetAssessmentNotificationAsync(assessment.AssessmentId, notificationId1, notificationId2);
     }
     
     private async Task ShowCourseNotification()
@@ -139,13 +160,15 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
         var notifcationEndDate = _viewModel.FullCourse.Course.EndDate.AddDays(-7);
         if (_viewModel.FullCourse.Course.EndDate.AddDays(-7) < DateTime.Now)
             notifcationEndDate = DateTime.Now.AddSeconds(1);
-            
+
         var notificationId2 = await SetStartAndEndNotifcations(
             $"Course Ending Soon: {_viewModel.FullCourse.Course.Title}",
             $"Course ends {_viewModel.FullCourse.Course.EndDate.Date:MMMM dd, yyyy}",
             notifcationEndDate,
             _viewModel.FullCourse.Course.EndDate
         );
+        
+        await _viewModel.SetCourseNotificationAsync(_viewModel.FullCourse.Course.CourseId, NotificationId1, notificationId2);
     }
 
     public void ShareNotesEventHandler(object sender, EventArgs e)

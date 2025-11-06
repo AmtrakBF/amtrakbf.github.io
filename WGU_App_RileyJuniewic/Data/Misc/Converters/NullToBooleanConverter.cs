@@ -9,7 +9,8 @@ public class NullToBooleanConverter : IValueConverter
         var parameterString = parameter as string;
         var inverse = bool.TryParse(parameterString, out var parameterBoolValue) ? parameterBoolValue : false;
 
-        if (value is null || (value is string str && str.Trim() == "") || (value is IEnumerable<object> list && !list.Any()))
+        if (value is null || (value is string str && str.Trim() == "") ||
+            (value is IEnumerable<object> list && !list.Any()) || (value is int num && num == -1))
             return inverse ? true : false;
         return !inverse ? true : false;
     }
