@@ -19,6 +19,7 @@ public class CreateInstructorRequest : BindingModel
 
     protected string _email = "";
     [Required(AllowEmptyStrings = false)]
+    [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Email
     {
         get => _email;
@@ -32,7 +33,8 @@ public class CreateInstructorRequest : BindingModel
 
     protected string _phone = "";
     [Required(AllowEmptyStrings = false)]
-    [MaxLength(20)]
+    [MaxLength(20, ErrorMessage = "Phone Number cannot be more than 20 digits")]
+    [MinLength(10, ErrorMessage = "Phone Number must be at least 10 digits")]
     [RegularExpression(@"^[0-9-]*$", ErrorMessage = "Phone number must only contain numbers and dashes.")]
     public string Phone
     {
