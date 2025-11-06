@@ -1,5 +1,11 @@
-﻿using Android.App;
+﻿using Android;
+using Android.App;
 using Android.Runtime;
+
+[assembly: UsesPermission(Manifest.Permission.Vibrate)]
+[assembly: UsesPermission(Manifest.Permission.PostNotifications)]
+[assembly: UsesPermission(Manifest.Permission.WakeLock)]
+[assembly: UsesPermission(Manifest.Permission.ReceiveBootCompleted)]
 
 namespace WGU_App_RileyJuniewic;
 

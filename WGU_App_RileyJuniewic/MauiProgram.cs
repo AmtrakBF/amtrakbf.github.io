@@ -19,6 +19,7 @@ using WGU_App_RileyJuniewic.Data.Dtos.Term;
 using WGU_App_RileyJuniewic.Data.Dtos.Instructor;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
 using WGU_App_RileyJuniewic.Data.ViewModels.AssessmentViewModels;
+using Plugin.LocalNotification;
 
 
 namespace WGU_App_RileyJuniewic;
@@ -30,6 +31,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+			.UseLocalNotification()
 			.UseMauiCommunityToolkit()
 			.ConfigureFonts(fonts =>
 			{

@@ -1,7 +1,13 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WGU_App_RileyJuniewic.Forms.Components.CourseComponents.CourseCard"
+             xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
              x:Name="courseCard">
+
+    <ContentView.Resources>
+        <converters:DateTimeToDateConverter x:Key="DateTimeToDate"/>
+    </ContentView.Resources>
+
     <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="20">
         <VerticalStackLayout>
             <VerticalStackLayout.Resources>
@@ -15,8 +21,8 @@
 
             <VerticalStackLayout HorizontalOptions="End">
                 <Label Text="{Binding Course.Status, StringFormat='Status: {0}', Source={x:Reference courseCard}}" HorizontalTextAlignment="End"/>
-                <Label Text="{Binding Course.StartDate, StringFormat='Start Date: {0}', Source={x:Reference courseCard}}" HorizontalTextAlignment="End"/>
-                <Label Text="{Binding Course.EndDate, StringFormat='End Date: {0}', Source={x:Reference courseCard}}" HorizontalTextAlignment="End"/>
+                <Label Text="{Binding Course.StartDate, StringFormat='Start Date: {0}', Source={x:Reference courseCard},Converter={x:StaticResource DateTimeToDate}}" HorizontalTextAlignment="End"/>
+                <Label Text="{Binding Course.EndDate, StringFormat='End Date: {0}', Source={x:Reference courseCard},Converter={x:StaticResource DateTimeToDate}}" HorizontalTextAlignment="End"/>
             </VerticalStackLayout>
         </VerticalStackLayout>
     </Border>

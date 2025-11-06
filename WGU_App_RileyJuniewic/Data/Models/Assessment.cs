@@ -25,8 +25,8 @@ public class Assessment
             CourseId = courseId,
             Name = name,
             Type = type,
-            StartDate = startDate,
-            EndDate = endDate
+            StartDate = startDate.Date.AddHours(8),
+            EndDate = endDate.Date.AddHours(8)
         };
     }
 
@@ -38,8 +38,8 @@ public class Assessment
             CourseId = courseId,
             Name = name,
             Type = type,
-            StartDate = startDate,
-            EndDate = endDate
+            StartDate = startDate.Date.AddHours(8),
+            EndDate = endDate.Date.AddHours(8)
         };
     }
 }
