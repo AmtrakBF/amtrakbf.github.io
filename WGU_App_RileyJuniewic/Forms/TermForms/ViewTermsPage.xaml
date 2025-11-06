@@ -23,7 +23,8 @@
                             <DataTemplate>
                                 <termComponents:TermCard Title="{Binding Title}" StartDate="{Binding StartDate}" EndDate="{Binding EndDate}" 
                                     TotalCourses="{Binding TotalCourses}" TotalCoursesFinished="{Binding TotalCoursesFinished}" TermId="{Binding TermId}"
-                                    OnModifyEvent="{Binding OnModifyEvent, Source={x:Reference viewTermsPage}}"/> 
+                                    OnModifyEvent="{Binding OnModifyEvent, Source={x:Reference viewTermsPage}}"
+                                    OnViewEvent="{Binding OnViewEvent, Source={x:Reference viewTermsPage}}" /> 
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

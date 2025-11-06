@@ -6,7 +6,7 @@ using WGU_App_RileyJuniewic.Data.Services;
 
 namespace WGU_App_RileyJuniewic.Data.ViewModels.TermViewModels;
 
-public class ViewTermsViewModel : BindingModel
+public class ViewAllTermsViewModel : BindingModel
 {
     private readonly ITermService _termService;
     private readonly ICourseService _courseService;
@@ -46,7 +46,7 @@ public class ViewTermsViewModel : BindingModel
 
     public Command LoadDataCommand { get; set; }
 
-    public ViewTermsViewModel(ITermService termService, ICourseService courseService)
+    public ViewAllTermsViewModel(ITermService termService, ICourseService courseService)
     {
         _termService = termService;
         _courseService = courseService;

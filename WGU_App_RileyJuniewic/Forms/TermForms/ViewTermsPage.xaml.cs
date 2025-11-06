@@ -6,7 +6,7 @@ namespace WGU_App_RileyJuniewic.Forms;
 
 public partial class ViewTermsPage : ContentPage
 {
-    private readonly ViewTermsViewModel _viewModel;
+    private readonly ViewAllTermsViewModel _viewModel;
 
     private EventHandler? _onModifyEvent;
     public EventHandler? OnModifyEvent
@@ -19,13 +19,16 @@ public partial class ViewTermsPage : ContentPage
         }
     }
 
-    public ViewTermsPage(ViewTermsViewModel viewModel)
+    public EventHandler? OnViewEvent { get; set; }
+
+    public ViewTermsPage(ViewAllTermsViewModel viewModel)
     {
         BindingContext = viewModel;
         _viewModel = viewModel;
         InitializeComponent();
 
         OnModifyEvent += Modify_Term_Clicked;
+        OnViewEvent += View_Term_Clicked;
     }
 
     protected override void OnAppearing()
@@ -51,6 +54,18 @@ public partial class ViewTermsPage : ContentPage
         {
             { "Term", term }
         };
-        _ = Shell.Current.GoToAsync(nameof(UpdateTermPage), navigationParameter);  
+        _ = Shell.Current.GoToAsync(nameof(UpdateTermPage), navigationParameter);
+    }
+    
+    private void View_Term_Clicked(object? sender, EventArgs e)
+    {
+        var termId = e as GuidEventArgs;
+        if (termId is null) return;
+
+        var navigationParameter = new ShellNavigationQueryParameters
+        {
+            { "TermId", termId.Value }
+        };
+        _ = Shell.Current.GoToAsync(nameof(SelectedTermPage), navigationParameter);
     }
 }

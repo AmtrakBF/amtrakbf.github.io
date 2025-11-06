@@ -79,6 +79,15 @@ public sealed partial class TermCard : ContentView
         get => (EventHandler?)GetValue(OnModifyEventProperty);
         set => SetValue(OnModifyEventProperty, value);
     }
+
+     public static readonly BindableProperty OnViewEventProperty =
+        BindableProperty.Create(nameof(OnViewEvent), typeof(EventHandler), typeof(BaseInputContentView), null, BindingMode.TwoWay);
+
+    public EventHandler? OnViewEvent
+    {
+        get => (EventHandler?)GetValue(OnViewEventProperty);
+        set => SetValue(OnViewEventProperty, value);
+    }
     
     public string CourseCompletion
     {
@@ -118,5 +127,10 @@ public sealed partial class TermCard : ContentView
     private void Modify_Term_Clicked(object sender, EventArgs e)
     {
         OnModifyEvent?.Invoke(this, new GuidEventArgs(TermId));
+    }
+
+    private void ViewTermClickEvent(object sender, EventArgs e)
+    {
+        OnViewEvent?.Invoke(this, new GuidEventArgs(TermId));
     }
 }

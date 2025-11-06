@@ -1,34 +1,42 @@
+using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
 using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Misc.Commands;
-using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Models.Interfaces;
 using WGU_App_RileyJuniewic.Data.Services;
-using WGU_App_RileyJuniewic.Data.ViewModels.TermViewModels;
 
-namespace WGU_App_RileyJuniewic.Data.ViewModels;
+namespace WGU_App_RileyJuniewic.Data.ViewModels.TermViewModels;
 
-public class CurrentTermViewModel : ViewTermViewModelBase, ITermViewModel
+public class SelectedTermViewModel : ViewTermViewModelBase, ITermViewModel
 {
+    private Guid _termId;
     public OnClickCommandAsync LoadDataCommand { get; set; }
 
-    public CurrentTermViewModel(ICourseService courseService, IInstructorService instructorService, ITermService termService)
+    public SelectedTermViewModel(ICourseService courseService, IInstructorService instructorService, ITermService termService)
         : base(courseService, instructorService, termService)
     {
         LoadDataCommand = new(LoadDataAsync);
-        _ = LoadDataAsync();
+    }
+    
+    public void SetTerm(Guid termId)
+    {
+        _termId = termId;
+        _ = LoadDataAsync();    
     }
 
-
-    public async Task LoadDataAsync()
+    private async Task LoadDataAsync()
     {
         IsRefreshing = true;
-        var terms = await _termService.GetAllTermsAsync();
-        var currentTerm = terms.Where(x => x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now).FirstOrDefault();
-
-        if (currentTerm is null)
+        if (_termId == Guid.Empty)
         {
-            new UserError("No current term found.");
+            IsRefreshing = false;
+            return;
+        }
+
+        var currentTerm = await _termService.GetTermAsync(_termId);
+        if (currentTerm.IsError())
+        {
+            new UserError(currentTerm.Errors);
             IsRefreshing = false;
             return;
         }

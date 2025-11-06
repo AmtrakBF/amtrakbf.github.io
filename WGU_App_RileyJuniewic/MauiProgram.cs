@@ -55,7 +55,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<UpdateTermPage>();
 		
 		builder.Services.AddTransient<CurrentTermViewModel>();
-		builder.Services.AddTransient<ViewTermsViewModel>();
+		builder.Services.AddTransient<ViewAllTermsViewModel>();
+		builder.Services.AddTransient<SelectedTermViewModel>();
 		builder.Services.AddTransient<AddTermViewModel>();
 		builder.Services.AddTransient<UpdateTermViewModel>();
 		
