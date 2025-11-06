@@ -2,6 +2,7 @@ using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.ViewModels.CourseViewModes;
 using WGU_App_RileyJuniewic.Forms.AssessmentForms;
+using WGU_App_RileyJuniewic.Forms.InstructorForms;
 
 namespace WGU_App_RileyJuniewic.Forms.CourseForms;
 
@@ -31,6 +32,15 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
         OnModifyCourseEvent += ModifyCourseEventHandler;
 
         InitializeComponent();
+    }
+
+    public void ModifyInstructorEventHandler(object sender, EventArgs e)
+    {
+        var navigationParameter = new ShellNavigationQueryParameters
+        {
+            { "FullCourse", _viewModel.FullCourse }
+        };
+        _ = Shell.Current.GoToAsync(nameof(ModifyInstructorPage), true, navigationParameter);
     }
 
     public void ModifyCourseEventHandler(object? sender, EventArgs e)

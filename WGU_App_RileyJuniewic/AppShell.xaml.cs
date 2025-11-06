@@ -1,5 +1,6 @@
 ﻿using WGU_App_RileyJuniewic.Forms.AssessmentForms;
 using WGU_App_RileyJuniewic.Forms.CourseForms;
+using WGU_App_RileyJuniewic.Forms.InstructorForms;
 using WGU_App_RileyJuniewic.Forms.TermForms;
 
 namespace WGU_App_RileyJuniewic;
@@ -19,5 +20,7 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute(nameof(AddCoursePage), typeof(AddCoursePage));
 		Routing.RegisterRoute(nameof(ViewCoursePage), typeof(ViewCoursePage));
 		Routing.RegisterRoute(nameof(ModifyCoursePage), typeof(ModifyCoursePage));
+
+		Routing.RegisterRoute(nameof(ModifyInstructorPage), typeof(ModifyInstructorPage));
 	}
 }

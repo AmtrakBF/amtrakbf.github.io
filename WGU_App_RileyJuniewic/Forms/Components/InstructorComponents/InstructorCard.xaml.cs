@@ -10,10 +10,14 @@ public sealed partial class InstructorCard : ContentView
 
     private static void OnSelectedInstructorChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is InstructorCard card)
+        if (bindable is InstructorCard card && newValue is Instructor)
         {
             card.InstructorSelected = true;
             card.OnPropertyChanged(nameof(SelectedInstructor));
+        } else
+        {
+            if (bindable is InstructorCard card2)
+                card2.InstructorSelected = false;
         }
     }
 

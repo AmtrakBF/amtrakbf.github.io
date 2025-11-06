@@ -1,0 +1,27 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="WGU_App_RileyJuniewic.Forms.InstructorForms.ModifyInstructorPage"
+            xmlns:instructorComponents="clr-namespace:WGU_App_RileyJuniewic.Forms.Components.InstructorComponents"
+            xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
+            x:Name="modifyInstructorPage"
+            Title="Modify Instructor"
+            Shell.NavBarIsVisible="True">
+
+    <ContentPage.Resources>
+        <converters:ErrorsToStringConverter x:Key="ErrorsToString"/>
+        <converters:ErrorsToBoolConverter x:Key="ErrorsToBool"/>
+        <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <instructorComponents:InstructorCard SelectedInstructor="{Binding SelectedInstructor,Source={x:Reference modifyInstructorPage}}" />
+            <Label Text="{Binding ModifyRequest.ValidationErrors, Converter={StaticResource ErrorsToString}, ConverterParameter=InstructorId}"
+                    TextColor="Red" FontSize="Small" Margin="0,0,0,10" HorizontalTextAlignment="Center"
+                    IsVisible="{Binding ModifyRequest.ValidationErrors, Converter={StaticResource ErrorsToBool}, ConverterParameter=InstructorId}"/>
+
+
+            <Button Text="Save Instructor" Command="{Binding ModifyCommandAsync}" Margin="40"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
