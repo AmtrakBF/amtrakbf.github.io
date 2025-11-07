@@ -87,8 +87,8 @@
 
                                 <Grid Margin="20">
                                     <VerticalStackLayout>
-                                        <Label Text="{Binding StartDate,Converter={x:StaticResource DateTimeToDate}}" HorizontalTextAlignment="End"/>
-                                        <Label Text="{Binding EndDate,Converter={x:StaticResource DateTimeToDate}}"  HorizontalTextAlignment="End"/>
+                                        <Label Text="{Binding StartDate, StringFormat='Start Date: {0}', Converter={x:StaticResource DateTimeToDate}}" HorizontalTextAlignment="End"/>
+                                        <Label Text="{Binding EndDate, StringFormat='End Date: {0}', Converter={x:StaticResource DateTimeToDate}}"  HorizontalTextAlignment="End"/>
                                     </VerticalStackLayout>
                                 </Grid>
 
@@ -107,7 +107,6 @@
 
     
             <Button Text="Add Assessment" Clicked="AddAssessmentEventHandler" Margin="0,20,0,20" HorizontalOptions="Center" />
-            <Button Text="Add Course" Command="{Binding CreateCommandAsync}" Margin="0,20,0,20" HorizontalOptions="Center" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
