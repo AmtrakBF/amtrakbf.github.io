@@ -47,7 +47,7 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
     public async Task<Result> DeleteAssessmentAsync(Guid id)
     {
         var assessment = await GetAssessmentAsync(id);
-        if (!assessment.IsError())
+        if (!assessment.IsError() && LocalNotificationCenter.Current is not null)
         {
             LocalNotificationCenter.Current.Cancel(assessment.Value.NotificationStartId);
             LocalNotificationCenter.Current.Cancel(assessment.Value.NotificationEndId);
@@ -135,6 +135,9 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
         var assessment = await GetAssessmentAsync(assessmentId);
         if (assessment.IsError())
             return Result.Error("Course not found");
+
+        if (LocalNotificationCenter.Current is null)
+            return Result.Error("Cannot remove notification");
 
         //! Delete old notifications
         LocalNotificationCenter.Current.Cancel(assessment.Value.NotificationStartId);

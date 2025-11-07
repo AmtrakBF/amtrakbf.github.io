@@ -33,7 +33,8 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var createdTerm = await _termService.CreateTermAsync(term);
-        var termFromDb = await _dbAccessAsync.GetConnectionAsync().GetAsync<Term>(createdTerm.Value.TermId);
+        var connection = await _dbAccessAsync.GetConnectionAsync();
+        var termFromDb = await connection.GetAsync<Term>(createdTerm.Value.TermId);
 
         termFromDb.Should().BeEquivalentTo(createdTerm.Value);
     }
@@ -54,7 +55,8 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
         var createdTerm = await _termService.CreateTermAsync(term);
 
         await _termService.DeleteTermAsync(createdTerm.Value.TermId);
-        var termFromDb = await _dbAccessAsync.GetConnectionAsync().Table<Term>().Where(x => x.TermId == createdTerm.Value.TermId).FirstOrDefaultAsync();
+        var connection = await _dbAccessAsync.GetConnectionAsync();
+        var termFromDb = await connection.Table<Term>().Where(x => x.TermId == createdTerm.Value.TermId).FirstOrDefaultAsync();
         termFromDb.Should().BeNull();
     }
 
@@ -81,7 +83,8 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var updatedTerm = await _termService.UpdateTermAsync(updateRequest);
-        var termFromDb = await _dbAccessAsync.GetConnectionAsync().GetAsync<Term>(createdTerm.Value.TermId);
+        var connection = await _dbAccessAsync.GetConnectionAsync();
+        var termFromDb = await connection.GetAsync<Term>(createdTerm.Value.TermId);
         termFromDb.Should().BeEquivalentTo(updatedTerm.Value);
         termFromDb.Should().NotBeEquivalentTo(createdTerm.Value);
         termFromDb.TermId.Should().Be(createdTerm.Value.TermId);
@@ -126,7 +129,8 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearTerms();
 
         var termBase = Term.CreateInstance(new Guid("358aa2d3-69e3-4123-8deb-d71ef308501a"), "Test Term", new DateTime(2023, 5, 1), new DateTime(2023, 6, 1));
-        await _dbAccessAsync.GetConnectionAsync().InsertAsync(termBase);
+            var connection = await _dbAccessAsync.GetConnectionAsync();
+        await connection.InsertAsync(termBase);
 
         var term = Term.CreateInstance(termId, title, startDate, endDate);
         var termService = new TermService(_dbAccessAsync);
@@ -143,5 +147,9 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
         }
     }
 
-    private async Task ClearTerms() => await _dbAccessAsync.GetConnectionAsync().DeleteAllAsync<Term>();
+    private async Task ClearTerms()
+    {
+        var connection = await _dbAccessAsync.GetConnectionAsync();
+        await connection.DeleteAllAsync<Term>();
+    }
 }

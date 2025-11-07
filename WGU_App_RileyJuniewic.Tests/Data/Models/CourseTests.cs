@@ -17,8 +17,9 @@ public class CourseTests : BaseTest
     {
         var course = Course.CreateNewInstance(Guid.NewGuid(), Guid.NewGuid(), "Test Course", CourseStatus.Active, DateTime.Now, DateTime.Now.AddDays(1));
 
-        await _dbAccessAsync.GetConnectionAsync().InsertAsync(course);
-        var courseFromDb = await _dbAccessAsync.GetConnectionAsync().GetAsync<Course>(course.CourseId);
+        var connection = await _dbAccessAsync.GetConnectionAsync();
+        await connection.InsertAsync(course);
+        var courseFromDb = await connection.GetAsync<Course>(course.CourseId);
         courseFromDb.Should().BeEquivalentTo(course);
     }   
 }

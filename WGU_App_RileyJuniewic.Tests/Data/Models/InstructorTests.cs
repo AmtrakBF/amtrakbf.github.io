@@ -15,8 +15,9 @@ public class InstructorTests : BaseTest
     {
         var instructor = Instructor.CreateNewInstance("Test Instructor", "test@test.com", "555-555-5555");
 
-        await _dbAccessAsync.GetConnectionAsync().InsertAsync(instructor);
-        var instructorFromDb = await _dbAccessAsync.GetConnectionAsync().GetAsync<Instructor>(instructor.InstructorId);
+        var connection = await _dbAccessAsync.GetConnectionAsync();
+        await connection.InsertAsync(instructor);
+        var instructorFromDb = await connection.GetAsync<Instructor>(instructor.InstructorId);
         instructorFromDb.Should().BeEquivalentTo(instructor);
     }
 }

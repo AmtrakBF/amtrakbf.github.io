@@ -15,8 +15,9 @@ public class TermTests : BaseTest
     {
         var term = Term.CreateNewInstance("Test Term", DateTime.Now, DateTime.Now.AddDays(30));
         
-        await _dbAccessAsync.GetConnectionAsync().InsertAsync(term);
-        var termFromDb = await _dbAccessAsync.GetConnectionAsync().GetAsync<Term>(term.TermId);
+        var connection = await _dbAccessAsync.GetConnectionAsync();
+        await connection.InsertAsync(term);
+        var termFromDb = await connection.GetAsync<Term>(term.TermId);
         termFromDb.Should().BeEquivalentTo(term);
     }
 }

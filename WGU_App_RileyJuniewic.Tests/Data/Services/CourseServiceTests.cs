@@ -203,7 +203,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
             InstructorId = instructor.InstructorId,
             Status = CourseStatus.Active.ToString(),
             StartDate = DateTime.Now,
-            EndDate = DateTime.Now.AddDays(1)
+            EndDate = DateTime.Now.AddDays(1),
         };
 
         var createdCourse = await _courseService.CreateCourseAsync(course);
@@ -270,7 +270,7 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
         var createdCourse = await _courseService.CreateCourseAsync(course);
         var updateRequest = new UpdateCourseRequest()
         {
-            CourseId = createdCourse.Value.CourseId,
+            Id = createdCourse.Value.CourseId,
             Title = "Updated Course",
             TermId = term.TermId,
             InstructorId = instructor.InstructorId,
@@ -287,15 +287,20 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
         courseFromDb.Value.CourseId.Should().Be(createdCourse.Value.CourseId);
     }
 
-    private async Task ClearCourses() => await _dbAccessAsync.GetConnectionAsync().DeleteAllAsync<Course>();
+    private async Task ClearCourses() 
+    {
+        var connection = await _dbAccessAsync.GetConnectionAsync();
+        await connection.DeleteAllAsync<Course>();
+    }
 
     private async Task<Tuple<Instructor, Term>> CreateInstructorAndTermAsync()
     {
         var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnectionAsync().InsertAsync(instructor);
+        var connection = await _dbAccessAsync.GetConnectionAsync();
+        await connection.InsertAsync(instructor);
 
         var term = new Term() { TermId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnectionAsync().InsertAsync(term);
+        await connection.InsertAsync(term);
 
         return new Tuple<Instructor, Term>(instructor, term);
     }

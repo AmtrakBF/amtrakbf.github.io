@@ -49,7 +49,7 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
     public async Task<Result> DeleteCourseAsync(Guid courseId)
     {
         var course = await GetCourseAsync(courseId);
-        if (!course.IsError())
+        if (!course.IsError() && LocalNotificationCenter.Current is not null)
         {
             LocalNotificationCenter.Current.Cancel(course.Value.NotificationStartId);
             LocalNotificationCenter.Current.Cancel(course.Value.NotificationEndId);
@@ -87,6 +87,9 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
         var course = await GetCourseAsync(courseId);
         if (course.IsError())
             return Result.Error("Course not found");
+
+        if (LocalNotificationCenter.Current is null)
+            return Result.Error("Cannot remove notification");
 
         //! Delete old notifications
         LocalNotificationCenter.Current.Cancel(course.Value.NotificationStartId);

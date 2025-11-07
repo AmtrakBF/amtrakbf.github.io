@@ -15,8 +15,9 @@ public class NoteTests : BaseTest
     {
         var note = Note.CreateNewInstance(Guid.NewGuid(), "Test Note", "This is a test note.");
 
-        await _dbAccessAsync.GetConnectionAsync().InsertAsync(note);
-        var noteFromDb = await _dbAccessAsync.GetConnectionAsync().GetAsync<Note>(note.NoteId);
+        var connection = await _dbAccessAsync.GetConnectionAsync();
+        await connection.InsertAsync(note);
+        var noteFromDb = await connection.GetAsync<Note>(note.NoteId);
         noteFromDb.Should().BeEquivalentTo(note);
     }
 }
