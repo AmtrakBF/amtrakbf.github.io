@@ -119,20 +119,16 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
 
     private async Task ShowAssessmentNotification(Assessment assessment)
     {
-        var notificationTime = assessment.StartDate.AddDays(-1);
-        if (assessment.StartDate < DateTime.Now)
-            notificationTime = DateTime.Now.AddSeconds(1);
-
         var notificationId1 = await SetStartAndEndNotifcations(
             $"{assessment.Type} Assessment {assessment.Name} Starts Soon",
             $"{assessment.StartDate.Date:MMMM dd, yyyy} - {assessment.EndDate.Date:MMMM dd, yyyy}",
-            notificationTime,
+            assessment.StartDate.AddDays(-1),
             assessment.EndDate
         );
 
         var notifcationEndDate = _viewModel.FullCourse.Course.EndDate.AddDays(-7);
         if (_viewModel.FullCourse.Course.EndDate.AddDays(-7) < DateTime.Now)
-            notifcationEndDate = DateTime.Now.AddSeconds(1);
+            notifcationEndDate = DateTime.Now.AddHours(1);
 
         var notificationId2 = await SetStartAndEndNotifcations(
             $"{assessment.Type} Assessment {assessment.Name} Ending Soon",
@@ -146,20 +142,16 @@ public sealed partial class ViewCoursePage : ContentPage, IQueryAttributable
     
     private async Task ShowCourseNotification()
     {
-        var notificationTime = _viewModel.FullCourse.Course.StartDate.AddDays(-1);
-        if (_viewModel.FullCourse.Course.StartDate < DateTime.Now)
-            notificationTime = DateTime.Now.AddSeconds(1);
-
         var NotificationId1 = await SetStartAndEndNotifcations(
             $"Upcoming Course: {_viewModel.FullCourse.Course.Title}",
             $"{_viewModel.FullCourse.Course.StartDate.Date:MMMM dd, yyyy} - {_viewModel.FullCourse.Course.EndDate.Date:MMMM dd, yyyy}",
-            notificationTime,
+            _viewModel.FullCourse.Course.StartDate.AddDays(-1),
             _viewModel.FullCourse.Course.EndDate
         );
 
         var notifcationEndDate = _viewModel.FullCourse.Course.EndDate.AddDays(-7);
         if (_viewModel.FullCourse.Course.EndDate.AddDays(-7) < DateTime.Now)
-            notifcationEndDate = DateTime.Now.AddSeconds(1);
+            notifcationEndDate = DateTime.Now.AddHours(1);
 
         var notificationId2 = await SetStartAndEndNotifcations(
             $"Course Ending Soon: {_viewModel.FullCourse.Course.Title}",
