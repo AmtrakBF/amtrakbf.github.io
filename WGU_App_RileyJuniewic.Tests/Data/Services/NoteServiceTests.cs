@@ -25,7 +25,7 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearNotes();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(course);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(course);
 
         var note = new CreateNoteRequest()
         {
@@ -35,7 +35,7 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var result = await _noteService.CreateNoteAsync(note);
-        var dbNote = await _dbAccessAsync.GetConnection().Table<Note>().Where(x => x.NoteId == result.Value.NoteId).FirstOrDefaultAsync();
+        var dbNote = await _dbAccessAsync.GetConnectionAsync().Table<Note>().Where(x => x.NoteId == result.Value.NoteId).FirstOrDefaultAsync();
         result.Value.Should().BeEquivalentTo(dbNote);
     }
 
@@ -62,7 +62,7 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearNotes();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(course);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(course);
 
         var note = new CreateNoteRequest()
         {
@@ -73,7 +73,7 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
 
         var result = await _noteService.CreateNoteAsync(note);
         await _noteService.DeleteNoteAsync(result.Value.NoteId);
-        var dbNote = await _dbAccessAsync.GetConnection().Table<Note>().Where(x => x.NoteId == result.Value.NoteId).FirstOrDefaultAsync();
+        var dbNote = await _dbAccessAsync.GetConnectionAsync().Table<Note>().Where(x => x.NoteId == result.Value.NoteId).FirstOrDefaultAsync();
         dbNote.Should().BeNull();
     }
 
@@ -83,7 +83,7 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearNotes();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(course);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(course);
 
         var note = new CreateNoteRequest()
         {
@@ -112,7 +112,7 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearNotes();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(course);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(course);
 
         var note = new CreateNoteRequest()
         {
@@ -142,7 +142,7 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearNotes();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(course);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(course);
 
         var note = new CreateNoteRequest()
         {
@@ -160,12 +160,12 @@ public class NoteServiceTests : TestBedWithDI<TestServiceProvider>
             Content = "Test Content 2"
         };
         await _noteService.UpdateNoteAsync(updateNote);
-        var dbNote = await _dbAccessAsync.GetConnection().Table<Note>().Where(x => x.NoteId == result.Value.NoteId).FirstOrDefaultAsync();
+        var dbNote = await _dbAccessAsync.GetConnectionAsync().Table<Note>().Where(x => x.NoteId == result.Value.NoteId).FirstOrDefaultAsync();
         dbNote.NoteId.Should().Be(result.Value.NoteId);
         dbNote.CourseId.Should().Be(course.CourseId);
         dbNote.Title.Should().Be(updateNote.Title);
         dbNote.Content.Should().Be(updateNote.Content);
     }
 
-    private async Task ClearNotes() => await _dbAccessAsync.GetConnection().DeleteAllAsync<Note>();
+    private async Task ClearNotes() => await _dbAccessAsync.GetConnectionAsync().DeleteAllAsync<Note>();
 }

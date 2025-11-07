@@ -15,8 +15,8 @@ public class AssessmentTests : BaseTest
     {
         var assessment = Assessment.CreateNewInstance(Guid.NewGuid(), "Test Assessment", AssessmentType.Objective, DateTime.Now, DateTime.Now.AddDays(1));
 
-        await _dbAccessAsync.GetConnection().InsertAsync(assessment);
-        var assessmentFromDb = await _dbAccessAsync.GetConnection().GetAsync<Assessment>(assessment.AssessmentId);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(assessment);
+        var assessmentFromDb = await _dbAccessAsync.GetConnectionAsync().GetAsync<Assessment>(assessment.AssessmentId);
         assessmentFromDb.Should().BeEquivalentTo(assessment);
     }
 }

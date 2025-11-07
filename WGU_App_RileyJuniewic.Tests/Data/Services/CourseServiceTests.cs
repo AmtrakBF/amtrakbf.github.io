@@ -287,15 +287,15 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
         courseFromDb.Value.CourseId.Should().Be(createdCourse.Value.CourseId);
     }
 
-    private async Task ClearCourses() => await _dbAccessAsync.GetConnection().DeleteAllAsync<Course>();
+    private async Task ClearCourses() => await _dbAccessAsync.GetConnectionAsync().DeleteAllAsync<Course>();
 
     private async Task<Tuple<Instructor, Term>> CreateInstructorAndTermAsync()
     {
         var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(instructor);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(instructor);
 
         var term = new Term() { TermId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(term);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(term);
 
         return new Tuple<Instructor, Term>(instructor, term);
     }

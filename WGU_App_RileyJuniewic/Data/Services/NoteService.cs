@@ -27,18 +27,27 @@ public class NoteService(SqlDataAccessAsync sqlDataAccess) : INoteService
         if (result.IsError())
             return result;
 
-        await sqlDataAccess.GetConnection().InsertAsync(note);
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.InsertAsync(note);
         return note;
     }
 
-    public async Task DeleteNoteAsync(Guid id) =>
-        await sqlDataAccess.GetConnection().Table<Note>().Where(x => x.NoteId == id).DeleteAsync();
+    public async Task DeleteNoteAsync(Guid id)
+    {
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.Table<Note>().Where(x => x.NoteId == id).DeleteAsync();
+    }
 
-    public async Task<IEnumerable<Note>> GetAllNotesAsync() => await sqlDataAccess.GetConnection().Table<Note>().ToListAsync();
+    public async Task<IEnumerable<Note>> GetAllNotesAsync()
+    {
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        return await connection.Table<Note>().ToListAsync();
+    }
 
     public async Task<Result<Note>> GetNoteAsync(Guid id)
     {
-        var note = await sqlDataAccess.GetConnection().Table<Note>().Where(x => x.NoteId == id).FirstOrDefaultAsync();
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        var note = await connection.Table<Note>().Where(x => x.NoteId == id).FirstOrDefaultAsync();
         if (note == null)
             return Result.Error("Note not found");
 
@@ -55,13 +64,15 @@ public class NoteService(SqlDataAccessAsync sqlDataAccess) : INoteService
         if (result.IsError())
             return result;
             
-        await sqlDataAccess.GetConnection().UpdateAsync(note);
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.UpdateAsync(note);
         return note;
     }
 
     private async Task<Result> ValidateNoteAsync(Note note)
     {
-        var existingCourse = await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.CourseId == note.CourseId).FirstOrDefaultAsync();
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        var existingCourse = await connection.Table<Course>().Where(x => x.CourseId == note.CourseId).FirstOrDefaultAsync();
         if (existingCourse == null)
             return Result.Error("Course not found");
 

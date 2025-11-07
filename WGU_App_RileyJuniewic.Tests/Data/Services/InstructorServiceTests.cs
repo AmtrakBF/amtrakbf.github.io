@@ -32,7 +32,7 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var result = await _instructorService.CreateInstructorAsync(instructor);
-        var dbInstructor = await _dbAccessAsync.GetConnection().Table<Instructor>().Where(x => x.InstructorId == result.Value.InstructorId).FirstOrDefaultAsync();
+        var dbInstructor = await _dbAccessAsync.GetConnectionAsync().Table<Instructor>().Where(x => x.InstructorId == result.Value.InstructorId).FirstOrDefaultAsync();
         result.Value.Should().BeEquivalentTo(dbInstructor);
     }
 
@@ -95,11 +95,11 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearInstructors();
 
         var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(instructor);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(instructor);
 
         await _instructorService.DeleteInstructorAsync(instructor.InstructorId);
 
-        var dbInstructor = await _dbAccessAsync.GetConnection().Table<Instructor>().Where(x => x.InstructorId == instructor.InstructorId).FirstOrDefaultAsync();
+        var dbInstructor = await _dbAccessAsync.GetConnectionAsync().Table<Instructor>().Where(x => x.InstructorId == instructor.InstructorId).FirstOrDefaultAsync();
         dbInstructor.Should().BeNull();
     }
 
@@ -109,14 +109,14 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearInstructors();
 
         var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(instructor);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(instructor);
 
         var course = new Course() { CourseId = Guid.NewGuid(), InstructorId = instructor.InstructorId };
-        await _dbAccessAsync.GetConnection().InsertAsync(course);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(course);
 
         var results = await _instructorService.DeleteInstructorAsync(instructor.InstructorId);
 
-        var dbInstructor = await _dbAccessAsync.GetConnection().Table<Instructor>().Where(x => x.InstructorId == instructor.InstructorId).FirstOrDefaultAsync();
+        var dbInstructor = await _dbAccessAsync.GetConnectionAsync().Table<Instructor>().Where(x => x.InstructorId == instructor.InstructorId).FirstOrDefaultAsync();
         dbInstructor.Should().NotBeNull();
 
         results.IsError().Should().BeTrue();
@@ -129,10 +129,10 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearInstructors();
 
         var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(instructor);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(instructor);
 
         var instructor2 = new Instructor() { InstructorId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(instructor2);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(instructor2);
 
         var instructors = await _instructorService.GetAllInstructorsAsync();
         instructors.Should().ContainEquivalentOf(instructor);
@@ -145,7 +145,7 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearInstructors();
 
         var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
-        await _dbAccessAsync.GetConnection().InsertAsync(instructor);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(instructor);
 
         var result = await _instructorService.GetInstructorAsync(instructor.InstructorId);
         result.Value.Should().BeEquivalentTo(instructor);
@@ -167,7 +167,7 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearInstructors();
 
         var instructor = new Instructor() { InstructorId = Guid.NewGuid(), Name = "Bob Smith", Email = "bob.smith@example.com", Phone = "1234567890" };
-        await _dbAccessAsync.GetConnection().InsertAsync(instructor);
+        await _dbAccessAsync.GetConnectionAsync().InsertAsync(instructor);
 
         var updateRequest = new UpdateInstructorRequest()
         {
@@ -185,6 +185,6 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
         instructorResult.Phone.Should().Be(updateRequest.Phone);
     }
 
-    private async Task ClearInstructors() => await _dbAccessAsync.GetConnection().DeleteAllAsync<Instructor>();
+    private async Task ClearInstructors() => await _dbAccessAsync.GetConnectionAsync().DeleteAllAsync<Instructor>();
 
 }

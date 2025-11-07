@@ -40,7 +40,8 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
         if (result.IsError())
             return result;
 
-        await sqlDataAccess.GetConnection().InsertAsync(course);
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.InsertAsync(course);
         return course;
     }
 
@@ -55,20 +56,26 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
         }
 
         // Delete Assesements & Notes
-        await sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.CourseId == courseId).DeleteAsync();
-        await sqlDataAccess.GetConnection().Table<Note>().Where(x => x.CourseId == courseId).DeleteAsync();
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.Table<Assessment>().Where(x => x.CourseId == courseId).DeleteAsync();
+        await connection.Table<Note>().Where(x => x.CourseId == courseId).DeleteAsync();
 
         // Delete Courses
-        await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.CourseId == courseId).DeleteAsync();
+        await connection.Table<Course>().Where(x => x.CourseId == courseId).DeleteAsync();
 
         return Result.Success();
     }
 
-    public Task<List<Course>> GetAllCoursesAsync() => sqlDataAccess.GetConnection().Table<Course>().ToListAsync();
+    public async Task<List<Course>> GetAllCoursesAsync()
+    {
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        return await connection.Table<Course>().ToListAsync();
+    }
 
     public async Task<Result<Course>> GetCourseAsync(Guid courseId)
     {
-        var course = await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.CourseId == courseId).FirstOrDefaultAsync();
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        var course = await connection.Table<Course>().Where(x => x.CourseId == courseId).FirstOrDefaultAsync();
         if (course == null)
             return Result.Error("Course not found");
             
@@ -88,7 +95,8 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
         course.Value.NotificationStartId = -1;
         course.Value.NotificationEndId = -1;
 
-        await sqlDataAccess.GetConnection().UpdateAsync(course.Value);
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.UpdateAsync(course.Value);
 
         return Result.Success();
     }
@@ -106,7 +114,8 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
         course.Value.NotificationStartId = startId;
         course.Value.NotificationEndId = endId;
 
-        await sqlDataAccess.GetConnection().UpdateAsync(course.Value);
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.UpdateAsync(course.Value);
         return Result.Success();
     }
 
@@ -127,21 +136,23 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
         if (result.IsError())
             return result;
 
-        await sqlDataAccess.GetConnection().UpdateAsync(course);
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.UpdateAsync(course);
         return course;
     }
     
     internal async Task<Result> ValidateCourseAsync(Course course)
     {
-        var validInstructor = await sqlDataAccess.GetConnection().Table<Instructor>().Where(x => x.InstructorId == course.InstructorId).FirstOrDefaultAsync();
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        var validInstructor = await connection.Table<Instructor>().Where(x => x.InstructorId == course.InstructorId).FirstOrDefaultAsync();
         if (validInstructor == null)
             return Result.Error("Instructor does not exist");
 
-        var validTerm = await sqlDataAccess.GetConnection().Table<Term>().Where(x => x.TermId == course.TermId).FirstOrDefaultAsync();
+        var validTerm = await connection.Table<Term>().Where(x => x.TermId == course.TermId).FirstOrDefaultAsync();
         if (validTerm == null)
             return Result.Error("Term does not exist");
 
-        var otherCourses = await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.TermId == course.TermId && x.CourseId != course.CourseId).ToListAsync();
+        var otherCourses = await connection.Table<Course>().Where(x => x.TermId == course.TermId && x.CourseId != course.CourseId).ToListAsync();
         foreach (var otherCourse in otherCourses)
         {
             // if (otherCourse.StartDate <= course.EndDate && otherCourse.EndDate >= course.StartDate)

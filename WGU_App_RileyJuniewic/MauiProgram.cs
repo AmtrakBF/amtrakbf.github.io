@@ -44,12 +44,7 @@ public static class MauiProgram
 		var config = new ConfigurationBuilder().AddJsonStream(stream!).Build();
 		builder.Configuration.AddConfiguration(config);
 
-		builder.Services.AddSingleton(provider =>
-		{
-			var dbAccess = new SqlDataAccessAsync(config);
-			_ = dbAccess.InitializeAsync();
-			return dbAccess;
-		});
+		builder.Services.AddSingleton<SqlDataAccessAsync>();
 
 		builder.Services.AddTransient<CurrentTermPage>();
 		builder.Services.AddTransient<AddCoursePage>();
@@ -98,6 +93,7 @@ public static class MauiProgram
 
 		return builder.Build();
 	}
+	
 }
 
 public static class ServiceHelper

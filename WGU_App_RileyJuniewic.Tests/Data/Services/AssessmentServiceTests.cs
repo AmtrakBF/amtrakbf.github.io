@@ -26,7 +26,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearAssessments();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _sqlDataAccess.GetConnection().InsertAsync(course);
+        await _sqlDataAccess.GetConnectionAsync().InsertAsync(course);
 
         var assessmentRequest = new CreateAssessmentRequest()
         {
@@ -38,7 +38,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         };
 
         var result = await _assessmentService.CreateAssessmentAsync(assessmentRequest);
-        var dbAssessment = await _sqlDataAccess.GetConnection().GetAsync<Assessment>(result.Value.AssessmentId);
+        var dbAssessment = await _sqlDataAccess.GetConnectionAsync().GetAsync<Assessment>(result.Value.AssessmentId);
         dbAssessment.Should().BeEquivalentTo(result.Value);
     }
 
@@ -48,7 +48,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearAssessments();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _sqlDataAccess.GetConnection().InsertAsync(course);
+        await _sqlDataAccess.GetConnectionAsync().InsertAsync(course);
 
         var assessmentRequest = new CreateAssessmentRequest()
         {
@@ -70,7 +70,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearAssessments();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _sqlDataAccess.GetConnection().InsertAsync(course);
+        await _sqlDataAccess.GetConnectionAsync().InsertAsync(course);
 
         var assessmentRequest = new CreateAssessmentRequest()
         {
@@ -103,7 +103,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearAssessments();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _sqlDataAccess.GetConnection().InsertAsync(course);
+        await _sqlDataAccess.GetConnectionAsync().InsertAsync(course);
 
         var assessmentRequest = new CreateAssessmentRequest()
         {
@@ -136,7 +136,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearAssessments();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _sqlDataAccess.GetConnection().InsertAsync(course);
+        await _sqlDataAccess.GetConnectionAsync().InsertAsync(course);
 
         var assessmentRequest = new CreateAssessmentRequest()
         {
@@ -150,7 +150,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         var result = await _assessmentService.CreateAssessmentAsync(assessmentRequest);
         await _assessmentService.DeleteAssessmentAsync(result.Value.AssessmentId);
         
-        var dbAssessment = await _sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.AssessmentId == result.Value.AssessmentId).FirstOrDefaultAsync();
+        var dbAssessment = await _sqlDataAccess.GetConnectionAsync().Table<Assessment>().Where(x => x.AssessmentId == result.Value.AssessmentId).FirstOrDefaultAsync();
         dbAssessment.Should().BeNull();
     }
 
@@ -160,7 +160,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearAssessments();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _sqlDataAccess.GetConnection().InsertAsync(course);
+        await _sqlDataAccess.GetConnectionAsync().InsertAsync(course);
 
         var assessmentRequest = new CreateAssessmentRequest()
         {
@@ -194,7 +194,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearAssessments();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _sqlDataAccess.GetConnection().InsertAsync(course);
+        await _sqlDataAccess.GetConnectionAsync().InsertAsync(course);
 
         var assessmentRequest = new CreateAssessmentRequest()
         {
@@ -226,7 +226,7 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
         await ClearAssessments();
 
         var course = new Course() { CourseId = Guid.NewGuid() };
-        await _sqlDataAccess.GetConnection().InsertAsync(course);
+        await _sqlDataAccess.GetConnectionAsync().InsertAsync(course);
 
         var assessmentRequest = new CreateAssessmentRequest()
         {
@@ -259,5 +259,5 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
     }
 
 
-    private async Task ClearAssessments() => await _sqlDataAccess.GetConnection().DeleteAllAsync<Assessment>();
+    private async Task ClearAssessments() => await _sqlDataAccess.GetConnectionAsync().DeleteAllAsync<Assessment>();
 }

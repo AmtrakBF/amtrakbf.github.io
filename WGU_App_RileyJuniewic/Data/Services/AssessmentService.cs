@@ -36,8 +36,9 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
         var result = await ValidateAssessmentAsync(assessment);
         if (result.IsError())
             return result;
-            
-        await sqlDataAccess.GetConnection().InsertAsync(assessment);
+
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.InsertAsync(assessment);
         return assessment;
     }
 
@@ -51,17 +52,23 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
             LocalNotificationCenter.Current.Cancel(assessment.Value.NotificationStartId);
             LocalNotificationCenter.Current.Cancel(assessment.Value.NotificationEndId);
         }
-        await sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.AssessmentId == id).DeleteAsync();
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.Table<Assessment>().Where(x => x.AssessmentId == id).DeleteAsync();
         return Result.Success();
     }
 
     public async Task<Result> DeleteAsync(Guid id) => await DeleteAssessmentAsync(id);
 
-    public async Task<IEnumerable<Assessment>> GetAllAssessmentsAsync() => await sqlDataAccess.GetConnection().Table<Assessment>().ToListAsync();
+    public async Task<IEnumerable<Assessment>> GetAllAssessmentsAsync()
+    {
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        return await connection.Table<Assessment>().ToListAsync();
+    }
 
     public async Task<Result<Assessment>> GetAssessmentAsync(Guid id)
     {
-        var assessment = await sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.AssessmentId == id).FirstOrDefaultAsync();
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        var assessment = await connection.Table<Assessment>().Where(x => x.AssessmentId == id).FirstOrDefaultAsync();
         if (assessment == null)
             return Result.Error("Assessment not found");
         return new(assessment);
@@ -80,7 +87,8 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
         if (result.IsError())
             return result;
 
-        await sqlDataAccess.GetConnection().UpdateAsync(assessment);
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.UpdateAsync(assessment);
         return assessment;
     }
 
@@ -88,15 +96,16 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
 
     public async Task<Result> ValidateAssessmentAsync(Assessment assessment)
     {
-        var existingCourse = await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.CourseId == assessment.CourseId).FirstOrDefaultAsync();
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        var existingCourse = await connection.Table<Course>().Where(x => x.CourseId == assessment.CourseId).FirstOrDefaultAsync();
         if (existingCourse == null)
             return Result.Error("Course does not exist");
 
-        var exisitingName = await sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.CourseId == assessment.CourseId && x.Name == assessment.Name).FirstOrDefaultAsync();
+        var exisitingName =await connection.Table<Assessment>().Where(x => x.CourseId == assessment.CourseId && x.Name == assessment.Name).FirstOrDefaultAsync();
         if (exisitingName != null && exisitingName.AssessmentId != assessment.AssessmentId)
             return Result.Error("Assessment name already exists");
 
-        var overlappingAssessments = await sqlDataAccess.GetConnection().Table<Assessment>().Where(x => x.CourseId == assessment.CourseId && x.StartDate <= assessment.EndDate && x.EndDate >= assessment.StartDate).ToListAsync();
+        var overlappingAssessments = await connection.Table<Assessment>().Where(x => x.CourseId == assessment.CourseId && x.StartDate <= assessment.EndDate && x.EndDate >= assessment.StartDate).ToListAsync();
         if (overlappingAssessments.Any(x => x.AssessmentId != assessment.AssessmentId))
             return Result.Error("Assessment overlaps with existing assessment");
 
@@ -115,7 +124,8 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
         assessment.Value.NotificationStartId = -1;
         assessment.Value.NotificationEndId = -1;
 
-        await sqlDataAccess.GetConnection().UpdateAsync(assessment.Value);
+       var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.UpdateAsync(assessment.Value);
 
         return Result.Success();
     }
@@ -133,7 +143,8 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
         assessment.Value.NotificationStartId = startId;
         assessment.Value.NotificationEndId = endId;
 
-        await sqlDataAccess.GetConnection().UpdateAsync(assessment.Value);
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.UpdateAsync(assessment.Value);
         return Result.Success();
     }
 }

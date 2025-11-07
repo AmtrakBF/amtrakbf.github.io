@@ -32,7 +32,8 @@ public class InstructorService(SqlDataAccessAsync sqlDataAccess) :
         if (result.IsError())
             return result;
 
-        await sqlDataAccess.GetConnection().InsertAsync(instructor);
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.InsertAsync(instructor);
         return instructor;
     }
 
@@ -40,19 +41,26 @@ public class InstructorService(SqlDataAccessAsync sqlDataAccess) :
 
     public async Task<Result> DeleteInstructorAsync(Guid id)
     {
-        var coursesWithInstructor = await sqlDataAccess.GetConnection().Table<Course>().Where(x => x.InstructorId == id).ToListAsync();
+        var connection = await sqlDataAccess.GetConnectionAsync();
+
+        var coursesWithInstructor = await connection.Table<Course>().Where(x => x.InstructorId == id).ToListAsync();
         if (coursesWithInstructor.Any())
             return Result.Error("Cannot delete Instructor as they are assigned to a course");
 
-        await sqlDataAccess.GetConnection().Table<Instructor>().Where(x => x.InstructorId == id).DeleteAsync();
+        await connection.Table<Instructor>().Where(x => x.InstructorId == id).DeleteAsync();
         return Result.Success();
     }
 
-    public async Task<IEnumerable<Instructor>> GetAllInstructorsAsync() => await sqlDataAccess.GetConnection().Table<Instructor>().ToListAsync();
+    public async Task<IEnumerable<Instructor>> GetAllInstructorsAsync()
+    {
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        return await connection.Table<Instructor>().ToListAsync();
+    }
 
     public async Task<Result<Instructor>> GetInstructorAsync(Guid id)
     {
-        var instructor = await sqlDataAccess.GetConnection().Table<Instructor>().Where(x => x.InstructorId == id).FirstOrDefaultAsync();
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        var instructor = await connection.Table<Instructor>().Where(x => x.InstructorId == id).FirstOrDefaultAsync();
         if (instructor == null)
             return Result.Error("Instructor not found");
 
@@ -71,17 +79,19 @@ public class InstructorService(SqlDataAccessAsync sqlDataAccess) :
         if (result.IsError())
             return result;
 
-        await sqlDataAccess.GetConnection().UpdateAsync(instructor);
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        await connection.UpdateAsync(instructor);
         return instructor;
     }
 
     internal async Task<Result> ValidateInstructorAsync(Instructor instructor)
     {
-        var existingEmail = await sqlDataAccess.GetConnection().Table<Instructor>().Where(x => x.Email == instructor.Email).FirstOrDefaultAsync();
+        var connection = await sqlDataAccess.GetConnectionAsync();
+        var existingEmail = await connection.Table<Instructor>().Where(x => x.Email == instructor.Email).FirstOrDefaultAsync();
         if (existingEmail != null && existingEmail.InstructorId != instructor.InstructorId)
             return Result.Error("Instructor with email already exists");
 
-        var existingPhone = await sqlDataAccess.GetConnection().Table<Instructor>().Where(x => x.Phone == instructor.Phone).FirstOrDefaultAsync();
+        var existingPhone = await connection.Table<Instructor>().Where(x => x.Phone == instructor.Phone).FirstOrDefaultAsync();
         if (existingPhone != null && existingPhone.InstructorId != instructor.InstructorId)
             return Result.Error("Instructor with phone number already exists");
 
