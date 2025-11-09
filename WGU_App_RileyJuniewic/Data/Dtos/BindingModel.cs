@@ -100,4 +100,12 @@ public class BindingModel : INotifyDataErrorInfo, INotifyPropertyChanged
         }
         ValidationErrors = new Dictionary<string, List<string?>>(ValidationErrors);
     }
+
+    protected void SetValue<T>(string propertyName, ref T propertyValue, T newValue)
+    {
+        if (EqualityComparer<T>.Default.Equals(propertyValue, newValue)) return;
+        propertyValue = newValue;
+        OnPropertyChanged(propertyName);
+        Validate(propertyName, newValue);
+    }
 }
