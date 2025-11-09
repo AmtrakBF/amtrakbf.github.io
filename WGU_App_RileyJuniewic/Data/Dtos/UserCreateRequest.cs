@@ -9,10 +9,10 @@ public class UserCreateRequest : BindingModel
     private string _confirmPassword = "";
 
     [Required(AllowEmptyStrings = false)]
-    public string Name
+    public string Username
     {
         get => _username;
-        set => SetValue(nameof(Name), ref _username, value);
+        set => SetValue(nameof(Username), ref _username, value);
     }
 
     [Required(AllowEmptyStrings = false)]
