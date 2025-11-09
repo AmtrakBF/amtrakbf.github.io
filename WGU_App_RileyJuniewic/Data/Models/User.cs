@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Sodium;
 
 namespace WGU_App_RileyJuniewic.Data.Models;
 
@@ -15,7 +16,7 @@ public class User
         {
             UserId = Guid.NewGuid(),
             Username = username,
-            Password = password
+            Password = PasswordHash.ArgonHashString(password, PasswordHash.StrengthArgon.Moderate)
         };
     }
 
@@ -28,4 +29,6 @@ public class User
             Password = password
         };
     }
+
+    public bool MatchPassword(string password) => PasswordHash.ArgonHashStringVerify(Password, password);
 }
