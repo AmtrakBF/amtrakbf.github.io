@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
+using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos;
 using WGU_App_RileyJuniewic.Data.Dtos.TermDtos;
+using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Models.Enums;
 using WGU_App_RileyJuniewic.Data.Services;
 
@@ -59,7 +61,14 @@ public class ViewAllTermsViewModel : BindingModel
     {
         IsRefreshing = true;
 
-        var terms = await _termService.GetAllTermsAsync();
+        var termRequest = await _termService.GetAllTermsAsync();
+         if (termRequest.IsError())
+        {
+            new ToastNotification(termRequest.Errors);
+            IsRefreshing = false;
+            return;
+        }
+        var terms = termRequest.Value;
         var courses = await _courseService.GetAllCoursesAsync();
 
         var termCourses =

@@ -20,6 +20,7 @@ using WGU_App_RileyJuniewic.Data.Dtos.Instructor;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
 using WGU_App_RileyJuniewic.Data.ViewModels.AssessmentViewModels;
 using Plugin.LocalNotification;
+using WGU_App_RileyJuniewic.Data;
 
 
 namespace WGU_App_RileyJuniewic;
@@ -45,6 +46,7 @@ public static class MauiProgram
 		builder.Configuration.AddConfiguration(config);
 
 		builder.Services.AddSingleton<SqlDataAccessAsync>();
+		builder.Services.AddSingleton<UserStore>();
 
 		builder.Services.AddTransient<CurrentTermPage>();
 		builder.Services.AddTransient<AddCoursePage>();

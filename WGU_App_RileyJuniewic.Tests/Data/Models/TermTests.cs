@@ -13,7 +13,7 @@ public class TermTests : BaseTest
     [Fact]
     public async Task CreateTerm_CreatesDBEntryAsync()
     {
-        var term = Term.CreateNewInstance("Test Term", DateTime.Now, DateTime.Now.AddDays(30));
+        var term = Term.CreateNewInstance("Test Term", Guid.NewGuid(), DateTime.Now, DateTime.Now.AddDays(30));
         
         var connection = await _dbAccessAsync.GetConnectionAsync();
         await connection.InsertAsync(term);

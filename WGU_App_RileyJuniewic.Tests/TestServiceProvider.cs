@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
+using WGU_App_RileyJuniewic.Data;
 using WGU_App_RileyJuniewic.Data.Repository;
 using WGU_App_RileyJuniewic.Data.Services;
 using Xunit.Microsoft.DependencyInjection;
@@ -32,6 +33,8 @@ public class TestServiceProvider : TestBedFixture
         services.AddScoped<IAssessmentService, AssessmentService>();
         services.AddScoped<INoteService, NoteService>();
         services.AddScoped<IUserService, UserService>();
+
+        services.AddSingleton<UserStore>();
     }
 
     protected override ValueTask DisposeAsyncCore() => new();

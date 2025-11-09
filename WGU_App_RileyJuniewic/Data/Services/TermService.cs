@@ -8,14 +8,14 @@ namespace WGU_App_RileyJuniewic.Data.Services;
 
 public interface ITermService
 {
-    Task<List<Term>> GetAllTermsAsync();
+    Task<Result<List<Term>>> GetAllTermsAsync();
     Task<Result<Term>> GetTermAsync(Guid termId);
     Task<Result<Term>> CreateTermAsync(CreateTermRequest request);
     Task<Result<Term>> UpdateTermAsync(UpdateTermRequest request);
     Task<Result> DeleteTermAsync(Guid termId);
 }
 
-public class TermService(SqlDataAccessAsync sqlDataAccess) :
+public class TermService(SqlDataAccessAsync sqlDataAccess, UserStore userStore) :
     ITermService,
     ICreateService<CreateTermRequest, Term>,
     IModifyService<UpdateTermRequest, Term>
@@ -25,7 +25,11 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) :
         if (request.HasErrors)
             return Result.Error(request.GetErrorList());
 
-        var term = Term.CreateNewInstance(request.Title, request.StartDate, request.EndDate);
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
+
+        var term = Term.CreateNewInstance(request.Title, user.Value.UserId, request.StartDate, request.EndDate);
         var result = await ValidateTermAsync(term);
         if (result.IsError())
             return result;
@@ -37,7 +41,15 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) :
 
     public async Task<Result> DeleteTermAsync(Guid termId)
     {
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
+
         var connection = await sqlDataAccess.GetConnectionAsync();
+
+        var term = await GetTermAsync(termId);
+        if (term.IsError())
+            return Result.Error(new ErrorList(term.Errors));
 
         // Delete Assesements & Notes
         var courses = await connection.Table<Course>().Where(x => x.TermId == termId).ToListAsync();
@@ -50,25 +62,32 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) :
         await connection.Table<Course>().Where(x => x.TermId == termId).DeleteAsync();
 
         // Delete Term
-        await connection.Table<Term>().Where(x => x.TermId == termId).DeleteAsync();
+        await connection.Table<Term>().Where(x => x.TermId == termId && x.UserId == user.Value.UserId).DeleteAsync();
 
         return Result.Success();
     }
 
     public async Task<Result<Term>> GetTermAsync(Guid termId)
     {
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
+
         var connection = await sqlDataAccess.GetConnectionAsync();
-        var term = await connection.Table<Term>().Where(x => x.TermId == termId).FirstOrDefaultAsync();
+        var term = await connection.Table<Term>().Where(x => x.TermId == termId && x.UserId == user.Value.UserId).FirstOrDefaultAsync();
         if (term == null)
             return Result.Error("Term not found");
 
         return term;
     }
 
-    public async Task<List<Term>> GetAllTermsAsync()
+    public async Task<Result<List<Term>>> GetAllTermsAsync()
     {
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
         var connection = await sqlDataAccess.GetConnectionAsync();
-        return await connection.Table<Term>().ToListAsync();
+        return await connection.Table<Term>().Where(x => x.UserId == user.Value.UserId).ToListAsync();
     }
 
     public async Task<Result<Term>> UpdateTermAsync(UpdateTermRequest request)
@@ -76,7 +95,11 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) :
         if (request.HasErrors)
             return Result.Error(request.GetErrorList());
             
-        var term = Term.CreateInstance(request.Id, request.Title, request.StartDate, request.EndDate);
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
+
+        var term = Term.CreateInstance(request.Id, user.Value.UserId, request.Title, request.StartDate, request.EndDate);
         var result = await ValidateTermAsync(term);
         if (result.IsError())
             return result;
@@ -88,8 +111,12 @@ public class TermService(SqlDataAccessAsync sqlDataAccess) :
 
     internal async Task<Result> ValidateTermAsync(Term term)
     {
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
+
         var connection = await sqlDataAccess.GetConnectionAsync();
-        var existingTerms = await connection.Table<Term>().ToListAsync();
+        var existingTerms = await connection.Table<Term>().Where(x => x.UserId == user.Value.UserId).ToListAsync();
         foreach (var existingTerm in existingTerms)
         {
             if (existingTerm.StartDate <= term.EndDate && existingTerm.EndDate >= term.StartDate && existingTerm.TermId != term.TermId)

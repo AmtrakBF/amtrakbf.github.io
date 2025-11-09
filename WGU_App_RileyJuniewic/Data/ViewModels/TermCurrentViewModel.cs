@@ -1,3 +1,4 @@
+using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
 using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Misc.Commands;
@@ -23,7 +24,14 @@ public class CurrentTermViewModel : ViewTermViewModelBase, ITermViewModel
     public async Task LoadDataAsync()
     {
         IsRefreshing = true;
-        var terms = await _termService.GetAllTermsAsync();
+        var termRequest = await _termService.GetAllTermsAsync();
+        if (termRequest.IsError())
+        {
+            new ToastNotification(termRequest.Errors);
+            IsRefreshing = false;
+            return;
+        }
+        var terms = termRequest.Value;
         var currentTerm = terms.Where(x => x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now).FirstOrDefault();
 
         if (currentTerm is null)

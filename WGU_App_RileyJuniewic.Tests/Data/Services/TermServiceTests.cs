@@ -1,7 +1,7 @@
 using Ardalis.Result;
 using FluentAssertions;
+using WGU_App_RileyJuniewic.Data;
 using WGU_App_RileyJuniewic.Data.Dtos.Term;
-using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Repository;
 using WGU_App_RileyJuniewic.Data.Services;
@@ -13,11 +13,12 @@ namespace WGU_App_RileyJuniewic.Tests.Data.Services;
 public class TermServiceTests : TestBedWithDI<TestServiceProvider>
 {
     [Inject] protected ITermService _termService { get; set; } = null!;
+    [Inject] protected UserStore _userStore { get; set; } = null!;
     [Inject] protected SqlDataAccessAsync _dbAccessAsync { get; set; } = null!;
 
     public TermServiceTests(ITestOutputHelper testOutputHelper, TestServiceProvider fixture) : base(testOutputHelper, fixture)
     {
-
+        _userStore.SetUser(new User { UserId = Guid.NewGuid() });
     }
 
     [Fact]
@@ -39,7 +40,7 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
         termFromDb.Should().BeEquivalentTo(createdTerm.Value);
     }
 
-    
+
     [Fact]
     public async Task DeleteTermAsync_DeletesTermAsync()
     {
@@ -114,8 +115,9 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
         var createdTerm2 = await _termService.CreateTermAsync(term2);
 
         var terms = await _termService.GetAllTermsAsync();
-        terms.Should().ContainEquivalentOf(createdTerm.Value);
-        terms.Should().ContainEquivalentOf(createdTerm2.Value);
+        terms.IsError().Should().BeFalse();
+        terms.Value.Should().ContainEquivalentOf(createdTerm.Value);
+        terms.Value.Should().ContainEquivalentOf(createdTerm2.Value);
     }
 
     [Theory]
@@ -128,12 +130,16 @@ public class TermServiceTests : TestBedWithDI<TestServiceProvider>
     {
         await ClearTerms();
 
-        var termBase = Term.CreateInstance(new Guid("358aa2d3-69e3-4123-8deb-d71ef308501a"), "Test Term", new DateTime(2023, 5, 1), new DateTime(2023, 6, 1));
+        var user = _userStore.GetUser();
+        if (user.IsError())
+            throw new Exception("User is not logged in");
+
+        var termBase = Term.CreateInstance(new Guid("358aa2d3-69e3-4123-8deb-d71ef308501a"), user.Value.UserId, "Test Term", new DateTime(2023, 5, 1), new DateTime(2023, 6, 1));
             var connection = await _dbAccessAsync.GetConnectionAsync();
         await connection.InsertAsync(termBase);
 
-        var term = Term.CreateInstance(termId, title, startDate, endDate);
-        var termService = new TermService(_dbAccessAsync);
+        var term = Term.CreateInstance(termId, user.Value.UserId, title, startDate, endDate);
+        var termService = new TermService(_dbAccessAsync, _userStore);
 
         if (message != null)
         {
