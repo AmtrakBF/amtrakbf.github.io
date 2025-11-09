@@ -31,6 +31,7 @@ public class TestServiceProvider : TestBedFixture
         services.AddScoped<IInstructorService, InstructorService>();
         services.AddScoped<IAssessmentService, AssessmentService>();
         services.AddScoped<INoteService, NoteService>();
+        services.AddScoped<IUserService, UserService>();
     }
 
     protected override ValueTask DisposeAsyncCore() => new();

@@ -15,7 +15,7 @@ public class User
         return new User
         {
             UserId = Guid.NewGuid(),
-            Username = username,
+            Username = username.ToLower(),
             Password = PasswordHash.ArgonHashString(password, PasswordHash.StrengthArgon.Moderate)
         };
     }

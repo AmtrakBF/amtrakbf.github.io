@@ -28,6 +28,7 @@ public class SqlDataAccessAsync
         await _connection.CreateTableAsync<Instructor>();
         await _connection.CreateTableAsync<Note>();
         await _connection.CreateTableAsync<InitDB>();
+        await _connection.CreateTableAsync<User>();
 
         _isInitialized = true;
     }
