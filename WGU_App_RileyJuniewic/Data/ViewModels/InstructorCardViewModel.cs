@@ -1,4 +1,6 @@
+using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos;
+using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Services;
 
@@ -28,7 +30,13 @@ public class InstructorCardViewModel : BindingModel
 
     public async Task GetAllInstructorsAsync()
     {
-        Instructors = (await _instructorService.GetAllInstructorsAsync()).OrderBy(x => x.Name).ToList();
+        var result = await _instructorService.GetAllInstructorsAsync();
+        if (result.IsError())
+        {
+            new ToastNotification(result.Errors);
+            return;
+        }
+        Instructors = result.Value.OrderBy(x => x.Name).ToList();
     }
     
 }

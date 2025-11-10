@@ -1,5 +1,6 @@
 using Ardalis.Result;
 using FluentAssertions;
+using WGU_App_RileyJuniewic.Data;
 using WGU_App_RileyJuniewic.Data.Dtos.Instructor;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Repository;
@@ -13,10 +14,11 @@ public class InstructorServiceTests : TestBedWithDI<TestServiceProvider>
 {
     [Inject] protected IInstructorService _instructorService { get; set; } = null!;
     [Inject] protected SqlDataAccessAsync _dbAccessAsync { get; set; } = null!;
+    [Inject] protected UserStore _userStore { get; set; } = null!;
 
     public InstructorServiceTests(ITestOutputHelper testOutputHelper, TestServiceProvider fixture) : base(testOutputHelper, fixture)
     {
-
+        _userStore.SetUser(new User { UserId = Guid.NewGuid() });
     }
 
     [Fact]
@@ -96,7 +98,7 @@ var connection = await _dbAccessAsync.GetConnectionAsync();
     {
         await ClearInstructors();
 
-        var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
+        var instructor = new Instructor() { InstructorId = Guid.NewGuid(), UserId = _userStore.GetUser().Value.UserId };
             
         var connection = await _dbAccessAsync.GetConnectionAsync();
         await connection.InsertAsync(instructor);
@@ -112,7 +114,7 @@ var connection = await _dbAccessAsync.GetConnectionAsync();
     {
         await ClearInstructors();
 
-        var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
+        var instructor = new Instructor() { InstructorId = Guid.NewGuid(), UserId = _userStore.GetUser().Value.UserId };
             
         var connection = await _dbAccessAsync.GetConnectionAsync();
         await connection.InsertAsync(instructor);
@@ -135,18 +137,18 @@ var connection = await _dbAccessAsync.GetConnectionAsync();
     {
         await ClearInstructors();
 
-        var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
+        var instructor = new Instructor() { InstructorId = Guid.NewGuid(), UserId = _userStore.GetUser().Value.UserId };
             
         var connection = await _dbAccessAsync.GetConnectionAsync();
         await connection.InsertAsync(instructor);
 
-        var instructor2 = new Instructor() { InstructorId = Guid.NewGuid() };
+        var instructor2 = new Instructor() { InstructorId = Guid.NewGuid(), UserId = _userStore.GetUser().Value.UserId };
             
         await connection.InsertAsync(instructor2);
 
         var instructors = await _instructorService.GetAllInstructorsAsync();
-        instructors.Should().ContainEquivalentOf(instructor);
-        instructors.Should().ContainEquivalentOf(instructor2);
+        instructors.Value.Should().ContainEquivalentOf(instructor);
+        instructors.Value.Should().ContainEquivalentOf(instructor2);
     }
 
     [Fact]
@@ -154,7 +156,7 @@ var connection = await _dbAccessAsync.GetConnectionAsync();
     {
         await ClearInstructors();
 
-        var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
+        var instructor = new Instructor() { InstructorId = Guid.NewGuid(), UserId = _userStore.GetUser().Value.UserId };
             
 var connection = await _dbAccessAsync.GetConnectionAsync();
         await connection.InsertAsync(instructor);

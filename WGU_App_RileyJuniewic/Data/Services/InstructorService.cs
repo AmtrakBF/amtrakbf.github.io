@@ -8,14 +8,14 @@ namespace WGU_App_RileyJuniewic.Data.Services;
 
 public interface IInstructorService
 {
-    Task<IEnumerable<Instructor>> GetAllInstructorsAsync();
+    Task<Result<IEnumerable<Instructor>>> GetAllInstructorsAsync();
     Task<Result<Instructor>> GetInstructorAsync(Guid id);
     Task<Result<Instructor>> CreateInstructorAsync(CreateInstructorRequest request);
     Task<Result<Instructor>> UpdateInstructorAsync(UpdateInstructorRequest request);
     Task<Result> DeleteInstructorAsync(Guid id);
 }
 
-public class InstructorService(SqlDataAccessAsync sqlDataAccess) :
+public class InstructorService(SqlDataAccessAsync sqlDataAccess, UserStore userStore) :
     IInstructorService,
     ICreateService<CreateInstructorRequest, Instructor>,
     IModifyService<UpdateInstructorRequest, Instructor>
@@ -27,7 +27,11 @@ public class InstructorService(SqlDataAccessAsync sqlDataAccess) :
         if (request.HasErrors)
             return Result.Error(request.GetErrorList());
 
-        var instructor = Instructor.CreateNewInstance(request.Name, request.Email, request.Phone);
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
+
+        var instructor = Instructor.CreateNewInstance(user.Value.UserId, request.Name, request.Email, request.Phone);
         var result = await ValidateInstructorAsync(instructor);
         if (result.IsError())
             return result;
@@ -43,24 +47,40 @@ public class InstructorService(SqlDataAccessAsync sqlDataAccess) :
     {
         var connection = await sqlDataAccess.GetConnectionAsync();
 
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
+
+        var instructor = await GetInstructorAsync(id);
+        if (instructor.IsError())
+            return Result.Error(new ErrorList(instructor.Errors));
+
         var coursesWithInstructor = await connection.Table<Course>().Where(x => x.InstructorId == id).ToListAsync();
         if (coursesWithInstructor.Any())
             return Result.Error("Cannot delete Instructor as they are assigned to a course");
 
-        await connection.Table<Instructor>().Where(x => x.InstructorId == id).DeleteAsync();
+        await connection.Table<Instructor>().Where(x => x.InstructorId == id && x.UserId == user.Value.UserId).DeleteAsync();
         return Result.Success();
     }
 
-    public async Task<IEnumerable<Instructor>> GetAllInstructorsAsync()
+    public async Task<Result<IEnumerable<Instructor>>> GetAllInstructorsAsync()
     {
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
+
         var connection = await sqlDataAccess.GetConnectionAsync();
-        return await connection.Table<Instructor>().ToListAsync();
+        return await connection.Table<Instructor>().Where(x => x.UserId == user.Value.UserId).ToListAsync();
     }
 
     public async Task<Result<Instructor>> GetInstructorAsync(Guid id)
     {
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
+            
         var connection = await sqlDataAccess.GetConnectionAsync();
-        var instructor = await connection.Table<Instructor>().Where(x => x.InstructorId == id).FirstOrDefaultAsync();
+        var instructor = await connection.Table<Instructor>().Where(x => x.InstructorId == id && x.UserId == user.Value.UserId).FirstOrDefaultAsync();
         if (instructor == null)
             return Result.Error("Instructor not found");
 
@@ -73,8 +93,12 @@ public class InstructorService(SqlDataAccessAsync sqlDataAccess) :
     {
         if (request.HasErrors)
             return Result.Error(request.GetErrorList());
+
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
             
-        var instructor = Instructor.CreateInstance(request.Id, request.Name, request.Email, request.Phone);
+        var instructor = Instructor.CreateInstance(request.Id, user.Value.UserId, request.Name, request.Email, request.Phone);
         var result = await ValidateInstructorAsync(instructor);
         if (result.IsError())
             return result;
@@ -86,12 +110,16 @@ public class InstructorService(SqlDataAccessAsync sqlDataAccess) :
 
     internal async Task<Result> ValidateInstructorAsync(Instructor instructor)
     {
+        var user = userStore.GetUser();
+        if (user.IsError())
+            return Result.Error(new ErrorList(user.Errors));
+
         var connection = await sqlDataAccess.GetConnectionAsync();
-        var existingEmail = await connection.Table<Instructor>().Where(x => x.Email == instructor.Email).FirstOrDefaultAsync();
+        var existingEmail = await connection.Table<Instructor>().Where(x => x.Email == instructor.Email && x.UserId == user.Value.UserId).FirstOrDefaultAsync();
         if (existingEmail != null && existingEmail.InstructorId != instructor.InstructorId)
             return Result.Error("Instructor with email already exists");
 
-        var existingPhone = await connection.Table<Instructor>().Where(x => x.Phone == instructor.Phone).FirstOrDefaultAsync();
+        var existingPhone = await connection.Table<Instructor>().Where(x => x.Phone == instructor.Phone && x.UserId == user.Value.UserId).FirstOrDefaultAsync();
         if (existingPhone != null && existingPhone.InstructorId != instructor.InstructorId)
             return Result.Error("Instructor with phone number already exists");
 

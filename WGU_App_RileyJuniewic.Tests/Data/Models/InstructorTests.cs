@@ -13,7 +13,7 @@ public class InstructorTests : BaseTest
     [Fact]
     public async Task CreateInstructor_CreatesDBEntryAsync()
     {
-        var instructor = Instructor.CreateNewInstance("Test Instructor", "test@test.com", "555-555-5555");
+        var instructor = Instructor.CreateNewInstance(Guid.NewGuid(), "Test Instructor", "test@test.com", "555-555-5555");
 
         var connection = await _dbAccessAsync.GetConnectionAsync();
         await connection.InsertAsync(instructor);

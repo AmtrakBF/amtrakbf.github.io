@@ -45,11 +45,18 @@ public class SelectedTermViewModel : ViewTermViewModelBase, ITermViewModel
 
         var courses = await _courseService.GetAllCoursesAsync();
         var instructors = await _instructorService.GetAllInstructorsAsync();
+        if (instructors.IsError())
+        {
+            new ToastNotification(instructors.Errors);
+            IsRefreshing = false;
+            return;
+        }
+        
 
         var fullCourses = courses.Where(x => x.TermId == Term.TermId).Select(c => new FullCourseDto
         {
             Course = c,
-            Instructor = instructors.FirstOrDefault(i => i.InstructorId == c.InstructorId) ?? new()
+            Instructor = instructors.Value.FirstOrDefault(i => i.InstructorId == c.InstructorId) ?? new()
         }).ToList();
 
         FullCourses = new(fullCourses);
