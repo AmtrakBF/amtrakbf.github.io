@@ -19,11 +19,12 @@ public interface ICourseService
     public Task<Result> RemoveNotificationAsync(Guid courseId);
 }
 
-public class CourseService(SqlDataAccessAsync sqlDataAccess) :
+public class CourseService(SqlDataAccessAsync sqlDataAccess, UserStore userStore) :
     ICourseService,
     ICreateService<CreateCourseRequest, Course>,
     IModifyService<UpdateCourseRequest, Course>
 {
+
     public async Task<Result<Course>> CreateAsync(CreateCourseRequest request) => await CreateCourseAsync(request);
 
     public async Task<Result<Course>> CreateCourseAsync(CreateCourseRequest request)
@@ -69,7 +70,15 @@ public class CourseService(SqlDataAccessAsync sqlDataAccess) :
     public async Task<List<Course>> GetAllCoursesAsync()
     {
         var connection = await sqlDataAccess.GetConnectionAsync();
-        return await connection.Table<Course>().ToListAsync();
+
+        var user = userStore.GetUser();
+        var queryCourses = @"
+            SELECT DISTINCT c.* FROM Course c
+            INNER JOIN Term t ON c.TermId = t.TermId
+            WHERE t.UserId = ? 
+        ";
+            
+        return await connection.QueryAsync<Course>(queryCourses, user.Value.UserId);
     }
 
     public async Task<Result<Course>> GetCourseAsync(Guid courseId)

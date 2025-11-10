@@ -10,7 +10,7 @@ namespace WGU_App_RileyJuniewic.Data.Services;
 
 public interface IAssessmentService
 {
-    Task<IEnumerable<Assessment>> GetAllAssessmentsAsync();
+    Task<List<Assessment>> GetAllAssessmentsAsync();
     Task<Result<Assessment>> GetAssessmentAsync(Guid id);
     Task<Result<Assessment>> CreateAssessmentAsync(CreateAssessmentRequest request);
     Task<Result<Assessment>> UpdateAssessmentAsync(UpdateAssessmentRequest request);
@@ -19,7 +19,7 @@ public interface IAssessmentService
     public Task<Result> RemoveNotificationAsync(Guid assessmentId);
 }
 
-public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
+public class AssessmentService(SqlDataAccessAsync sqlDataAccess, UserStore userStore) :
     IAssessmentService,
     ICreateService<CreateAssessmentRequest, Assessment>,
     IModifyService<UpdateAssessmentRequest, Assessment>
@@ -59,10 +59,18 @@ public class AssessmentService(SqlDataAccessAsync sqlDataAccess) :
 
     public async Task<Result> DeleteAsync(Guid id) => await DeleteAssessmentAsync(id);
 
-    public async Task<IEnumerable<Assessment>> GetAllAssessmentsAsync()
+    public async Task<List<Assessment>> GetAllAssessmentsAsync()
     {
         var connection = await sqlDataAccess.GetConnectionAsync();
-        return await connection.Table<Assessment>().ToListAsync();
+        var user = userStore.GetUser();
+
+        var queryAssessment = @"
+            SELECT DISTINCT a.* FROM Assessment a
+            INNER JOIN Course c ON a.CourseId = c.CourseId
+            INNER JOIN Term t ON c.TermId = t.TermId
+            WHERE t.UserId = ?
+        ";
+        return await connection.QueryAsync<Assessment>(queryAssessment, user.Value.UserId);
     }
 
     public async Task<Result<Assessment>> GetAssessmentAsync(Guid id)
