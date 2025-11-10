@@ -1,3 +1,4 @@
+using Ardalis.Result;
 using WGU_App_RileyJuniewic.Data.Dtos;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Repository;
@@ -6,18 +7,22 @@ namespace WGU_App_RileyJuniewic.Data.Services;
 
 public interface ISearchService
 {
-    Task<SearchResult> SearchAllAsync(string searchQuery, Guid userId);
+    Task<Result<SearchResult>> SearchAllAsync(string searchQuery);
 }
 
-public class SearchService(SqlDataAccessAsync sqlDataAccess) : ISearchService
+public class SearchService(SqlDataAccessAsync sqlDataAccess, UserStore userStore) : ISearchService
 {
-    public async Task<SearchResult> SearchAllAsync(string searchQuery, Guid userId)
+    public async Task<Result<SearchResult>> SearchAllAsync(string searchQuery)
     {
+        var userResult = userStore.GetUser();
+        if (userResult.IsError())
+            return Result.Error(new ErrorList(userResult.Errors));
+
         var connection = await sqlDataAccess.GetConnectionAsync();
         var like = $"%{searchQuery.ToLower()}%";
 
         if (searchQuery.Trim() == "")
-            return new SearchResult();
+            return Result.Error("Search query cannot be empty");
 
         var queryAssessment = @"
             SELECT DISTINCT a.* FROM Assessment a
@@ -40,7 +45,6 @@ public class SearchService(SqlDataAccessAsync sqlDataAccess) : ISearchService
 
         var queryCourses = @"
             SELECT DISTINCT c.* FROM Course c
-            INNER JOIN Assessment a ON c.CourseId = a.CourseId
             INNER JOIN Term t ON c.TermId = t.TermId
             WHERE (
                 LOWER(c.Title) LIKE ? OR
@@ -53,7 +57,6 @@ public class SearchService(SqlDataAccessAsync sqlDataAccess) : ISearchService
         var queryInstructors = @"
             SELECT DISTINCT i.* FROM Instructor i
             INNER JOIN Course c ON i.InstructorId = c.InstructorId
-            INNER JOIN Assessment a ON c.CourseId = a.CourseId
             INNER JOIN Term t ON c.TermId = t.TermId
             WHERE (
                 LOWER(i.Name) LIKE ? OR
@@ -64,10 +67,10 @@ public class SearchService(SqlDataAccessAsync sqlDataAccess) : ISearchService
         ";
 
 
-        var assessments = await connection.QueryAsync<Assessment>(queryAssessment, like, like, userId);
-        var terms = await connection.QueryAsync<Term>(queryTerms, like, userId);
-        var courses = await connection.QueryAsync<Course>(queryCourses, like, like, like, userId);
-        var instructors = await connection.QueryAsync<Instructor>(queryInstructors, like, like, like, userId);
+        var assessments = await connection.QueryAsync<Assessment>(queryAssessment, like, like, userResult.Value.UserId);
+        var terms = await connection.QueryAsync<Term>(queryTerms, like, userResult.Value.UserId);
+        var courses = await connection.QueryAsync<Course>(queryCourses, like, like, like, userResult.Value.UserId);
+        var instructors = await connection.QueryAsync<Instructor>(queryInstructors, like, like, like, userResult.Value.UserId);
 
         return new SearchResult()
         {

@@ -18,6 +18,11 @@
             Title="Terms"
             ContentTemplate="{DataTemplate forms:ViewTermsPage}"
             Route="ViewTermsPage" />
+
+        <ShellContent
+            Title="Search"
+            ContentTemplate="{DataTemplate forms:SearchPage}"
+            Route="SearchPage" />
             
     </FlyoutItem>
 

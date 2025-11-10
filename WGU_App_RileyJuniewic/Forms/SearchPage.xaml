@@ -1,0 +1,104 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="WGU_App_RileyJuniewic.Forms.SearchPage"
+            xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters">
+
+    <ContentPage.Resources>
+        <converters:ErrorsToStringConverter x:Key="ErrorsToString"/>
+        <converters:ErrorsToBoolConverter x:Key="ErrorsToBool"/>
+        <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
+        <converters:DateTimeToDateConverter x:Key="DateTimeConverter"/>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Margin="40">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <VerticalStackLayout>
+                    <Entry Text="{Binding Query}" Placeholder="Search..." />
+                    <Label Text="{Binding ValidationErrors, Converter={StaticResource ErrorsToString}, ConverterParameter=Query}"
+                        TextColor="Red" FontSize="Small" HorizontalTextAlignment="Start"/>
+                </VerticalStackLayout>
+
+                <Button Text="Search" Command="{Binding SearchCommandAsync}" Grid.Column="1" Margin="10"/>
+            </Grid>
+
+            <Label Text="Courses" FontSize="Medium" FontAttributes="Bold" Margin="0,10"/>
+            <CollectionView ItemsSource="{Binding SearchResults.Courses}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="5">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Title, StringFormat='Course Title: {0}'}" FontSize="Medium"/>
+                                <Label Text="{Binding Notes, StringFormat='Course Notes: {0}'}" FontSize="Small" HorizontalOptions="End"/>
+                                <Label Text="{Binding Status, StringFormat='Course Status: {0}'}" FontSize="Small" HorizontalOptions="End"/>
+                                <VerticalStackLayout HorizontalOptions="End"> 
+                                    <Label Text="{Binding StartDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
+                                    <Label Text="{Binding EndDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
+                                </VerticalStackLayout>
+                                <Button Text="View Course" Clicked="ViewCourseEventHandler" Margin="20"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Terms" FontSize="Medium" FontAttributes="Bold" Margin="0,10"/>
+            <CollectionView ItemsSource="{Binding SearchResults.Terms}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="5">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Title, StringFormat='Term Title: {0}'}" FontSize="Medium"/>
+                                <VerticalStackLayout HorizontalOptions="End"> 
+                                    <Label Text="{Binding StartDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
+                                    <Label Text="{Binding EndDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
+                                </VerticalStackLayout>
+                                <Button Text="View Term" Clicked="ViewTermEventHandler" Margin="20"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Instructors" FontSize="Medium" FontAttributes="Bold" Margin="0,10"/>
+            <CollectionView ItemsSource="{Binding SearchResults.Instructors}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="5">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name, StringFormat='Instructor Name: {0}'}" FontSize="Medium"/>
+                                <Label Text="{Binding Email, StringFormat='Instructor Email: {0}'}" FontSize="Small" HorizontalOptions="End"/>
+                                <Label Text="{Binding Phone, StringFormat='Instructor Phone Number: {0}'}" FontSize="Small" HorizontalOptions="End"/>
+                                <Button Text="View Instructor" Clicked="ViewInstructorEventHandler" Margin="20"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Assessments" FontSize="Medium" FontAttributes="Bold" Margin="0,10"/>
+            <CollectionView ItemsSource="{Binding SearchResults.Assessments}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="5">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name, StringFormat='Instructor Name: {0}'}" FontSize="Medium"/>
+                                <Label Text="{Binding Type, StringFormat='Instructor Name: {0}'}" FontSize="Small" HorizontalOptions="End"/>
+                                <VerticalStackLayout HorizontalOptions="End"> 
+                                    <Label Text="{Binding StartDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
+                                    <Label Text="{Binding EndDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
+                                </VerticalStackLayout>
+                                <Button Text="View Assessment" Clicked="ViewAssessmentEventHandler" Margin="20"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
