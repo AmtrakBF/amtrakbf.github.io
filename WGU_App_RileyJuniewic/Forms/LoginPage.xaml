@@ -1,0 +1,35 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="WGU_App_RileyJuniewic.Forms.LoginPage"
+            xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
+            Shell.NavBarIsVisible="False"
+            Shell.TabBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <converters:ErrorsToStringConverter x:Key="ErrorsToString"/>
+        <converters:ErrorsToBoolConverter x:Key="ErrorsToBool"/>
+        <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout VerticalOptions="Center">
+            <Label Text="Login" FontSize="Large" Margin="0,0,0,40" HorizontalTextAlignment="Center"/>
+
+            <Entry Text="{Binding LoginRequest.Username}" Placeholder="Username" Margin="40,10"/>
+            <Label Text="{Binding LoginRequest.ValidationErrors, Converter={StaticResource ErrorsToString}, ConverterParameter=Username}"
+                    TextColor="Red" FontSize="Small" Margin="40,0,40,10" HorizontalTextAlignment="Start" 
+                    IsVisible="{Binding LoginRequest.ValidationErrors, Converter={StaticResource ErrorsToBool}, ConverterParameter=Username}"/>
+
+            <Entry Text="{Binding LoginRequest.Password}" Placeholder="Password" Margin="40,10" IsPassword="True"/>
+            <Label Text="{Binding LoginRequest.ValidationErrors, Converter={StaticResource ErrorsToString}, ConverterParameter=Password}"
+                    TextColor="Red" FontSize="Small" Margin="40,0,40,10" HorizontalTextAlignment="Start"
+                    IsVisible="{Binding LoginRequest.ValidationErrors, Converter={StaticResource ErrorsToBool}, ConverterParameter=Password}"/>
+
+
+            <Button Text="Login" Command="{Binding LoginCommandAsync}" Margin="40"/>
+
+            <Label Text="Don't have an account?" FontSize="Small" Margin="0,0,0,10" HorizontalTextAlignment="Center"/>
+            <Button Text="Register" Clicked="RegisterEventHandler" Margin="40, 10" HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

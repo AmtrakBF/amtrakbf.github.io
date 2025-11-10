@@ -10,10 +10,10 @@ public partial class App : Application
 
     public App(SqlDataAccessAsync sqlDataAccessAsync)
 	{
-		InitializeComponent();
+        InitializeComponent();
 
 		_sqlDataAccess = sqlDataAccessAsync;
-		_ = InitDB();
+        _ = InitDB();
 	}
 
 	protected override Window CreateWindow(IActivationState? activationState)
@@ -25,8 +25,16 @@ public partial class App : Application
 	{
 		var connection = await _sqlDataAccess.GetConnectionAsync();
 		var isInitialized = await connection.Table<InitDB>().FirstOrDefaultAsync() ?? new InitDB();
-		if (isInitialized.IsInitialized)
-			return;
+        if (isInitialized.IsInitialized)
+            return;
+            
+        var user = new User
+        {
+            UserId = Guid.NewGuid(),
+            Username = "testuser",
+            Password = "password"
+        };
+        await connection.InsertAsync(user);
 
 		var instructor = new Instructor
         {
@@ -39,6 +47,7 @@ public partial class App : Application
 
         var term = new Term
         {
+            UserId = user.UserId,
             TermId = Guid.NewGuid(),
             Title = "Summer 2025",
             StartDate = new DateTime(2025, 5, 1),

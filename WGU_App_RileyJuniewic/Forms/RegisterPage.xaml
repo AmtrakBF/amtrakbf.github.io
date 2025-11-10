@@ -1,0 +1,37 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="WGU_App_RileyJuniewic.Forms.RegisterPage"
+            xmlns:converters="clr-namespace:WGU_App_RileyJuniewic.Data.Misc.Converters"
+            Shell.NavBarIsVisible="True"
+            Shell.TabBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <converters:ErrorsToStringConverter x:Key="ErrorsToString"/>
+        <converters:ErrorsToBoolConverter x:Key="ErrorsToBool"/>
+        <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout VerticalOptions="Center">
+            <Label Text="Register" FontSize="Large" Margin="0,0,0,40" HorizontalTextAlignment="Center"/>
+
+            <Entry Text="{Binding CreateRequest.Username}" Placeholder="Username" Margin="40,10"/>
+            <Label Text="{Binding CreateRequest.ValidationErrors, Converter={StaticResource ErrorsToString}, ConverterParameter=Username}"
+                    TextColor="Red" FontSize="Small" Margin="40,0,40,10" HorizontalTextAlignment="Start" 
+                    IsVisible="{Binding CreateRequest.ValidationErrors, Converter={StaticResource ErrorsToBool}, ConverterParameter=Username}"/>
+
+            <Entry Text="{Binding CreateRequest.Password}" Placeholder="Password" Margin="40,10" IsPassword="True"/>
+            <Label Text="{Binding CreateRequest.ValidationErrors, Converter={StaticResource ErrorsToString}, ConverterParameter=Password}"
+                    TextColor="Red" FontSize="Small" Margin="40,0,40,10" HorizontalTextAlignment="Start"
+                    IsVisible="{Binding CreateRequest.ValidationErrors, Converter={StaticResource ErrorsToBool}, ConverterParameter=Password}"/>
+
+            <Entry Text="{Binding CreateRequest.ConfirmPassword}" Placeholder="ConfirmPassword" Margin="40,10" IsPassword="True"/>
+            <Label Text="{Binding CreateRequest.ValidationErrors, Converter={StaticResource ErrorsToString}, ConverterParameter=ConfirmPassword}"
+                    TextColor="Red" FontSize="Small" Margin="40,0,40,10" HorizontalTextAlignment="Start"
+                    IsVisible="{Binding CreateRequest.ValidationErrors, Converter={StaticResource ErrorsToBool}, ConverterParameter=ConfirmPassword}"/>
+
+
+            <Button Text="Register" Command="{Binding CreateCommandAsync}" Margin="40"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

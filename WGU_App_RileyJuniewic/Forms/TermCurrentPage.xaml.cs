@@ -1,3 +1,5 @@
+using Ardalis.Result;
+using WGU_App_RileyJuniewic.Data;
 using WGU_App_RileyJuniewic.Data.Misc.Events;
 using WGU_App_RileyJuniewic.Data.ViewModels;
 using WGU_App_RileyJuniewic.Forms.CourseForms;
@@ -11,8 +13,11 @@ public partial class CurrentTermPage : ContentPage
 
     public EventHandler? ButtonEventHandler { get; set; }
     
-    public CurrentTermPage(CurrentTermViewModel viewModel)
+    public CurrentTermPage(CurrentTermViewModel viewModel, UserStore userStore)
     {
+        if (userStore.GetUser().IsError()){}
+            _ = Shell.Current.GoToAsync(nameof(LoginPage));
+
         BindingContext = viewModel;
         _viewModel = viewModel;
         InitializeComponent();

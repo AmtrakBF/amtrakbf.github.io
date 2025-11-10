@@ -21,6 +21,7 @@ using WGU_App_RileyJuniewic.Data.Dtos.Course;
 using WGU_App_RileyJuniewic.Data.ViewModels.AssessmentViewModels;
 using Plugin.LocalNotification;
 using WGU_App_RileyJuniewic.Data;
+using WGU_App_RileyJuniewic.Data.Dtos;
 
 
 namespace WGU_App_RileyJuniewic;
@@ -67,12 +68,14 @@ public static class MauiProgram
 		builder.Services.AddTransient<ViewCourseViewModel>();
 		builder.Services.AddTransient<ModifyCourseViewModel>();
 
+		builder.Services.AddTransient<LoginViewModel>();
+		builder.Services.AddTransient<RegisterViewModel>();
+
 		builder.Services.AddTransient<CreateAssessmentViewModel>();
 		builder.Services.AddTransient<ModifyAssessmentViewModel>();
 
 		builder.Services.AddScoped<ICreateService<CreateAssessmentRequest, Assessment>, AssessmentService>();
 		builder.Services.AddScoped<IModifyService<UpdateAssessmentRequest, Assessment>, AssessmentService>();
-
 
 		builder.Services.AddScoped<ICreateService<CreateInstructorRequest, Instructor>, InstructorService>();
 		builder.Services.AddScoped<IModifyService<UpdateInstructorRequest, Instructor>, InstructorService>();
@@ -82,6 +85,8 @@ public static class MauiProgram
 
 		builder.Services.AddScoped<ICreateService<CreateTermRequest, Term>, TermService>();
 		builder.Services.AddScoped<IModifyService<UpdateTermRequest, Term>, TermService>();
+
+		builder.Services.AddScoped<ICreateService<UserCreateRequest, User>, UserService>();
 
 		builder.Services.AddScoped<ITermService, TermService>();
 		builder.Services.AddScoped<ICourseService, CourseService>();
@@ -93,6 +98,7 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+
 
 		return builder.Build();
 	}
