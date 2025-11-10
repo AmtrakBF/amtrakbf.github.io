@@ -12,15 +12,20 @@
 
     <ScrollView>
         <VerticalStackLayout Margin="40">
+             <VerticalStackLayout.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Margin" Value="10"/>
+                </Style>
+            </VerticalStackLayout.Resources>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <VerticalStackLayout>
-                    <Entry Text="{Binding Query}" Placeholder="Search..." />
+                    <Entry Text="{Binding Query}" Placeholder="Search..." Margin="0"/>
                     <Label Text="{Binding ValidationErrors, Converter={StaticResource ErrorsToString}, ConverterParameter=Query}"
-                        TextColor="Red" FontSize="Small" HorizontalTextAlignment="Start"/>
+                        TextColor="Red" FontSize="Small" HorizontalTextAlignment="Start"  Margin="0"/>
                 </VerticalStackLayout>
 
                 <Button Text="Search" Command="{Binding SearchCommandAsync}" Grid.Column="1" Margin="10"/>
@@ -33,11 +38,12 @@
                         <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="5">
                             <VerticalStackLayout>
                                 <Label Text="{Binding Title, StringFormat='Course Title: {0}'}" FontSize="Medium"/>
-                                <Label Text="{Binding Notes, StringFormat='Course Notes: {0}'}" FontSize="Small" HorizontalOptions="End"/>
+                                <Label Text="{Binding Notes, StringFormat='Course Notes: {0}'}" IsVisible="{Binding Notes, Converter={StaticResource NullToBoolean}}"
+                                    FontSize="Small" HorizontalOptions="End"/>
                                 <Label Text="{Binding Status, StringFormat='Course Status: {0}'}" FontSize="Small" HorizontalOptions="End"/>
                                 <VerticalStackLayout HorizontalOptions="End"> 
-                                    <Label Text="{Binding StartDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
-                                    <Label Text="{Binding EndDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
+                                    <Label Text="{Binding StartDate,Converter={StaticResource DateTimeConverter},StringFormat='Start Date: {0}'}" FontSize="Small"/>
+                                    <Label Text="{Binding EndDate,Converter={StaticResource DateTimeConverter},StringFormat='End Date: {0}'}" FontSize="Small"/>
                                 </VerticalStackLayout>
                                 <Button Text="View Course" Clicked="ViewCourseEventHandler" Margin="20"/>
                             </VerticalStackLayout>
@@ -54,8 +60,8 @@
                             <VerticalStackLayout>
                                 <Label Text="{Binding Title, StringFormat='Term Title: {0}'}" FontSize="Medium"/>
                                 <VerticalStackLayout HorizontalOptions="End"> 
-                                    <Label Text="{Binding StartDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
-                                    <Label Text="{Binding EndDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
+                                    <Label Text="{Binding StartDate,Converter={StaticResource DateTimeConverter},StringFormat='Start Date: {0}'}" FontSize="Small"/>
+                                    <Label Text="{Binding EndDate,Converter={StaticResource DateTimeConverter},StringFormat='End Date: {0}'}" FontSize="Small"/>
                                 </VerticalStackLayout>
                                 <Button Text="View Term" Clicked="ViewTermEventHandler" Margin="20"/>
                             </VerticalStackLayout>
@@ -86,11 +92,11 @@
                     <DataTemplate>
                         <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="5">
                             <VerticalStackLayout>
-                                <Label Text="{Binding Name, StringFormat='Instructor Name: {0}'}" FontSize="Medium"/>
-                                <Label Text="{Binding Type, StringFormat='Instructor Name: {0}'}" FontSize="Small" HorizontalOptions="End"/>
+                                <Label Text="{Binding Name, StringFormat='Assessment Name: {0}'}" FontSize="Medium"/>
+                                <Label Text="{Binding Type, StringFormat='Assessment Type: {0}'}" FontSize="Small" HorizontalOptions="End"/>
                                 <VerticalStackLayout HorizontalOptions="End"> 
-                                    <Label Text="{Binding StartDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
-                                    <Label Text="{Binding EndDate,Converter={StaticResource DateTimeConverter}}" FontSize="Small"/>
+                                    <Label Text="{Binding StartDate,Converter={StaticResource DateTimeConverter},StringFormat='Start Date: {0}'}" FontSize="Small"/>
+                                    <Label Text="{Binding EndDate,Converter={StaticResource DateTimeConverter},StringFormat='End Date: {0}'}" FontSize="Small"/>
                                 </VerticalStackLayout>
                                 <Button Text="View Assessment" Clicked="ViewAssessmentEventHandler" Margin="20"/>
                             </VerticalStackLayout>
