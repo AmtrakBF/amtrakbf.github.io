@@ -69,6 +69,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<ModifyCourseViewModel>();
 
 		builder.Services.AddTransient<SearchViewModel>();
+		builder.Services.AddTransient<ReportsViewModel>();
 
 		builder.Services.AddTransient<LoginViewModel>();
 		builder.Services.AddTransient<RegisterViewModel>();
