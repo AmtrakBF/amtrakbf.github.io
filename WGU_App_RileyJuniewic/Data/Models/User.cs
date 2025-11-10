@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using SQLite;
 using WGU_App_RileyJuniewic.Data.Services;
 
 namespace WGU_App_RileyJuniewic.Data.Models;
@@ -6,6 +6,7 @@ namespace WGU_App_RileyJuniewic.Data.Models;
 [Table("User")]
 public class User
 {
+    [PrimaryKey]
     public Guid UserId { get; set; }
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";

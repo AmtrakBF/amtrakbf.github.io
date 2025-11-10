@@ -7,6 +7,7 @@ public class Term
 {
     [PrimaryKey]
     public Guid TermId { get; set; }
+    [Indexed]
     public Guid UserId { get; set; }
     public string Title { get; set; } = "";
     public DateTime StartDate { get; set; }
