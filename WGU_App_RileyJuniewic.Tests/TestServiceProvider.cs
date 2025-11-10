@@ -33,6 +33,7 @@ public class TestServiceProvider : TestBedFixture
         services.AddScoped<IAssessmentService, AssessmentService>();
         services.AddScoped<INoteService, NoteService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ISearchService, SearchService>();
 
         services.AddSingleton<UserStore>();
     }

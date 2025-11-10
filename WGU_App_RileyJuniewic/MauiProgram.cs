@@ -94,6 +94,7 @@ public static class MauiProgram
 		builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 		builder.Services.AddScoped<INoteService, NoteService>();
 		builder.Services.AddScoped<IUserService, UserService>();
+		builder.Services.AddScoped<ISearchService, SearchService>();
 
 #if DEBUG
 		builder.Logging.AddDebug();
