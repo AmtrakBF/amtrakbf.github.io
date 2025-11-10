@@ -1,4 +1,5 @@
 using FluentAssertions;
+using WGU_App_RileyJuniewic.Data;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Models.Enums;
 using WGU_App_RileyJuniewic.Data.Repository;
@@ -12,6 +13,7 @@ public class SearchServiceTests : TestBedWithDI<TestServiceProvider>
 {
     [Inject] public ISearchService _searchService { get; set; } = null!;
     [Inject] public SqlDataAccessAsync _sqlDataAccess { get; set; } = null!;
+    [Inject] public UserStore _userStore { get; set; } = null!;
 
     private Task _init;
 
@@ -41,6 +43,8 @@ public class SearchServiceTests : TestBedWithDI<TestServiceProvider>
         await connection.InsertAsync(assessment);
         var assessment2 = new Assessment() { AssessmentId = Guid.NewGuid(), CourseId = course.CourseId, Name = "Test TEST", Type = AssessmentType.Objective, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(1) };
         await connection.InsertAsync(assessment2);
+
+        _userStore.SetUser(user);
     }
 
     [Fact]
@@ -48,7 +52,8 @@ public class SearchServiceTests : TestBedWithDI<TestServiceProvider>
     {
         await _init;
 
-        var searchResults = await _searchService.SearchAllAsync("ass", new Guid("84c9e24e-742a-41ee-9025-35dfbba98e20"));
+        var result = await _searchService.SearchAllAsync("ass");
+        var searchResults = result.Value;
         searchResults.Should().NotBeNull();
         searchResults.Assessments.Should().NotBeNull();
         searchResults.Assessments.Count().Should().Be(1);
@@ -64,7 +69,8 @@ public class SearchServiceTests : TestBedWithDI<TestServiceProvider>
     {
         await _init;
 
-        var searchResults = await _searchService.SearchAllAsync("Course", new Guid("84c9e24e-742a-41ee-9025-35dfbba98e20"));
+        var result = await _searchService.SearchAllAsync("Course");
+        var searchResults = result.Value;
         searchResults.Should().NotBeNull();
         searchResults.Courses.Count().Should().Be(1);
         searchResults.Courses.First().Title.Should().Be("Test Course");
@@ -79,7 +85,8 @@ public class SearchServiceTests : TestBedWithDI<TestServiceProvider>
     {
         await _init;
 
-        var searchResults = await _searchService.SearchAllAsync("Term", new Guid("84c9e24e-742a-41ee-9025-35dfbba98e20"));
+        var result = await _searchService.SearchAllAsync("Term");
+        var searchResults = result.Value;
         searchResults.Should().NotBeNull();
         searchResults.Terms.Count().Should().Be(1);
         searchResults.Terms.First().Title.Should().Be("Test Term");
@@ -94,7 +101,8 @@ public class SearchServiceTests : TestBedWithDI<TestServiceProvider>
     {
         await _init;
 
-        var searchResults = await _searchService.SearchAllAsync("Instructor", new Guid("84c9e24e-742a-41ee-9025-35dfbba98e20"));
+        var result = await _searchService.SearchAllAsync("Instructor");
+        var searchResults = result.Value;
         searchResults.Should().NotBeNull();
         searchResults.Instructors.Count().Should().Be(1);
         searchResults.Instructors.First().Name.Should().Be("Test Instructor");
@@ -109,7 +117,8 @@ public class SearchServiceTests : TestBedWithDI<TestServiceProvider>
     {
         await _init;
 
-        var searchResults = await _searchService.SearchAllAsync("Test", new Guid("84c9e24e-742a-41ee-9025-35dfbba98e20"));
+        var result = await _searchService.SearchAllAsync("Test");
+        var searchResults = result.Value;
         searchResults.Should().NotBeNull();
         searchResults.Instructors.Should().NotBeEmpty();
         searchResults.Assessments.Should().NotBeEmpty();
