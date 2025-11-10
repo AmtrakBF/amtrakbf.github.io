@@ -1,5 +1,4 @@
 using Ardalis.Result;
-using Sodium;
 using WGU_App_RileyJuniewic.Data.Dtos;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Models.Interfaces;
