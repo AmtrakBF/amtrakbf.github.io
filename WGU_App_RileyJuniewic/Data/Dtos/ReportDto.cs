@@ -12,6 +12,7 @@ public class ReportDto : BindingModel
     private int _totalAssessmentCount;
     private int _totalTermCount;
     private int _completeTermCount;
+    private DateTime _reportDate;
 
     public int CompleteCourseCount
     {
@@ -71,6 +72,12 @@ public class ReportDto : BindingModel
     {
         get => _completeTermCount;
         set => SetValue(nameof(CompleteTermCount), ref _completeTermCount, value);
+    }
+
+    public DateTime ReportDate
+    {
+        get => _reportDate;
+        set => SetValue(nameof(ReportDate), ref _reportDate, value);
     }
 
     public ReportDto()

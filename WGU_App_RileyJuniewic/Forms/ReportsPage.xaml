@@ -14,6 +14,7 @@
         <VerticalStackLayout>
             <components:HeaderComp />
             <Label Text="Reports" FontSize="Large" Margin="0,20" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+            <Label Text="{Binding ReportDto.ReportDate, StringFormat='Updated as of: {0}'}" FontSize="Medium" Margin="0,20" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
 
             <Border Padding="20" StrokeShape="RoundRectangle 10" Margin="40">
                 <VerticalStackLayout>

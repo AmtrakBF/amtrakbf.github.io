@@ -52,7 +52,8 @@ public class ReportsViewModel : BindingModel
             TotalCourseCount = courses.Count,
             TotalAssessmentCount = assessments.Count,
             TotalTermCount = termsResult.Value.Count,
-            CompleteTermCount = termsResult.Value.Count(x => x.EndDate < DateTime.Now)
+            CompleteTermCount = termsResult.Value.Count(x => x.EndDate < DateTime.Now),
+            ReportDate = DateTime.Now
         };
     }
 }
