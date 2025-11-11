@@ -1,5 +1,6 @@
 using Ardalis.Result;
 using FluentAssertions;
+using WGU_App_RileyJuniewic.Data;
 using WGU_App_RileyJuniewic.Data.Dtos.Course;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Models.Enums;
@@ -15,9 +16,11 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
 
     [Inject] protected ICourseService _courseService { get; set; } = null!;
     [Inject] protected SqlDataAccessAsync _dbAccessAsync { get; set; } = null!;
+    [Inject] protected UserStore _userStore { get; set; } = null!;
 
     public CourseServiceTests(ITestOutputHelper testOutputHelper, TestServiceProvider fixture) : base(testOutputHelper, fixture)
     {
+        _userStore.SetUser(new User() { UserId = Guid.NewGuid() });
     }
 
     [Fact]
@@ -295,11 +298,11 @@ public class CourseServiceTests : TestBedWithDI<TestServiceProvider>
 
     private async Task<Tuple<Instructor, Term>> CreateInstructorAndTermAsync()
     {
-        var instructor = new Instructor() { InstructorId = Guid.NewGuid() };
+        var instructor = new Instructor() { InstructorId = Guid.NewGuid(), UserId = _userStore.GetUser().Value.UserId };
         var connection = await _dbAccessAsync.GetConnectionAsync();
         await connection.InsertAsync(instructor);
 
-        var term = new Term() { TermId = Guid.NewGuid() };
+        var term = new Term() { TermId = Guid.NewGuid(), UserId = _userStore.GetUser().Value.UserId };
         await connection.InsertAsync(term);
 
         return new Tuple<Instructor, Term>(instructor, term);

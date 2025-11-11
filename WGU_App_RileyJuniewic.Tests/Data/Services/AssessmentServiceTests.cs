@@ -1,7 +1,7 @@
 using Ardalis.Result;
 using FluentAssertions;
+using WGU_App_RileyJuniewic.Data;
 using WGU_App_RileyJuniewic.Data.Dtos.Assessment;
-using WGU_App_RileyJuniewic.Data.Misc.Attributes.Exceptions;
 using WGU_App_RileyJuniewic.Data.Models;
 using WGU_App_RileyJuniewic.Data.Models.Enums;
 using WGU_App_RileyJuniewic.Data.Repository;
@@ -15,9 +15,11 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
 {
     [Inject] public IAssessmentService _assessmentService { get; set; } = null!;
     [Inject] public SqlDataAccessAsync _sqlDataAccess { get; set; } = null!;
+    [Inject] public UserStore _userStore { get; set; } = null!;
 
     public AssessmentServiceTests(ITestOutputHelper testOutputHelper, TestServiceProvider fixture) : base(testOutputHelper, fixture)
     {
+        _userStore.SetUser(new User() { UserId = Guid.NewGuid() });
     }
 
     [Fact]
@@ -164,9 +166,11 @@ public class AssessmentServiceTests : TestBedWithDI<TestServiceProvider>
     {
         await ClearAssessments();
 
-        var course = new Course() { CourseId = Guid.NewGuid() };
-         var connection = await _sqlDataAccess.GetConnectionAsync();
+        var term = new Term() { TermId = Guid.NewGuid(), UserId = _userStore.GetUser().Value.UserId };
+        var course = new Course() { CourseId = Guid.NewGuid(), TermId = term.TermId };
+        var connection = await _sqlDataAccess.GetConnectionAsync();
         await connection.InsertAsync(course);
+        await connection.InsertAsync(term);
 
         var assessmentRequest = new CreateAssessmentRequest()
         {
