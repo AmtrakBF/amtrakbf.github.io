@@ -1,0 +1,162 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    --blue: #002F51;
+    --black: #2D2D2D;
+    
+    color: var(--black);
+    font-family: lato, arial;
+    --margin-header: 2em 10em;
+    --margin-body: 2em 20em;
+}
+
+#logo {
+    height: 2em;
+    aspect-ratio: 4/1;
+    margin: var(--margin-header);
+}
+
+#blue-stripe {
+    background-color: var(--blue);
+    height: 2em;
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: start;
+}
+
+.flex-body {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    margin: var(--margin-body);
+}
+
+.flex-container {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 4em;
+}
+
+.image-carousel {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    align-items: start;
+}
+
+.arrow {
+    height: 4em;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+}
+
+.image-carousel {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-carousel img {
+    width: 20em;
+    user-select: none;
+}
+
+.contrast-img {
+    filter: contrast(.4)
+}
+
+.download-card {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.download-card a {
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none;
+    background-color: var(--blue);
+    padding: 1em 5em;
+    border-radius: 50px;
+}
+
+@media screen and (max-width: 2200px) {
+    .image-carousel img {
+        width: 13em;
+    }
+
+    .download-card a {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 1800px) {
+    body,html {
+        --margin-body: 2em 10em;
+    }
+}
+
+@media screen and (max-width: 1450px) {
+    body,html {
+        --margin-body: 2em 5em;
+    }
+
+    .image-carousel img {
+        width: 10em;
+    }
+}
+
+@media screen and (max-width: 1150px) {
+    .flex-container{
+        flex-direction: column;
+        gap: 5em;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .image-carousel img {
+        width: 10em;
+        position: absolute;
+    }
+
+    .image-carousel img.contrast-img {
+        opacity: 0;
+    }
+
+    .image-carousel {
+        padding: 8em 0;
+        gap: 14em;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    body,html {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 330px) {
+    body,html {
+        --margin-body: 2em 2em;
+    }
+}
