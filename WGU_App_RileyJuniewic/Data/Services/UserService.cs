@@ -17,6 +17,9 @@ public class UserService(SqlDataAccessAsync sqlDataAccess) : ICreateService<User
 {
     public async Task<Result<User>> CreateAsync(UserCreateRequest request)
     {
+        if (request.HasErrors)
+            return Result.Error(request.GetErrorList());
+
         var connection = await sqlDataAccess.GetConnectionAsync();
         var existingUser = await connection.Table<User>().Where(x => x.Username == request.Username.ToLower()).FirstOrDefaultAsync();
         if (existingUser != null)

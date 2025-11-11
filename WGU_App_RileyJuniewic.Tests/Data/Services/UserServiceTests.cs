@@ -41,7 +41,8 @@ public class UserServiceTests : TestBedWithDI<TestServiceProvider>
     [Theory]
     [InlineData("Test User", "mypassword", "mypassword")]
     [InlineData("Test User", "mypassword", "mypassword", "User already exists.")]
-    [InlineData("Test User2", "mypassword", "notvalid", "Passwords do not match.")]
+    [InlineData("Test User2", "mypassword", "notvalid123", "Passwords do not match.")]
+    [InlineData("Test User3", "short", "short", "Password must be at least 8 characters.")]
     public async Task CreateUserAsync_WithInvalidData_ReturnsErrorAsync(string username, string password, string confirmPassword, string? errorMessage = null)
     {
         if (errorMessage == null)
