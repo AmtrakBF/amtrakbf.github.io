@@ -82,21 +82,10 @@ public sealed partial class SearchPage : ContentPage
             return;
         }
 
-        var course = _searchViewModel.SearchResults.Courses.FirstOrDefault(c => c.InstructorId == instructor.InstructorId);
-        if (course is null)
-        {
-            new ToastNotification("Cannot modify instructor");
-            return;
-        }
-        var fullCourseDto = new FullCourseDto
-        {
-            Course = course,
-            Instructor = instructor
-        };
         var navigationParameter = new ShellNavigationQueryParameters
         {
-            {"FullCourse", fullCourseDto}
+            {"Instructor", instructor}
         };
-        Shell.Current.GoToAsync(nameof(ModifyInstructorPage), true, navigationParameter);
+        Shell.Current.GoToAsync(nameof(InstructorUpdatePage), true, navigationParameter);
     }
 }
