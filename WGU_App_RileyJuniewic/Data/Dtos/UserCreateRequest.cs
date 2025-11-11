@@ -16,7 +16,6 @@ public class UserCreateRequest : BindingModel
     }
 
     [Required(AllowEmptyStrings = false)]
-<<<<<<< HEAD
     [Length(8, 65, ErrorMessage = "Password must be at least 8 characters.")]
     public string Password
     {
