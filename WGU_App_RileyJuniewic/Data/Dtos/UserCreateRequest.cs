@@ -16,6 +16,7 @@ public class UserCreateRequest : BindingModel
     }
 
     [Required(AllowEmptyStrings = false)]
+    [MinLength(8)]
     public string Password
     {
         get => _password;
