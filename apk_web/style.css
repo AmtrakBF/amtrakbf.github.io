@@ -155,7 +155,7 @@ body, html {
     }
 
     body, html {
-        --margin-body: 2em 3em;
+        --margin-header: 2em 3em;
     }
 }
 
