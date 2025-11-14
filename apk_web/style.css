@@ -153,6 +153,10 @@ body, html {
     body,html {
         font-size: 12px;
     }
+
+    body, html {
+        --margin-body: 2em 3em;
+    }
 }
 
 @media screen and (max-width: 330px) {
